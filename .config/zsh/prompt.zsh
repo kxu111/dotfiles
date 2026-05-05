@@ -1,7 +1,7 @@
 PROMPT='%~ $ '
 
 # color change for vi mode
-function zle-keymap-select { 
+function zle-keymap-select {
     if [[ ${KEYMAP} == vicmd ]]; then
         PROMPT='%F{magenta}%~ $ %f'
     else
@@ -9,6 +9,4 @@ function zle-keymap-select {
     fi
     zle reset-prompt
 }
-
 zle -N zle-keymap-select
-
