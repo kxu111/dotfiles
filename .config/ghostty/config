@@ -20,6 +20,8 @@ font-style-bold = "Bold"
 font-style-italic = "Italic"
 font-style-bold-italic = "Bold Italic"
 
+copy-on-select = clipboard
+
 
 keybind = super+digit_1=text:\x02\x31
 keybind = super+digit_2=text:\x02\x32

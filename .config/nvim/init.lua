@@ -118,7 +118,7 @@ require("blink.cmp").setup({
 			},
 		},
 		documentation = { auto_show = true, auto_show_delay_ms = 50 },
-		-- ghost_text = { enabled = true },
+		ghost_text = { enabled = true },
 	},
 })
 
@@ -183,7 +183,7 @@ local function pack_clean()
 	end
 
 	if #unused_plugins == 0 then
-		print("No unused plugins.")
+		print("Nothing to clean.")
 		return
 	end
 

@@ -1,6 +1,5 @@
 # syntax highlighting
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS} ma=0\;33
 
 # fzf
 source <(fzf --zsh)

@@ -16,6 +16,7 @@
       "raylib"
       "yt-dlp"
       "uv"
+      "mpv"
     ];
     casks = [
       "vesktop"
@@ -23,7 +24,6 @@
       "helium-browser"
       "sioyek"
       "obs"
-      "vlc"
       "ghostty"
       "desktoppr"
       "karabiner-elements"
