@@ -1,5 +1,11 @@
 # syntax highlighting
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source_highlighting() {
+    source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    unfunction source_highlighting
+}
+zle -N source_highlighting
+autoload -U add-zsh-hook
+add-zsh-hook precmd source_highlighting
 
 # fzf
 source <(fzf --zsh)
