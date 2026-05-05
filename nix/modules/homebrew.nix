@@ -11,7 +11,6 @@
       "mas"
       "node"
       "mole"
-      "zsh-syntax-highlighting"
       "pkgconfig"
       "raylib"
       "yt-dlp"
