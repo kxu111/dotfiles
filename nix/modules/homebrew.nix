@@ -16,6 +16,7 @@
       "yt-dlp"
       "uv"
       "mpv"
+      "starship"
     ];
     casks = [
       "vesktop"
