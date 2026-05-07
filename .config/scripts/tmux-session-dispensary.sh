@@ -1,11 +1,7 @@
 #!/bin/bash
 
 DIRS=(
-	"$HOME"
-    "$HOME/.config"
-	"$HOME/playground"
     "$HOME/projects"
-	"$HOME/Movies"
 )
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
