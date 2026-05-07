@@ -20,11 +20,11 @@ vim.pack.add({
 	"https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
 	"https://github.com/nvim-treesitter/nvim-treesitter",
 	"https://github.com/stevearc/conform.nvim",
-	"https://github.com/nvim-tree/nvim-web-devicons",
+	"https://github.com/nvim-mini/mini.nvim",
 	"https://github.com/ibhagwan/fzf-lua",
 	"https://github.com/stevearc/oil.nvim",
 	{ src = "https://github.com/Saghen/blink.cmp", version = "v1" },
-	"https://codeberg.org/andyg/leap.nvim",
+	"https://github.com/folke/flash.nvim",
 })
 
 require("mason").setup()
@@ -58,6 +58,23 @@ require("conform").setup({
 		c = { "clang-format" },
 		cpp = { "clang-format" },
 		rs = { "rustfmt" },
+	},
+})
+
+require("mini.icons").setup()
+MiniIcons.mock_nvim_web_devicons()
+require("mini.ai").setup()
+require("mini.surround").setup({
+	mappings = {
+		add = "<Leader>sa",
+		delete = "<Leader>sd",
+		find = "<Leader>sf",
+		find_left = "<Leader>sF",
+		highlight = "<Leader>sh",
+		replace = "<Leader>sr",
+
+		suffix_last = "l",
+		suffix_next = "n",
 	},
 })
 
@@ -122,16 +139,14 @@ require("blink.cmp").setup({
 	},
 })
 
-vim.keymap.set({ "n", "v", "o" }, "s", "<Plug>(leap-forward)")
-vim.keymap.set({ "n", "v", "o" }, "S", "<Plug>(leap-backward)")
-vim.keymap.set({ "x", "o" }, "an", function()
-	require("leap.treesitter").select({
-		opts = require("leap.user").with_traversal_keys("n", "N"),
-	})
-end)
-vim.keymap.set({ "n", "x", "o" }, "R", function()
-	require("leap.remote").action()
-end)
+local flash = require("flash")
+flash.setup({ modes = { char = { enabled = false } } })
+-- stylua: ignore start
+vim.keymap.set({ "n", "v", "o" }, "s",function() flash.jump() end)
+vim.keymap.set({ "n", "v", "o" }, "S",function() flash.treesitter() end)
+vim.keymap.set({ "n", "v", "o" }, "r",function() flash.remote() end)
+vim.keymap.set({ "n", "v", "o" }, "R",function() flash.treesitter_search() end)
+-- stylua: ignore end
 
 vim.cmd.packadd("nvim.undotree")
 vim.keymap.set("n", "<Leader>u", "<Cmd>Undotree<CR>", { desc = "Toggle undotree" })
@@ -250,6 +265,8 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
 
 		vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "Comment" })
+
+		vim.api.nvim_set_hl(0, "LeapLabel", { fg = "#ffffff" })
 
 		vim.defer_fn(function()
 			vim.api.nvim_set_hl(0, "BlinkCmpMenu", { bg = "none" })
