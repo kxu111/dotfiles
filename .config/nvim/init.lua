@@ -19,12 +19,14 @@ vim.pack.add({
 	"https://github.com/mason-org/mason-lspconfig.nvim",
 	"https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
 	"https://github.com/nvim-treesitter/nvim-treesitter",
+	"https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
 	"https://github.com/stevearc/conform.nvim",
-	"https://github.com/nvim-mini/mini.nvim",
+	"https://github.com/nvim-tree/nvim-web-devicons",
 	"https://github.com/ibhagwan/fzf-lua",
 	"https://github.com/stevearc/oil.nvim",
 	{ src = "https://github.com/Saghen/blink.cmp", version = "v1" },
-	"https://github.com/folke/flash.nvim",
+	"https://codeberg.org/andyg/leap.nvim",
+	"https://github.com/kylechui/nvim-surround",
 })
 
 require("mason").setup()
@@ -40,6 +42,7 @@ require("mason-tool-installer").setup({
 		"clangd",
 		"clang-format",
 		"rust-analyzer",
+		"tinymist",
 	},
 })
 local ts_parsers = {
@@ -48,6 +51,9 @@ local ts_parsers = {
 	"c",
 	"cpp",
 	"rust",
+	"markdown",
+	"markdown_inline",
+	"typst",
 }
 require("nvim-treesitter").install(ts_parsers)
 require("conform").setup({
@@ -61,22 +67,24 @@ require("conform").setup({
 	},
 })
 
-require("mini.icons").setup()
-MiniIcons.mock_nvim_web_devicons()
-require("mini.ai").setup()
-require("mini.surround").setup({
-	mappings = {
-		add = "<Leader>sa",
-		delete = "<Leader>sd",
-		find = "<Leader>sf",
-		find_left = "<Leader>sF",
-		highlight = "<Leader>sh",
-		replace = "<Leader>sr",
-
-		suffix_last = "l",
-		suffix_next = "n",
-	},
-})
+require("nvim-treesitter-textobjects").setup({ select = { lookahead = true } })
+-- stylua: ignore start
+vim.keymap.set("n", "<leader>a", function() require("nvim-treesitter-textobjects.swap").swap_next("@parameter.inner") end)
+vim.keymap.set("n", "<leader>A", function() require("nvim-treesitter-textobjects.swap").swap_previous("@parameter.inner") end)
+-- stylua: ignore end
+local ts_textobjects_keymaps = {
+	["af"] = "@function.outer",
+	["if"] = "@function.inner",
+	["ac"] = "@class.outer",
+	["ic"] = "@class.inner",
+	["aa"] = "@parameter.outer",
+	["ia"] = "@parameter.inner",
+}
+for bind, ts_object in pairs(ts_textobjects_keymaps) do
+	vim.keymap.set({ "v", "o" }, "" .. bind, function()
+		require("nvim-treesitter-textobjects.select").select_textobject("" .. ts_object, "textobjects")
+	end)
+end
 
 require("fzf-lua").setup({
 	defaults = { formatter = "path.dirname_first" }, -- show greyed-out directory before filename
@@ -139,14 +147,17 @@ require("blink.cmp").setup({
 	},
 })
 
-local flash = require("flash")
-flash.setup({ modes = { char = { enabled = false } } })
--- stylua: ignore start
-vim.keymap.set({ "n", "v", "o" }, "s",function() flash.jump() end)
-vim.keymap.set({ "n", "v", "o" }, "S",function() flash.treesitter() end)
-vim.keymap.set({ "n", "v", "o" }, "r",function() flash.remote() end)
-vim.keymap.set({ "n", "v", "o" }, "R",function() flash.treesitter_search() end)
--- stylua: ignore end
+vim.keymap.set({ "n", "o" }, "s", "<Plug>(leap-forward)")
+vim.keymap.set({ "n", "o" }, "S", "<Plug>(leap-backward)")
+vim.keymap.set({ "n", "o" }, "gs", "<Plug>(leap-remote)")
+vim.keymap.set({ "n", "o" }, "gS", "<Plug>(leap-remote-linewise)")
+vim.keymap.set({ "x", "o" }, "ar", "<Plug>(leap-remote-text-object)")
+vim.keymap.set({ "x", "o" }, "ir", "<Plug>(leap-remote-inner-text-object)")
+vim.keymap.set({ "x", "o" }, "an", function()
+	require("leap.treesitter").select({
+		opts = require("leap.user").with_traversal_keys("n", "N"),
+	})
+end)
 
 vim.cmd.packadd("nvim.undotree")
 vim.keymap.set("n", "<Leader>u", "<Cmd>Undotree<CR>", { desc = "Toggle undotree" })
@@ -266,7 +277,10 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
 		vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "Comment" })
 
-		vim.api.nvim_set_hl(0, "LeapLabel", { fg = "#ffffff" })
+		vim.api.nvim_set_hl(0, "LeapLabel", {
+			fg = "#ffffff",
+			bg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg,
+		})
 
 		vim.defer_fn(function()
 			vim.api.nvim_set_hl(0, "BlinkCmpMenu", { bg = "none" })
