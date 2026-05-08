@@ -25,7 +25,7 @@ vim.pack.add({
 	"https://github.com/ibhagwan/fzf-lua",
 	"https://github.com/stevearc/oil.nvim",
 	{ src = "https://github.com/Saghen/blink.cmp", version = "v1" },
-	"https://codeberg.org/andyg/leap.nvim",
+	"https://github.com/folke/flash.nvim",
 	"https://github.com/kylechui/nvim-surround",
 })
 
@@ -147,17 +147,11 @@ require("blink.cmp").setup({
 	},
 })
 
-vim.keymap.set({ "n", "o" }, "s", "<Plug>(leap-forward)")
-vim.keymap.set({ "n", "o" }, "S", "<Plug>(leap-backward)")
-vim.keymap.set({ "n", "o" }, "gs", "<Plug>(leap-remote)")
-vim.keymap.set({ "n", "o" }, "gS", "<Plug>(leap-remote-linewise)")
-vim.keymap.set({ "x", "o" }, "ar", "<Plug>(leap-remote-text-object)")
-vim.keymap.set({ "x", "o" }, "ir", "<Plug>(leap-remote-inner-text-object)")
-vim.keymap.set({ "x", "o" }, "an", function()
-	require("leap.treesitter").select({
-		opts = require("leap.user").with_traversal_keys("n", "N"),
-	})
-end)
+local flash = require("flash")
+flash.setup({ modes = { char = { enabled = false } } })
+vim.keymap.set({ "n", "v", "o" }, "s", flash.jump)
+vim.keymap.set({ "n", "v", "o" }, "S", flash.treesitter_search)
+vim.keymap.set({ "n", "v", "o" }, "R", flash.remote)
 
 vim.cmd.packadd("nvim.undotree")
 vim.keymap.set("n", "<Leader>u", "<Cmd>Undotree<CR>", { desc = "Toggle undotree" })
@@ -276,11 +270,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
 
 		vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "Comment" })
-
-		vim.api.nvim_set_hl(0, "LeapLabel", {
-			fg = "#ffffff",
-			bg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg,
-		})
 
 		vim.defer_fn(function()
 			vim.api.nvim_set_hl(0, "BlinkCmpMenu", { bg = "none" })
