@@ -10,6 +10,7 @@ vim.o.termguicolors = true
 vim.o.splitright = true
 vim.o.smartindent = true
 vim.o.ruler = false
+vim.o.spelllang = "en_gb"
 vim.o.undofile = true
 
 vim.pack.add({
@@ -19,14 +20,12 @@ vim.pack.add({
 	"https://github.com/mason-org/mason-lspconfig.nvim",
 	"https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
 	"https://github.com/nvim-treesitter/nvim-treesitter",
-	"https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
 	"https://github.com/stevearc/conform.nvim",
 	"https://github.com/nvim-tree/nvim-web-devicons",
 	"https://github.com/ibhagwan/fzf-lua",
 	"https://github.com/stevearc/oil.nvim",
 	{ src = "https://github.com/Saghen/blink.cmp", version = "v1" },
-	"https://github.com/folke/flash.nvim",
-	"https://github.com/kylechui/nvim-surround",
+	"https://github.com/chomosuke/typst-preview.nvim",
 })
 
 require("mason").setup()
@@ -43,8 +42,10 @@ require("mason-tool-installer").setup({
 		"clang-format",
 		"rust-analyzer",
 		"tinymist",
+		"typstyle",
 	},
 })
+vim.diagnostic.config({ virtual_text = true })
 local ts_parsers = {
 	"lua",
 	"nix",
@@ -64,27 +65,9 @@ require("conform").setup({
 		c = { "clang-format" },
 		cpp = { "clang-format" },
 		rs = { "rustfmt" },
+		typ = { "typstyle" },
 	},
 })
-
-require("nvim-treesitter-textobjects").setup({ select = { lookahead = true } })
--- stylua: ignore start
-vim.keymap.set("n", "<leader>a", function() require("nvim-treesitter-textobjects.swap").swap_next("@parameter.inner") end)
-vim.keymap.set("n", "<leader>A", function() require("nvim-treesitter-textobjects.swap").swap_previous("@parameter.inner") end)
--- stylua: ignore end
-local ts_textobjects_keymaps = {
-	["af"] = "@function.outer",
-	["if"] = "@function.inner",
-	["ac"] = "@class.outer",
-	["ic"] = "@class.inner",
-	["aa"] = "@parameter.outer",
-	["ia"] = "@parameter.inner",
-}
-for bind, ts_object in pairs(ts_textobjects_keymaps) do
-	vim.keymap.set({ "v", "o" }, "" .. bind, function()
-		require("nvim-treesitter-textobjects.select").select_textobject("" .. ts_object, "textobjects")
-	end)
-end
 
 require("fzf-lua").setup({
 	defaults = { formatter = "path.dirname_first" }, -- show greyed-out directory before filename
@@ -147,12 +130,6 @@ require("blink.cmp").setup({
 	},
 })
 
-local flash = require("flash")
-flash.setup({ modes = { char = { enabled = false } } })
-vim.keymap.set({ "n", "v", "o" }, "s", flash.jump)
-vim.keymap.set({ "n", "v", "o" }, "S", flash.treesitter_search)
-vim.keymap.set({ "n", "v", "o" }, "R", flash.remote)
-
 vim.cmd.packadd("nvim.undotree")
 vim.keymap.set("n", "<Leader>u", "<Cmd>Undotree<CR>", { desc = "Toggle undotree" })
 
@@ -164,7 +141,12 @@ vim.cmd("filetype plugin indent on")
 vim.keymap.set("n", "<Leader>q", "<Cmd>quit<CR>", { desc = "Quit the buffer" })
 vim.keymap.set("n", "<Leader><C-q>", "<Cmd>qa!<CR>", { desc = "Write + quit all" })
 vim.keymap.set("n", "<Leader>w", "<Cmd>write<CR>", { desc = "Write to the buffer" })
-vim.keymap.set("n", "<Leader>o", "<Cmd>update<CR><Cmd>source<CR>", { desc = "Source the buffer" })
+vim.keymap.set(
+	"n",
+	"<Leader>o",
+	"<Cmd>source " .. vim.fn.stdpath("config") .. "/init.lua<CR>",
+	{ desc = "Source init.lua" }
+)
 
 vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y', { desc = "Copy to clipboard" })
 vim.keymap.set({ "n", "v" }, "<Leader>d", '"+d', { desc = "Delete to clipboard" })
@@ -179,6 +161,8 @@ vim.keymap.set("n", "<C-h>", "<C-w>h")
 vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-k>", "<C-w>k")
 vim.keymap.set("n", "<C-l>", "<C-w>l")
+
+vim.keymap.set("n", "<Leader>s", "z=1<CR>", { desc = "Spell" })
 
 vim.keymap.set("n", "<C-t>", "<C-w>T", { desc = "Open buf in new tab" })
 for i = 1, 9 do
@@ -258,6 +242,13 @@ vim.api.nvim_create_autocmd("PackChanged", {
 vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
 		vim.highlight.on_yank()
+	end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = ts_parsers,
+	callback = function()
+		vim.treesitter.start()
 	end,
 })
 
