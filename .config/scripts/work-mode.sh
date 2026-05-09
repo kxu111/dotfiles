@@ -51,6 +51,7 @@ DOMAINS=(
 	fmhy.net
 	pstream.net
 	cineby.sc
+	odysee.com
 )
 
 usage() {
