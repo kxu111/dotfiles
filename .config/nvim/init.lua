@@ -52,8 +52,8 @@ local ts_parsers = {
 	"c",
 	"cpp",
 	"rust",
-	"markdown",
 	"markdown_inline",
+	"markdown",
 	"typst",
 }
 require("nvim-treesitter").install(ts_parsers)
@@ -80,15 +80,14 @@ require("fzf-lua").setup({
 		},
 	},
 })
-vim.keymap.set("n", "<Leader>f", "", { noremap = true, silent = true, desc = "Fzf" })
-vim.keymap.set("n", "<Leader>ff", "<Cmd>FzfLua files<CR>", { desc = "Find files" })
-vim.keymap.set("n", "<Leader>fh", "<Cmd>FzfLua helptags<CR>", { desc = "Search helptags" })
-vim.keymap.set("n", "<Leader>fb", "<Cmd>FzfLua buffers<CR>", { desc = "Search buffers" })
-vim.keymap.set("n", "<Leader>fl", "<Cmd>FzfLua live_grep<CR>", { desc = "Live grep" })
-vim.keymap.set("n", "<Leader>ft", "<Cmd>FzfLua diagnostics_document<CR>", { desc = "Search diagnostics" })
-vim.keymap.set("n", "<Leader>fd", "<Cmd>FzfLua lsp_definitions<CR>", { desc = "Find definition" })
-vim.keymap.set("n", "<Leader>fv", "<Cmd>FzfLua lsp_references<CR>", { desc = "Find references" })
-vim.keymap.set("n", "<Leader>fr", "<Cmd>FzfLua resume<CR>", { desc = "Resume fzf" })
+vim.keymap.set("n", "<Leader>ff", "<Cmd>FzfLua files<CR>")
+vim.keymap.set("n", "<Leader>fh", "<Cmd>FzfLua helptags<CR>")
+vim.keymap.set("n", "<Leader>fb", "<Cmd>FzfLua buffers<CR>")
+vim.keymap.set("n", "<Leader>fl", "<Cmd>FzfLua live_grep<CR>")
+vim.keymap.set("n", "<Leader>ft", "<Cmd>FzfLua diagnostics_document<CR>")
+vim.keymap.set("n", "<Leader>fd", "<Cmd>FzfLua lsp_definitions<CR>")
+vim.keymap.set("n", "<Leader>fv", "<Cmd>FzfLua lsp_references<CR>")
+vim.keymap.set("n", "<Leader>fr", "<Cmd>FzfLua resume<CR>")
 
 require("oil").setup({
 	delete_to_trash = true,
@@ -105,7 +104,7 @@ require("oil").setup({
 		["<C-h>"] = false,
 	},
 })
-vim.keymap.set("n", "-", "<Cmd>Oil<CR>", { desc = "Open Oil" })
+vim.keymap.set("n", "-", "<Cmd>Oil<CR>")
 
 require("blink.cmp").setup({
 	completion = {
@@ -131,46 +130,41 @@ require("blink.cmp").setup({
 })
 
 vim.cmd.packadd("nvim.undotree")
-vim.keymap.set("n", "<Leader>u", "<Cmd>Undotree<CR>", { desc = "Toggle undotree" })
+vim.keymap.set("n", "<Leader>u", "<Cmd>Undotree<CR>")
 
 vim.cmd.packadd("nohlsearch")
 vim.keymap.set("n", "<ESC>", "<Cmd>nohlsearch<CR>", { noremap = true, silent = true })
 
 vim.cmd("filetype plugin indent on")
 
-vim.keymap.set("n", "<Leader>q", "<Cmd>quit<CR>", { desc = "Quit the buffer" })
-vim.keymap.set("n", "<Leader><C-q>", "<Cmd>qa!<CR>", { desc = "Write + quit all" })
-vim.keymap.set("n", "<Leader>w", "<Cmd>write<CR>", { desc = "Write to the buffer" })
-vim.keymap.set(
-	"n",
-	"<Leader>o",
-	"<Cmd>source " .. vim.fn.stdpath("config") .. "/init.lua<CR>",
-	{ desc = "Source init.lua" }
-)
+vim.keymap.set("n", "<Leader>q", "<Cmd>quit<CR>")
+vim.keymap.set("n", "<Leader><C-q>", "<Cmd>qa!<CR>")
+vim.keymap.set("n", "<Leader>w", "<Cmd>write<CR>")
+vim.keymap.set("n", "<Leader>o", "<Cmd>source " .. vim.fn.stdpath("config") .. "/init.lua<CR>")
 
-vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y', { desc = "Copy to clipboard" })
-vim.keymap.set({ "n", "v" }, "<Leader>d", '"+d', { desc = "Delete to clipboard" })
-vim.keymap.set({ "n", "v" }, "<Leader>Y", '"+y$', { desc = "Yank to clip til end of line" })
-vim.keymap.set({ "n", "v" }, "<Leader>D", '"+d$', { desc = "Delete to clip til end of line" })
+vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y')
+vim.keymap.set({ "n", "v" }, "<Leader>d", '"+d')
+vim.keymap.set({ "n", "v" }, "<Leader>Y", '"+y$')
+vim.keymap.set({ "n", "v" }, "<Leader>D", '"+d$')
 
 vim.keymap.set({ "n", "v" }, "<C-d>", "<C-d>zz")
 vim.keymap.set({ "n", "v" }, "<C-u>", "<C-u>zz")
 
-vim.keymap.set("n", "<Leader>v", "<Cmd>vertical split<CR>", { desc = "Vertical split" })
+vim.keymap.set("n", "<Leader>v", "<Cmd>vertical split<CR>")
 vim.keymap.set("n", "<C-h>", "<C-w>h")
 vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-k>", "<C-w>k")
 vim.keymap.set("n", "<C-l>", "<C-w>l")
 
-vim.keymap.set("n", "<Leader>s", "z=1<CR>", { desc = "Spell" })
+vim.keymap.set("n", "<Leader>s", "z=1<CR>")
 
-vim.keymap.set("n", "<C-t>", "<C-w>T", { desc = "Open buf in new tab" })
+vim.keymap.set("n", "<C-t>", "<C-w>T")
 for i = 1, 9 do
-	vim.keymap.set("n", "<Leader>" .. i, "<Cmd>tabnext " .. i .. "<CR>", { desc = "Go to tab " .. i })
+	vim.keymap.set("n", "<Leader>" .. i, "<Cmd>tabnext " .. i .. "<CR>")
 end
 
 vim.keymap.set({ "n", "v" }, "<C-n>", ":norm ")
-vim.keymap.set({ "n", "v" }, "<C-s>", [[:s/\V]], { desc = "Enter substitute mode in selection" })
+vim.keymap.set({ "n", "v" }, "<C-s>", [[:s/\V]])
 
 local function pack_clean()
 	local active_plugins = {}
@@ -222,7 +216,7 @@ local function clean_all()
 	vim.cmd("MasonToolsClean")
 end
 
-vim.keymap.set("n", "<Leader>c", clean_all, { desc = "Clean unused pkgs" })
+vim.keymap.set("n", "<Leader>c", clean_all)
 
 vim.api.nvim_create_autocmd("PackChanged", {
 	callback = function(ev)
