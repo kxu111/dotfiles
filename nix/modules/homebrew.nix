@@ -30,6 +30,7 @@
       "aerospace"
       "anki"
       "raycast"
+      "obsidian"
     ];
     masApps = {
       "Davinci Resolve" = 571213070;

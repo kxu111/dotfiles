@@ -72,6 +72,7 @@ alt-e = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh net.whatsapp.W
 alt-s = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.spotify.client 5'
 alt-q = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh info.sioyek.sioyek 3'
 alt-v = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.obsproject.obs-studio 8'
+alt-n = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh md.obsidian 7'
 
 alt-o = 'reload-config'
 
