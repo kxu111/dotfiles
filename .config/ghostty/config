@@ -25,7 +25,6 @@ keybind = super+c=text:\x02c
 keybind = super+d=text:\x02x
 keybind = super+i=text:\x02i
 keybind = super+o=text:\x02o
-keybind = super+w=text:\x02w
 
 keybind = super+f=text:\x02f
 keybind = super+shift+h=text:\x02H
