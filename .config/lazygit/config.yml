@@ -23,3 +23,7 @@ gui:
       - "#d8647e"
     defaultFgColor:
       - "#cdcdcd"
+
+git:
+  pagers:
+    - pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}" --syntax-theme="vague"

@@ -17,6 +17,7 @@
       "uv"
       "mpv"
       "starship"
+      "git-delta"
     ];
     casks = [
       "vesktop"
