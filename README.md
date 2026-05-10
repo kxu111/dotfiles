@@ -1,6 +1,6 @@
-*Personal dotfiles using nix-darwin and stow.*
+### Personal dotfiles using nix-darwin and stow.
 
-Not everything in here is fully declarative using nix, I'm too lazy for home-manager bullcrap \
+Not everything in here is fully declarative using nix, I'm too lazy for home-manager bullcrap
 
 Credit to Sylvan Franklin for the tmux session scripts + a substantial amount of inspiration
 
