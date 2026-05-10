@@ -70,6 +70,10 @@ require("conform").setup({
 
 require("fzf-lua").setup({
 	defaults = { formatter = "path.dirname_first" }, -- show greyed-out directory before filename
+	fzf_opts = {
+		["--style"] = "full",
+		["--info"] = "hidden",
+	},
 	winopts = {
 		border = "none",
 		fullscreen = true,

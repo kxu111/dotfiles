@@ -12,6 +12,12 @@
 --color=pointer:#aeaed1
 --color=marker:#d8647e
 --color=prompt:#bb9dbd
+--color=separator:0
 
---style full
+--style=full
+--layout=reverse
+--info=hidden
+--no-bold
+--no-scrollbar
 --preview 'bat --color=always --style=numbers {}'
+--cycle
