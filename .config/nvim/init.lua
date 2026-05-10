@@ -8,7 +8,6 @@ vim.o.winborder = "rounded"
 vim.o.signcolumn = "yes"
 vim.o.termguicolors = true
 vim.o.splitright = true
-vim.o.smartindent = true
 vim.o.ruler = false
 vim.o.spelllang = "en_gb"
 vim.o.undofile = true
