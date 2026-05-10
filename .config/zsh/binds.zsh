@@ -1,5 +1,5 @@
-bindkey -v
-KEYTIMEOUT=1
+# bindkey -v
+# KEYTIMEOUT=1
 
 
 bindkey -r '^T'
