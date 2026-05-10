@@ -1,19 +1,20 @@
 #!/bin/bash
 
 DIRS=(
+	"$HOME"
     "$HOME/Projects"
     "$HOME/School"
 )
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/skim-themes.sh"
+source "$SCRIPT_DIR/fzf-themes.sh"
 
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
     selected=$(fd . "${DIRS[@]}" --type=dir --max-depth=1 --full-path --base-directory $HOME \
         | sed "s|^$HOME/||" \
-        | sk "${SKIM_THEME_SESSION[@]}" )
+		| fzf $(fzf_theme_flags session) )
 
     [[ $selected ]] && selected="$HOME/$selected"
 fi

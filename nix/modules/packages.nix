@@ -17,7 +17,6 @@
     fd
     zoxide
     yazi
-    skim
     newsboat
     bat
     lazygit
