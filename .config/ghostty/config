@@ -22,7 +22,6 @@ keybind = super+digit_6=text:\x02\x36
 keybind = super+digit_7=text:\x02\x37
 keybind = super+digit_8=text:\x02\x38
 keybind = super+digit_9=text:\x02\x39
-keybind = super+s=text:\x14
 
 keybind = super+c=text:\x02c
 keybind = super+d=text:\x02x
