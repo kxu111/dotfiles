@@ -7,14 +7,14 @@ DIRS=(
 )
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/fzf-themes.sh"
+source "$SCRIPT_DIR/fzf-flags.sh"
 
 if [[ $# -eq 1 ]]; then
     selected=$1
 else
     selected=$(fd . "${DIRS[@]}" --type=dir --max-depth=1 --full-path --base-directory $HOME \
         | sed "s|^$HOME/||" \
-		| fzf $(fzf_theme_flags session) )
+		| fzf $(fzf_flags session) )
 
     [[ $selected ]] && selected="$HOME/$selected"
 fi

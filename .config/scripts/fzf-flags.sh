@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Shared skim layout for all pickers.
-FZF_THEME_BASE=(
+FZF_FLAGS_BASE=(
 	--style=default 
 	--preview-window=hidden
 	--info=hidden
@@ -10,13 +10,13 @@ FZF_THEME_BASE=(
 	--tmux
 )
 
-FZF_THEME_PDF=("${FZF_THEME_BASE[@]}")
-FZF_THEME_SESSION=("${FZF_THEME_BASE[@]}" --scheme=path)
+FZF_FLAGS_PDF=("${FZF_FLAGS_BASE[@]}")
+FZF_FLAGS_SESSION=("${FZF_FLAGS_BASE[@]}" --scheme=path)
 
-fzf_theme_flags() {
-    local theme="${1:-}"
-	local upper_theme=$(echo "$theme" | tr '[:lower:]' '[:upper:]')
-    local var_name="FZF_THEME_${upper_theme}"
+fzf_flags() {
+    local flags="${1:-}"
+	local upper_flags=$(echo "$flags" | tr '[:lower:]' '[:upper:]')
+    local var_name="FZF_FLAGS_${upper_flags}"
     if ! declare -p "${var_name}" >/dev/null 2>&1; then
         return 1
     fi

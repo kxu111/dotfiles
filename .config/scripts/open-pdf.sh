@@ -7,7 +7,7 @@ DIRS=(
 )
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/fzf-themes.sh"
+source "$SCRIPT_DIR/fzf-flags.sh"
 
 if [[ $# -eq 1 ]]; then
     selected=$1
@@ -15,7 +15,7 @@ else
     selected=$(fd . "${DIRS[@]}" --max-depth=2 --extension="djvu" --extension="epub" --extension="pdf" --full-path --base-directory "$HOME" \
         | sed "s|^$HOME/||" \
         | sort -uf \
-		| fzf $(fzf_theme_flags pdf) )
+		| fzf $(fzf_flags pdf) )
 
     [[ $selected ]] && selected="$HOME/$selected"
 fi

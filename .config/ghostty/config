@@ -12,6 +12,7 @@ font-thicken = true
 font-thicken-strength = 255
 copy-on-select = clipboard
 
+
 keybind = super+digit_1=text:\x02\x31
 keybind = super+digit_2=text:\x02\x32
 keybind = super+digit_3=text:\x02\x33
@@ -21,6 +22,7 @@ keybind = super+digit_6=text:\x02\x36
 keybind = super+digit_7=text:\x02\x37
 keybind = super+digit_8=text:\x02\x38
 keybind = super+digit_9=text:\x02\x39
+keybind = super+s=text:\x14
 
 keybind = super+c=text:\x02c
 keybind = super+d=text:\x02x
