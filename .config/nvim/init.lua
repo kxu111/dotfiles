@@ -1,12 +1,45 @@
+-- stylua: ignore start
+local mason_pkgs = {
+	"tree-sitter-cli",
+	"lua_ls", "stylua",
+	"nil", "alejandra",
+	"clangd", "clang-format",
+	"rust-analyzer",
+	"tinymist", "typstyle",
+	"svelte-language-server", "ts_ls", "cssls",
+}
+local ts_parsers = {
+	"lua",
+	"nix",
+	"c", "cpp",
+	"rust",
+	"markdown_inline", "markdown",
+	"typst",
+	"svelte", "typescript", "css"
+}
+local formatters = {
+	lua = { "stylua" },
+	nix = { "alejandra" },
+	c = { "clang-format" }, cpp = { "clang-format" },
+	rs = { "rustfmt" },
+	typ = { "typstyle" },
+}
+-- stylua: ignore end
+
 vim.g.mapleader = " "
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.o.showtabline = 2
 vim.o.wrap = false
 vim.o.swapfile = false
 vim.o.winborder = "rounded"
 vim.o.signcolumn = "yes"
 vim.o.termguicolors = true
+vim.o.smartindent = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 vim.o.splitright = true
 vim.o.ruler = false
 vim.o.undofile = true
@@ -30,41 +63,13 @@ require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({
 	auto_update = true,
-	ensure_installed = {
-		"tree-sitter-cli",
-		"lua_ls",
-		"stylua",
-		"nil",
-		"alejandra",
-		"clangd",
-		"clang-format",
-		"rust-analyzer",
-		"tinymist",
-		"typstyle",
-	},
+	ensure_installed = mason_pkgs,
 })
 vim.diagnostic.config({ virtual_text = true })
-local ts_parsers = {
-	"lua",
-	"nix",
-	"c",
-	"cpp",
-	"rust",
-	"markdown_inline",
-	"markdown",
-	"typst",
-}
 require("nvim-treesitter").install(ts_parsers)
 require("conform").setup({
 	format_on_save = { lsp_format = "fallback", timeout_ms = 500 },
-	formatters_by_ft = {
-		lua = { "stylua" },
-		nix = { "alejandra" },
-		c = { "clang-format" },
-		cpp = { "clang-format" },
-		rs = { "rustfmt" },
-		typ = { "typstyle" },
-	},
+	formatters_by_ft = formatters,
 })
 
 require("fzf-lua").setup({
@@ -126,7 +131,7 @@ require("blink.cmp").setup({
 				},
 			},
 		},
-		documentation = { auto_show = true, auto_show_delay_ms = 50 },
+		documentation = { auto_show = true, auto_show_delay_ms = 0 },
 		ghost_text = { enabled = true },
 	},
 })
@@ -223,9 +228,6 @@ vim.keymap.set("n", "<Leader>c", clean_all)
 vim.api.nvim_create_autocmd("PackChanged", {
 	callback = function(ev)
 		local name, kind = ev.data.spec.name, ev.data.kind
-		if kind ~= "install" then
-			clean_all()
-		end
 		if name == "nvim-treesitter" and kind == "update" then
 			vim.cmd("TSUpdate")
 		end
