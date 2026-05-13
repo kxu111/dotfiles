@@ -66,14 +66,15 @@ alt-shift-9 = 'move-node-to-workspace 9'
 alt-shift-0 = 'move-node-to-workspace 10'
 
 alt-a = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.mitchellh.ghostty 1'
+alt-q = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh info.sioyek.sioyek 1'
 alt-b = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh net.imput.helium 2'
-alt-f = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.apple.finder 5'
 alt-d = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh dev.vencord.vesktop 3'
 alt-e = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh net.whatsapp.WhatsApp 3'
 alt-s = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.spotify.client 4'
-alt-q = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh info.sioyek.sioyek 1'
-alt-v = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.obsproject.obs-studio 7'
+alt-f = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.apple.finder 5'
 alt-n = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh md.obsidian 6'
+alt-v = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.obsproject.obs-studio 7'
+alt-g = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.figma.Desktop 8'
 
 alt-o = 'reload-config'
 
