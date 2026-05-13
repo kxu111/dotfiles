@@ -33,6 +33,7 @@
       "anki"
       "raycast"
       "obsidian"
+      "figma"
     ];
     masApps = {
       "Davinci Resolve" = 571213070;
