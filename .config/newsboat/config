@@ -10,4 +10,5 @@ color hint-separator      white   black   bold
 color hint-description    white   black
 color article             white   black
 
+cleanup-on-quit yes
 browser "open -a helium"
