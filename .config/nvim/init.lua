@@ -87,6 +87,7 @@ require("fzf-lua").setup({
 		},
 	},
 })
+require("fzf-lua").register_ui_select()
 vim.keymap.set("n", "<Leader>ff", "<Cmd>FzfLua files<CR>")
 vim.keymap.set("n", "<Leader>fh", "<Cmd>FzfLua helptags<CR>")
 vim.keymap.set("n", "<Leader>fb", "<Cmd>FzfLua buffers<CR>")
@@ -95,6 +96,7 @@ vim.keymap.set("n", "<Leader>ft", "<Cmd>FzfLua diagnostics_document<CR>")
 vim.keymap.set("n", "<Leader>fd", "<Cmd>FzfLua lsp_definitions<CR>")
 vim.keymap.set("n", "<Leader>fv", "<Cmd>FzfLua lsp_references<CR>")
 vim.keymap.set("n", "<Leader>fr", "<Cmd>FzfLua resume<CR>")
+vim.keymap.set("n", "<Leader>fa", "<Cmd>FzfLua lsp_code_actions<CR>")
 
 require("oil").setup({
 	delete_to_trash = true,
