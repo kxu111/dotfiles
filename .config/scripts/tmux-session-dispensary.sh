@@ -1,8 +1,8 @@
 #!/bin/bash
 
 DIRS=(
-    "$HOME/Projects"
-    "$HOME/School"
+    "$HOME/Projects"/*/
+    "$HOME/School"/*/
 )
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

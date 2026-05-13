@@ -37,7 +37,6 @@ vim.o.swapfile = false
 vim.o.winborder = "rounded"
 vim.o.signcolumn = "yes"
 vim.o.termguicolors = true
-vim.o.smartindent = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.o.splitright = true
@@ -111,6 +110,7 @@ require("oil").setup({
 	},
 	keymaps = {
 		["<C-h>"] = false,
+		["<C-l>"] = false,
 	},
 })
 vim.keymap.set("n", "-", "<Cmd>Oil<CR>")
@@ -233,7 +233,7 @@ vim.api.nvim_create_autocmd("PackChanged", {
 		if name == "nvim-treesitter" and kind == "update" then
 			vim.cmd("TSUpdate")
 		end
-		if name == "blink.cmp" and kind == "update" then
+		if name == "blink.cmp" and kind == "install" or kind == "update" then
 			vim.cmd("BlinkCmp build")
 		end
 	end,
