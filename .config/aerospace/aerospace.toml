@@ -19,6 +19,7 @@ outer.right = 0
 
 [mode.main.binding]
 alt-shift-s = 'exec-and-forget screencapture -i -c'
+alt-ctrl-s = 'exec-and-forget screencapture -i -p'
 
 alt-h = 'focus --boundaries-action wrap-around-the-workspace left'
 alt-j = 'focus --boundaries-action wrap-around-the-workspace down'
