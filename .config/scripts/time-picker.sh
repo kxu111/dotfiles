@@ -30,18 +30,18 @@ done
 case "$action" in
     stop)
         if [[ -f /tmp/workmode-enabled ]]; then
-            tmux display-popup -E "$HOME/.config/scripts/work-mode.sh" off
+			tmux display-popup -E 'bash ~/.config/scripts/work-mode.sh off'
         fi
         timew_stop
         exit 0
         ;;
     off)
         if [[ -f /tmp/workmode-enabled ]]; then
-            tmux display-popup -E "$HOME/.config/scripts/work-mode.sh" off
+			tmux display-popup -E 'bash ~/.config/scripts/work-mode.sh off'
         fi
         ;;
     on)
-        	tmux display-popup -E "$HOME/.config/scripts/work-mode.sh" on
+		tmux display-popup -E 'bash ~/.config/scripts/work-mode.sh on'
         ;;
 esac
 
