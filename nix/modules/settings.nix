@@ -17,10 +17,8 @@
         "/Applications/Helium.app"
         "/Applications/Vesktop.app"
         "/Applications/Spotify.app/"
-        "/Applications/Steam.app/"
-        "/Applications/WhatsApp.app"
-        "/Applications/OBS.app"
-        "/Applications/DaVinci Resolve.app"
+        "/Applications/sioyek.app"
+        "/Applications/Anki.app"
       ];
       mru-spaces = false;
     };
