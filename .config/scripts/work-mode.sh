@@ -231,13 +231,6 @@ set_work_mode() {
 
     write_hosts_file "$TMP_HOSTS_FILE"
     flush_dns
-
-	if [[ "$state" == "on" ]]; then
-        touch /tmp/workmode-enabled
-    else
-        rm -f /tmp/workmode-enabled
-    fi
-
 }
 
 action="${1:-toggle}"
@@ -253,20 +246,24 @@ esac
 case "$action" in
     on)
         set_work_mode on
+        touch /tmp/workmode-enabled
         echo "Work mode is on. Blocked $((${#DOMAINS[@]})) hostnames."
         ;;
     off)
         set_work_mode off
+        rm -f /tmp/workmode-enabled
         echo "Work mode is off."
         warn_if_dns_still_blocked
         ;;
     toggle)
         if is_enabled; then
             set_work_mode off
+        	rm -f /tmp/workmode-enabled
             echo "Work mode is off."
             warn_if_dns_still_blocked
         else
             set_work_mode on
+        	touch /tmp/workmode-enabled
             echo "Work mode is on. Blocked $((${#DOMAINS[@]})) hostnames."
         fi
         ;;
