@@ -18,6 +18,7 @@
       "mpv"
       "starship"
       "git-delta"
+      "timewarrior"
     ];
     casks = [
       "vesktop"
