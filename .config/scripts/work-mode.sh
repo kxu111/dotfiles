@@ -231,6 +231,13 @@ set_work_mode() {
 
     write_hosts_file "$TMP_HOSTS_FILE"
     flush_dns
+
+	if [[ "$state" == "on" ]]; then
+        touch /tmp/workmode-enabled
+    else
+        rm -f /tmp/workmode-enabled
+    fi
+
 }
 
 action="${1:-toggle}"
