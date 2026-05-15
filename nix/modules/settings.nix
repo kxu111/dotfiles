@@ -13,12 +13,13 @@
       show-recents = false;
       minimize-to-application = true;
       persistent-apps = [
+        "/Applications/AeroSpace.app"
         "/Applications/Ghostty.app"
         "/Applications/Helium.app"
         "/Applications/Vesktop.app"
+        "/Applications/WhatsApp.app"
         "/Applications/Spotify.app/"
-        "/Applications/sioyek.app"
-        "/Applications/Anki.app"
+        "/Applications/Obsidian.app"
       ];
       mru-spaces = false;
     };
