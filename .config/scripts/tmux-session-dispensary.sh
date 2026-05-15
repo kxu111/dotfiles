@@ -1,7 +1,9 @@
 #!/bin/bash
 
 DIRS=(
+    "$HOME/Projects"
     "$HOME/Projects"/*/
+    "$HOME/School"
     "$HOME/School"/*/
 )
 
