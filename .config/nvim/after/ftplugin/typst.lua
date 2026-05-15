@@ -13,4 +13,4 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 	end,
 })
 
-vim.keymap.set("n", "<leader>p", ":TypstPreview<CR>", { desc = "Typst preview" })
+vim.keymap.set("n", "<leader>p", "<Cmd>TypstPreview<CR>", { desc = "Typst preview" })
