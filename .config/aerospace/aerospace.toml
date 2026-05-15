@@ -1,13 +1,9 @@
 start-at-login = true
-
 config-version = 2
-
-persistent-workspaces = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
-
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
-
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+accordion-padding = 0
 
 [gaps]
 inner.horizontal = 0
@@ -75,16 +71,6 @@ alt-f = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.apple.find
 alt-n = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh md.obsidian 6'
 alt-v = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.obsproject.obs-studio 7'
 alt-g = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.figma.Desktop 8'
+alt-c = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.adobe.acc.AdobeCreativeCloud 9'
 
-alt-o = 'reload-config'
-
-alt-r = 'mode resize'
-
-[mode.resize.binding]
-h = 'resize width -50'
-j = 'resize height +50'
-k = 'resize height -50'
-l = 'resize width +50'
-enter = 'mode main'
-esc = 'mode main'
-alt-r = 'mode main'
+alt-r = 'reload-config'

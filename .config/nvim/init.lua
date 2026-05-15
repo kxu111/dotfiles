@@ -149,7 +149,7 @@ vim.cmd("filetype plugin indent on")
 vim.keymap.set("n", "<Leader>q", "<Cmd>quit<CR>")
 vim.keymap.set("n", "<Leader><C-q>", "<Cmd>qa!<CR>")
 vim.keymap.set("n", "<Leader>w", "<Cmd>write<CR>")
-vim.keymap.set("n", "<Leader>o", "<Cmd>source " .. vim.fn.stdpath("config") .. "/init.lua<CR>")
+vim.keymap.set("n", "<Leader>r", "<Cmd>source " .. vim.fn.stdpath("config") .. "/init.lua<CR>")
 
 vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y')
 vim.keymap.set({ "n", "v" }, "<Leader>d", '"+d')
