@@ -1,4 +1,5 @@
 theme = Vague
+background = #000000
 window-padding-x = 28
 window-padding-y = 28
 confirm-close-surface = false
