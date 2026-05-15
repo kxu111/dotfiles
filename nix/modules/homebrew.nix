@@ -19,6 +19,7 @@
       "starship"
       "git-delta"
       "timewarrior"
+      "typst"
     ];
     casks = [
       "vesktop"
@@ -34,6 +35,7 @@
       "raycast"
       "obsidian"
       "figma"
+      "adobe-creative-cloud"
     ];
     masApps = {
       "Davinci Resolve" = 571213070;
