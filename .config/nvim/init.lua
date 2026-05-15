@@ -85,8 +85,8 @@ require("fzf-lua").setup({
 			scrollbar = false,
 		},
 	},
+	lsp = { code_actions = { silent = true } },
 })
-require("fzf-lua").register_ui_select()
 vim.keymap.set("n", "<Leader>ff", "<Cmd>FzfLua files<CR>")
 vim.keymap.set("n", "<Leader>fh", "<Cmd>FzfLua helptags<CR>")
 vim.keymap.set("n", "<Leader>fb", "<Cmd>FzfLua buffers<CR>")
@@ -113,7 +113,7 @@ require("oil").setup({
 		["<C-l>"] = false,
 	},
 })
-vim.keymap.set("n", "-", "<Cmd>Oil<CR>")
+vim.keymap.set("n", "<Leader>e", "<Cmd>Oil<CR>")
 
 require("blink.cmp").setup({
 	completion = {
@@ -255,6 +255,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("ColorScheme", {
 	pattern = "*",
 	callback = function()
+		vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 		vim.api.nvim_set_hl(0, "StatusLine", { bg = "none" })
 		vim.api.nvim_set_hl(0, "TabLine", { bg = "none" })
 		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
