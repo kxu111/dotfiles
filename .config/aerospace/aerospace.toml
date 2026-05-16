@@ -5,6 +5,14 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 accordion-padding = 0
 
+[gaps]
+outer.top = 6
+outer.bottom = 6
+outer.left = 6
+outer.right = 6
+inner.horizontal = 6
+inner.vertical = 6
+
 [mode.main.binding]
 alt-shift-s = 'exec-and-forget screencapture -i -c'
 alt-ctrl-s = 'exec-and-forget screencapture -i -p'
