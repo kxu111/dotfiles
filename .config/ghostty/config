@@ -41,6 +41,7 @@ keybind = super+shift+n=text:\x02N
 keybind = super+shift+p=text:\x02P
 keybind = super+shift+m=text:\x02M
 keybind = super+shift+s=text:\x02S
+keybind = super+shift+l=text:\x02L
 
 keybind = super+p=text:\x02p
 keybind = super+shift+w=text:\x02W
