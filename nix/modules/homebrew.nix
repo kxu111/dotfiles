@@ -9,17 +9,9 @@
     };
     brews = [
       "mas"
-      "node"
       "mole"
       "pkgconfig"
       "raylib"
-      "yt-dlp"
-      "uv"
-      "mpv"
-      "starship"
-      "git-delta"
-      "timewarrior"
-      "typst"
     ];
     casks = [
       "vesktop"
@@ -32,13 +24,15 @@
       "karabiner-elements"
       "aerospace"
       "anki"
-      "raycast"
       "figma"
       "adobe-creative-cloud"
+      "alfred"
+      "firefox"
     ];
     masApps = {
       "Davinci Resolve" = 571213070;
       "WhatsApp" = 310633997;
+      "Slack" = 803453959;
     };
   };
 }

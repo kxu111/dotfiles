@@ -21,7 +21,14 @@
     bat
     lazygit
     eza
-    ghostscript
+    starship
+    timewarrior
+    typst
+    uv
+    delta
+    yt-dlp
+    nodejs
+    mpv
   ];
 
   fonts.packages = with pkgs; [
