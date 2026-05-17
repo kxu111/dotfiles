@@ -16,7 +16,6 @@
     casks = [
       "vesktop"
       "steam"
-      "helium-browser"
       "sioyek"
       "obs"
       "ghostty"

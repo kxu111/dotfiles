@@ -5,8 +5,7 @@
     fastfetch
     btop
     stow
-    vim
-    bob-nvim
+    neovim
     ripgrep
     rustup
     tmux
