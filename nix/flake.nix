@@ -31,7 +31,7 @@
     aerospace,
     ...
   }: {
-    darwinConfigurations."kennys-MacBook-Air" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations."air" = nix-darwin.lib.darwinSystem {
       specialArgs = {
         inherit self;
       };

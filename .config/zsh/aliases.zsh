@@ -1,6 +1,6 @@
 alias neofetch='fastfetch'
 
-alias nrs='sudo darwin-rebuild switch --flake ~/nix'
+alias nrs='sudo darwin-rebuild switch --flake ~/nix#air'
 alias reload='source ~/.zshrc'
 alias cron-sync="crontab ~/.config/cron/crontab"
 
