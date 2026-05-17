@@ -42,6 +42,7 @@ vim.opt.smartcase = true
 vim.o.splitright = true
 vim.o.ruler = false
 vim.o.undofile = true
+vim.opt.laststatus = 0
 
 vim.pack.add({
 	"https://github.com/vague-theme/vague.nvim",
@@ -175,7 +176,7 @@ vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-k>", "<C-w>k")
 vim.keymap.set("n", "<C-l>", "<C-w>l")
 
-vim.keymap.set("n", "<Leader>s", "z=1<CR>")
+vim.keymap.set("n", "<Leader>s", "z=1<CR><CR>")
 
 vim.keymap.set("n", "<C-t>", "<C-w>T")
 for i = 1, 9 do
