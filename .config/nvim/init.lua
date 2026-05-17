@@ -54,7 +54,6 @@ vim.pack.add({
 	"https://github.com/stevearc/conform.nvim",
 	"https://github.com/nvim-mini/mini.nvim",
 	"https://github.com/ibhagwan/fzf-lua",
-	"https://github.com/stevearc/oil.nvim",
 	{ src = "https://github.com/Saghen/blink.cmp", version = "v1" },
 	"https://github.com/chomosuke/typst-preview.nvim",
 })
@@ -89,6 +88,20 @@ require("mini.hipatterns").setup({
 	},
 })
 
+require("mini.files").setup({
+	options = { permanent_delete = false },
+	mappings = {
+		go_in = "",
+		go_in_plus = "l",
+		synchronize = "<CR>",
+	},
+})
+vim.keymap.set("n", "<Tab>", function(...)
+	if not MiniFiles.close() then
+		MiniFiles.open(...)
+	end
+end)
+
 require("fzf-lua").setup({
 	defaults = { formatter = "path.dirname_first" }, -- show greyed-out directory before filename
 	fzf_opts = { ["--info"] = "hidden" },
@@ -111,24 +124,6 @@ vim.keymap.set("n", "<Leader>fd", "<Cmd>FzfLua lsp_definitions<CR>")
 vim.keymap.set("n", "<Leader>fv", "<Cmd>FzfLua lsp_references<CR>")
 vim.keymap.set("n", "<Leader>fr", "<Cmd>FzfLua resume<CR>")
 vim.keymap.set("n", "<Leader>fa", "<Cmd>FzfLua lsp_code_actions<CR>")
-
-require("oil").setup({
-	delete_to_trash = true,
-	skip_confirm_for_simple_edits = true,
-	view_options = {
-		show_hidden = true,
-		is_always_hidden = function(name, bufnr)
-			if name == ".." or name == ".DS_Store" then
-				return bufnr
-			end
-		end,
-	},
-	keymaps = {
-		["<C-h>"] = false,
-		["<C-l>"] = false,
-	},
-})
-vim.keymap.set("n", "<Leader>e", "<Cmd>Oil<CR>")
 
 require("blink.cmp").setup({
 	completion = {
@@ -277,6 +272,8 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
 
 		vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "Comment" })
+
+		vim.api.nvim_set_hl(0, "MiniFilesCursorLine", { bg = "none" })
 
 		vim.defer_fn(function()
 			vim.api.nvim_set_hl(0, "BlinkCmpMenu", { bg = "none" })
