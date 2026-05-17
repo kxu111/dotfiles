@@ -33,7 +33,6 @@
       "aerospace"
       "anki"
       "raycast"
-      "obsidian"
       "figma"
       "adobe-creative-cloud"
     ];

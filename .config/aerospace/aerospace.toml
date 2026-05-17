@@ -6,22 +6,28 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 accordion-padding = 0
 default-root-container-layout = 'accordion'
 
-[gaps]
-outer.top = 6
-outer.bottom = 6
-outer.left = 6
-outer.right = 6
-inner.horizontal = 6
-inner.vertical = 6
-
 [mode.main.binding]
+alt-a = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.mitchellh.ghostty 1'
+alt-q = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh info.sioyek.sioyek 1'
+alt-b = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh net.imput.helium 2'
+alt-d = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh dev.vencord.vesktop 3'
+alt-e = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh net.whatsapp.WhatsApp 3'
+alt-s = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.spotify.client 4'
+alt-f = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.apple.finder 5'
+alt-v = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.obsproject.obs-studio 6'
+alt-g = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.figma.Desktop 7'
+
 alt-shift-s = 'exec-and-forget screencapture -i -c'
 alt-ctrl-s = 'exec-and-forget screencapture -i -p'
 
 alt-h = 'focus --boundaries-action wrap-around-the-workspace left'
 alt-l = 'focus --boundaries-action wrap-around-the-workspace right'
 
+alt-w = 'layout accordion'
 alt-shift-space = 'layout floating tiling'
+alt-c = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.adobe.acc.AdobeCreativeCloud 8'
+
+alt-r = 'reload-config'
 
 alt-1 = 'workspace 1'
 alt-2 = 'workspace 2'
@@ -33,7 +39,6 @@ alt-7 = 'workspace 7'
 alt-8 = 'workspace 8'
 alt-9 = 'workspace 9'
 alt-0 = 'workspace 10'
-
 alt-shift-1 = 'move-node-to-workspace 1'
 alt-shift-2 = 'move-node-to-workspace 2'
 alt-shift-3 = 'move-node-to-workspace 3'
@@ -45,16 +50,10 @@ alt-shift-8 = 'move-node-to-workspace 8'
 alt-shift-9 = 'move-node-to-workspace 9'
 alt-shift-0 = 'move-node-to-workspace 10'
 
-alt-a = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.mitchellh.ghostty 1'
-alt-q = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh info.sioyek.sioyek 1'
-alt-b = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh net.imput.helium 2'
-alt-d = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh dev.vencord.vesktop 3'
-alt-e = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh net.whatsapp.WhatsApp 3'
-alt-s = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.spotify.client 4'
-alt-f = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.apple.finder 5'
-alt-n = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh md.obsidian 6'
-alt-v = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.obsproject.obs-studio 7'
-alt-g = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.figma.Desktop 8'
-alt-c = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.adobe.acc.AdobeCreativeCloud 9'
-
-alt-r = 'reload-config'
+[gaps]
+outer.top = 6
+outer.bottom = 6
+outer.left = 6
+outer.right = 6
+inner.horizontal = 6
+inner.vertical = 6
