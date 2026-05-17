@@ -8,8 +8,7 @@ alias vi='nvim'
 alias y='yazi'
 alias lg='lazygit'
 
-alias news='newsboat'
-alias add-news='~/.config/scripts/add-news.sh'
+alias news='~/.config/scripts/add-news.sh'
 
 alias m='mkdir -p'
 alias cat='bat'
