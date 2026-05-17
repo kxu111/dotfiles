@@ -4,6 +4,7 @@ enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 accordion-padding = 0
+default-root-container-layout = 'accordion'
 
 [gaps]
 outer.top = 6
@@ -18,24 +19,7 @@ alt-shift-s = 'exec-and-forget screencapture -i -c'
 alt-ctrl-s = 'exec-and-forget screencapture -i -p'
 
 alt-h = 'focus --boundaries-action wrap-around-the-workspace left'
-alt-j = 'focus --boundaries-action wrap-around-the-workspace down'
-alt-k = 'focus --boundaries-action wrap-around-the-workspace up'
 alt-l = 'focus --boundaries-action wrap-around-the-workspace right'
-
-alt-shift-h = 'move left'
-alt-shift-j = 'move down'
-alt-shift-k = 'move up'
-alt-shift-l = 'move right'
-
-alt-ctrl-h = 'join-with left'
-alt-ctrl-j = 'join-with down'
-alt-ctrl-k = 'join-with up'
-alt-ctrl-l = 'join-with right'
-
-alt-m = 'fullscreen'
-
-alt-w = 'layout h_accordion'
-alt-t = 'layout tiles horizontal vertical'
 
 alt-shift-space = 'layout floating tiling'
 
