@@ -50,8 +50,9 @@ vim.pack.add({
 	"https://github.com/mason-org/mason-lspconfig.nvim",
 	"https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
 	"https://github.com/nvim-treesitter/nvim-treesitter",
+	"https://github.com/nvim-treesitter/nvim-treesitter-context",
 	"https://github.com/stevearc/conform.nvim",
-	"https://github.com/nvim-tree/nvim-web-devicons",
+	"https://github.com/nvim-mini/mini.nvim",
 	"https://github.com/ibhagwan/fzf-lua",
 	"https://github.com/stevearc/oil.nvim",
 	{ src = "https://github.com/Saghen/blink.cmp", version = "v1" },
@@ -71,12 +72,26 @@ require("conform").setup({
 	formatters_by_ft = formatters,
 })
 
+require("mini.icons").setup()
+require("mini.pairs").setup()
+require("mini.surround").setup()
+require("mini.ai").setup()
+require("mini.splitjoin").setup()
+require("mini.comment").setup()
+local hi_words = require("mini.extra").gen_highlighter.words
+require("mini.hipatterns").setup({
+	highlighters = {
+		hex_color = require("mini.hipatterns").gen_highlighter.hex_color(),
+		fixme = hi_words({ "FIXME" }, "MiniHipatternsFixme"),
+		todo = hi_words({ "TODO", "todo" }, "MiniHipatternsTodo"),
+		note = hi_words({ "NOTE" }, "MiniHipatternsNote"),
+		hack = hi_words({ "HACK" }, "MiniHipatternsHack"),
+	},
+})
+
 require("fzf-lua").setup({
 	defaults = { formatter = "path.dirname_first" }, -- show greyed-out directory before filename
-	fzf_opts = {
-		["--style"] = "full",
-		["--info"] = "hidden",
-	},
+	fzf_opts = { ["--info"] = "hidden" },
 	winopts = {
 		border = "none",
 		fullscreen = true,
