@@ -16,6 +16,7 @@ alt-s = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.spotify.cl
 alt-f = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.apple.finder 5'
 alt-v = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.obsproject.obs-studio 6'
 alt-g = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.figma.Desktop 7'
+alt-c = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.adobe.acc.AdobeCreativeCloud 8'
 
 alt-shift-s = 'exec-and-forget screencapture -i -c'
 alt-ctrl-s = 'exec-and-forget screencapture -i -p'
@@ -25,7 +26,6 @@ alt-l = 'focus --boundaries-action wrap-around-the-workspace right'
 
 alt-w = 'layout accordion'
 alt-shift-space = 'layout floating tiling'
-alt-c = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.adobe.acc.AdobeCreativeCloud 8'
 
 alt-r = 'reload-config'
 
