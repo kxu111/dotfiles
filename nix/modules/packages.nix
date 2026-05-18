@@ -23,6 +23,7 @@
     starship
     timewarrior
     typst
+    python3
     uv
     delta
     yt-dlp

@@ -7,6 +7,7 @@ local mason_pkgs = {
 	"rust-analyzer",
 	"tinymist", "typstyle",
 	"svelte-language-server", "ts_ls", "cssls",
+	"pyright", "ruff",
 }
 local ts_parsers = {
 	"lua",
@@ -15,7 +16,8 @@ local ts_parsers = {
 	"rust",
 	"markdown_inline", "markdown",
 	"typst",
-	"svelte", "typescript", "css"
+	"svelte", "typescript", "css",
+	"python",
 }
 local formatters = {
 	lua = { "stylua" },
@@ -23,6 +25,7 @@ local formatters = {
 	c = { "clang-format" }, cpp = { "clang-format" },
 	rs = { "rustfmt" },
 	typ = { "typstyle" },
+	py={ "ruff" },
 }
 -- stylua: ignore end
 
@@ -67,6 +70,7 @@ require("mason-tool-installer").setup({
 })
 vim.diagnostic.config({ virtual_text = true })
 require("nvim-treesitter").install(ts_parsers)
+require("treesitter-context").setup({ max_lines = 1 })
 require("conform").setup({
 	format_on_save = { lsp_format = "fallback", timeout_ms = 500 },
 	formatters_by_ft = formatters,
@@ -88,9 +92,9 @@ require("mini.hipatterns").setup({
 		hack = hi_words({ "HACK" }, "MiniHipatternsHack"),
 	},
 })
-
 require("mini.files").setup({
 	options = { permanent_delete = false },
+	windows = { preview = true },
 	mappings = {
 		go_in = "",
 		go_in_plus = "l",
@@ -102,6 +106,13 @@ vim.keymap.set("n", "<Tab>", function(...)
 		MiniFiles.open(...)
 	end
 end)
+vim.api.nvim_create_autocmd("User", {
+	pattern = "MiniFilesWindowUpdate",
+	callback = function()
+		vim.wo.number = true
+		vim.wo.relativenumber = true
+	end,
+})
 
 require("fzf-lua").setup({
 	defaults = { formatter = "path.dirname_first" }, -- show greyed-out directory before filename
@@ -266,15 +277,13 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("ColorScheme", {
 	pattern = "*",
 	callback = function()
-		vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+		-- vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 		vim.api.nvim_set_hl(0, "StatusLine", { bg = "none" })
 		vim.api.nvim_set_hl(0, "TabLine", { bg = "none" })
 		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 		vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
 
 		vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "Comment" })
-
-		vim.api.nvim_set_hl(0, "MiniFilesCursorLine", { bg = "none" })
 
 		vim.defer_fn(function()
 			vim.api.nvim_set_hl(0, "BlinkCmpMenu", { bg = "none" })
