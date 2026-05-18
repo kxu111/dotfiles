@@ -39,6 +39,7 @@
       InitialKeyRepeat = 15;
       "com.apple.mouse.tapBehavior" = 1;
       NSAutomaticPeriodSubstitutionEnabled = false;
+      NSWindowShouldDragOnGesture = true;
     };
     ".GlobalPreferences"."com.apple.mouse.scaling" = -1.0;
     trackpad.Clicking = true;
