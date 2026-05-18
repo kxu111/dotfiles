@@ -15,17 +15,15 @@
     ];
     casks = [
       "vesktop"
-      "steam"
       "sioyek"
       "obs"
       "ghostty"
-      "desktoppr"
       "karabiner-elements"
       "aerospace"
       "anki"
       "figma"
       "adobe-creative-cloud"
-      "alfred"
+      "raycast"
       "firefox"
     ];
     masApps = {
