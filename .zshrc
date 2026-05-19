@@ -1,6 +1,6 @@
 alias neofetch='fastfetch'
 alias nrs='sudo darwin-rebuild switch --flake ~/nix#air'
-alias reload='source ~/.zshrc; source ~/.zshenv'
+alias reload='source ~/.zshenv; source ~/.zshrc'
 alias cron-sync="crontab ~/.config/cron/crontab"
 alias vi='nvim'
 alias y='yazi'
@@ -16,6 +16,9 @@ alias lla='eza -la'
 alias llh='eza -lh'
 alias llah='eza -lah'
 alias lt='eza --tree'
+
+alias av='source .venv/bin/activate'
+alias dav='deactivate'
 
 bindkey -v
 KEYTIMEOUT=1
@@ -33,3 +36,30 @@ if [[ "$TERM" == "xterm-ghostty" ]] then
 	fi
 	tmux attach-session 2>/dev/null || tmux new-session -s "$(whoami)"
 fi
+
+autoload -U add-zsh-hook
+_auto_venv() {
+  local search="$PWD"
+  local found=""
+  while [[ "$search" != "/" ]]; do
+    if [[ -f "$search/.venv/bin/activate" ]]; then
+      found="$search/.venv"
+      break
+    fi
+    search="${search:h}"
+  done
+  if [[ -n "$found" ]]; then
+    if [[ "${VIRTUAL_ENV:-}" != "$found" ]]; then
+      if [[ -n "${VIRTUAL_ENV:-}" ]] && typeset -f deactivate >/dev/null 2>&1; then
+        deactivate >/dev/null 2>&1 || true
+      fi
+      source "$found/bin/activate"
+    fi
+  else
+    if [[ -n "${VIRTUAL_ENV:-}" ]] && typeset -f deactivate >/dev/null 2>&1; then
+      deactivate >/dev/null 2>&1 || true
+    fi
+  fi
+}
+add-zsh-hook chpwd _auto_venv
+_auto_venv

@@ -1,15 +1,63 @@
 add_newline = false
-format = "$git_branch$directory$character"
+format = "$directory$fill${custom.py_icon} $git_branch\n$character"
 
 [directory]
-truncation_length = 5
+truncation_length = 3
+truncation_symbol = '../'
 truncate_to_repo = false
 style = "blue"
 
 [git_branch]
-format = "[$branch]($style) "
+symbol = '  '
+format = "[$symbol$branch]($style) "
 
 [character]
 success_symbol = '[\$](bold white)'
 error_symbol = '[\$](bold white)'
 vicmd_symbol = '[V](bold yellow)'
+
+[fill]
+symbol = ' '
+
+[python]
+style = 'yellow'
+symbol = '  '
+format = '[$symbol]($style)'
+
+[custom.py_icon]
+command = '''
+. "$HOME/.local/share/theme/colors.sh"
+hex_to_rgb() {
+  hex="${1#\#}"
+  printf '%d;%d;%d' "0x$(printf '%s' "$hex" | cut -c1-2)" "0x$(printf '%s' "$hex" | cut -c3-4)" "0x$(printf '%s' "$hex" | cut -c5-6)"
+}
+yellow="$(hex_to_rgb "$YELLOW")"
+gray3="$(hex_to_rgb "$GRAY3")"
+dir="$PWD"
+venv=""
+while :; do
+  if [ -d "$dir.venv" ]; then
+    venv="$dir.venv"
+    break
+  fi
+  if [ -d "$dir/.venv" ]; then
+    venv="$dir/.venv"
+    break
+  fi
+  [ "$dir" = "/" ] && break
+  dir="${dir%/*}"
+  [ -z "$dir" ] && dir="/"
+done
+if [ -z "$venv" ]; then
+  printf '   '
+  exit 0
+fi
+if [ -n "$VIRTUAL_ENV" ] && [ "$VIRTUAL_ENV" = "$venv" ]; then
+  printf '\033[38;2;%sm  \033[0m' "$yellow"
+else
+  printf '\033[38;2;%sm  \033[0m' "$gray3"
+fi
+'''
+when = "true"
+format = "$output"
+unsafe_no_escape = true

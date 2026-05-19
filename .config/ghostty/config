@@ -1,5 +1,4 @@
 theme = Vague
-# background = #000000
 window-padding-x = 28
 window-padding-y = 28
 confirm-close-surface = false
@@ -8,7 +7,7 @@ cursor-style = block
 cursor-style-blink = false
 shell-integration-features = no-cursor
 font-size = 17
-font-family = "Iosevka Nerd Font Mono"
+font-family = "Iosevka Nerd Font Propo"
 font-thicken = true
 font-thicken-strength = 255
 copy-on-select = clipboard
