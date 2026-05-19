@@ -19,11 +19,6 @@ vicmd_symbol = '[V](bold yellow)'
 [fill]
 symbol = ' '
 
-[python]
-style = 'yellow'
-symbol = '  '
-format = '[$symbol]($style)'
-
 [custom.py_icon]
 command = '''
 . "$HOME/.config/themes/colors.sh"

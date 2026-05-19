@@ -25,7 +25,7 @@ local formatters = {
 	c = { "clang-format" }, cpp = { "clang-format" },
 	rs = { "rustfmt" },
 	typ = { "typstyle" },
-	py={ "ruff" },
+	py = { "ruff" },
 }
 -- stylua: ignore end
 
