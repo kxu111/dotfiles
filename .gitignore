@@ -1,4 +1,5 @@
 nvim-pack-lock.json
 .DS_STORE
 .config/karabiner/automatic_backups/
-.config/cron/logs
+.config/cron/logs/*
+!.gitkeep
