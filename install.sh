@@ -1,5 +1,6 @@
 #!/bin/bash
-# run this AFTER setting up nix-darwin
+
+# NOTE: run this AFTER setting up nix-darwin
 cd ~/dotfiles
 mkdir ~/.config
 stow . --adopt
