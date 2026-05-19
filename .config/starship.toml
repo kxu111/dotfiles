@@ -26,13 +26,13 @@ format = '[$symbol]($style)'
 
 [custom.py_icon]
 command = '''
-. "$HOME/.local/share/theme/colors.sh"
+. "$HOME/.config/themes/colors.sh"
 hex_to_rgb() {
   hex="${1#\#}"
   printf '%d;%d;%d' "0x$(printf '%s' "$hex" | cut -c1-2)" "0x$(printf '%s' "$hex" | cut -c3-4)" "0x$(printf '%s' "$hex" | cut -c5-6)"
 }
-yellow="$(hex_to_rgb "$YELLOW")"
-gray3="$(hex_to_rgb "$GRAY3")"
+active="$(hex_to_rgb "$Yellow")"
+inactive="$(hex_to_rgb "$Muted")"
 dir="$PWD"
 venv=""
 while :; do
@@ -53,9 +53,9 @@ if [ -z "$venv" ]; then
   exit 0
 fi
 if [ -n "$VIRTUAL_ENV" ] && [ "$VIRTUAL_ENV" = "$venv" ]; then
-  printf '\033[38;2;%sm  \033[0m' "$yellow"
+  printf '\033[38;2;%sm  \033[0m' "$active"
 else
-  printf '\033[38;2;%sm  \033[0m' "$gray3"
+  printf '\033[38;2;%sm  \033[0m' "$inactive"
 fi
 '''
 when = "true"
