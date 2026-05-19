@@ -9,7 +9,6 @@
     ripgrep
     rustup
     tmux
-    tree
     tealdeer
     unzip
     fzf

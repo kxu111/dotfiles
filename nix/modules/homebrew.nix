@@ -7,12 +7,7 @@
       autoUpdate = true;
       upgrade = true;
     };
-    brews = [
-      "mas"
-      "mole"
-      "pkgconfig"
-      "raylib"
-    ];
+    brews = ["mas"];
     casks = [
       "vesktop"
       "sioyek"
