@@ -15,7 +15,7 @@ alias la='eza -a'
 alias lla='eza -la'
 alias llh='eza -lh'
 alias llah='eza -lah'
-alias tree='eza --tree'
+alias lt='eza --tree'
 
 bindkey -v
 KEYTIMEOUT=1

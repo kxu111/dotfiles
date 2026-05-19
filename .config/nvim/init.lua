@@ -103,7 +103,7 @@ require("mini.files").setup({
 })
 vim.keymap.set("n", "<Tab>", function(...)
 	if not MiniFiles.close() then
-		MiniFiles.open(...)
+		MiniFiles.open(vim.api.nvim_buf_get_name(0))
 	end
 end)
 vim.api.nvim_create_autocmd("User", {
