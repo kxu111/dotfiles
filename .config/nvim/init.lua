@@ -81,7 +81,6 @@ require("mini.pairs").setup()
 require("mini.surround").setup()
 require("mini.ai").setup()
 require("mini.splitjoin").setup()
-require("mini.comment").setup()
 local hi_words = require("mini.extra").gen_highlighter.words
 require("mini.hipatterns").setup({
 	highlighters = {
@@ -98,14 +97,15 @@ require("mini.files").setup({
 	mappings = {
 		go_in = "",
 		go_in_plus = "l",
-		synchronize = "<CR>",
+		synchronize = "<Leader>w",
 	},
 })
-vim.keymap.set("n", "<Tab>", function(...)
+vim.keymap.set("n", "<C-e>", function()
 	if not MiniFiles.close() then
 		MiniFiles.open(vim.api.nvim_buf_get_name(0))
 	end
 end)
+
 vim.api.nvim_create_autocmd("User", {
 	pattern = "MiniFilesWindowUpdate",
 	callback = function()
@@ -127,7 +127,7 @@ require("fzf-lua").setup({
 	},
 	lsp = { code_actions = { silent = true } },
 })
-vim.keymap.set("n", "<Leader>ff", "<Cmd>FzfLua files<CR>")
+vim.keymap.set("n", "<Leader>s", "<Cmd>FzfLua files<CR>")
 vim.keymap.set("n", "<Leader>fh", "<Cmd>FzfLua helptags<CR>")
 vim.keymap.set("n", "<Leader>fb", "<Cmd>FzfLua buffers<CR>")
 vim.keymap.set("n", "<Leader>fl", "<Cmd>FzfLua live_grep<CR>")
@@ -186,8 +186,6 @@ vim.keymap.set("n", "<C-h>", "<C-w>h")
 vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-k>", "<C-w>k")
 vim.keymap.set("n", "<C-l>", "<C-w>l")
-
-vim.keymap.set("n", "<Leader>s", "z=1<CR><CR>")
 
 vim.keymap.set("n", "<C-t>", "<C-w>T")
 for i = 1, 9 do

@@ -10,7 +10,6 @@
     rustup
     tmux
     tealdeer
-    unzip
     fzf
     fd
     zoxide
@@ -28,6 +27,10 @@
     yt-dlp
     nodejs
     mpv
+    poppler
+    p7zip
+    resvg
+    imagemagick
   ];
 
   fonts.packages = with pkgs; [
