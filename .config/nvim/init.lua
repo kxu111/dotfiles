@@ -100,7 +100,7 @@ require("mini.files").setup({
 		synchronize = "<Leader>w",
 	},
 })
-vim.keymap.set("n", "<C-e>", function()
+vim.keymap.set("n", "<Leader>e", function()
 	if not MiniFiles.close() then
 		MiniFiles.open(vim.api.nvim_buf_get_name(0))
 	end
@@ -177,9 +177,6 @@ vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y')
 vim.keymap.set({ "n", "v" }, "<Leader>d", '"+d')
 vim.keymap.set({ "n", "v" }, "<Leader>Y", '"+y$')
 vim.keymap.set({ "n", "v" }, "<Leader>D", '"+d$')
-
-vim.keymap.set({ "n", "v" }, "<C-d>", "<C-d>zz")
-vim.keymap.set({ "n", "v" }, "<C-u>", "<C-u>zz")
 
 vim.keymap.set("n", "<Leader>v", "<Cmd>vertical split<CR>")
 vim.keymap.set("n", "<C-h>", "<C-w>h")
