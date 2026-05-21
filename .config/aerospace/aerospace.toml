@@ -9,7 +9,7 @@ default-root-container-layout = 'accordion'
 [mode.main.binding]
 alt-a = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.mitchellh.ghostty 1'
 alt-q = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh info.sioyek.sioyek 1'
-alt-b = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh org.mozilla.firefox 2'
+alt-b = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh net.imput.helium 2'
 alt-d = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh dev.vencord.vesktop 3'
 alt-e = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh net.whatsapp.WhatsApp 3'
 alt-n = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.tinyspeck.slackmacgap 3'

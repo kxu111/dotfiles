@@ -19,7 +19,7 @@
       "figma"
       "adobe-creative-cloud"
       "raycast"
-      "firefox"
+      "helium-browser"
     ];
     masApps = {
       "Davinci Resolve" = 571213070;

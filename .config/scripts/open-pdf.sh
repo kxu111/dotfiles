@@ -2,6 +2,7 @@
 set -euo pipefail
 
 DIRS=(
+	"$HOME/Documents"
 	"$HOME/Documents/Books"
 	"$HOME/Documents/PDFs"
 )

@@ -15,7 +15,7 @@
       persistent-apps = [
         "/Applications/AeroSpace.app"
         "/Applications/Ghostty.app"
-        "/Applications/Firefox.app"
+        "/Applications/Helium.app"
         "/Applications/Vesktop.app"
         "/Applications/WhatsApp.app"
         "/Applications/Spotify.app/"
