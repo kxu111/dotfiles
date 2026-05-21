@@ -12,15 +12,14 @@ alt-q = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh info.sioyek.si
 alt-b = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh net.imput.helium 2'
 alt-d = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh dev.vencord.vesktop 3'
 alt-e = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh net.whatsapp.WhatsApp 3'
-alt-n = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.tinyspeck.slackmacgap 3'
 alt-s = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.spotify.client 4'
 alt-f = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.apple.finder 5'
 alt-v = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.obsproject.obs-studio 6'
 alt-g = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.figma.Desktop 7'
 alt-c = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.adobe.acc.AdobeCreativeCloud 8'
 
-alt-ctrl-s = 'exec-and-forget screencapture -i -c'
-# alt-ctrl-s = 'exec-and-forget screencapture -i -p'
+# hold ctrl before selecting to copy to clip
+alt-shift-s = 'exec-and-forget screencapture -i -p'
 
 alt-h = 'focus --boundaries-action wrap-around-the-workspace left'
 alt-l = 'focus --boundaries-action wrap-around-the-workspace right'

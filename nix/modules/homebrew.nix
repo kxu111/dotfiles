@@ -24,7 +24,6 @@
     masApps = {
       "Davinci Resolve" = 571213070;
       "WhatsApp" = 310633997;
-      "Slack" = 803453959;
     };
   };
 }

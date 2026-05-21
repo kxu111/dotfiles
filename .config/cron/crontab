@@ -1,1 +1,2 @@
 0 * * * * /Users/kenny/.config/scripts/news-update.sh >> /Users/kenny/.config/cron/logs/news-update.log 2>&1
+0 0 * * 1 /Users/kenny/.config/scripts/cron-clean.sh >> /Users/kenny/.config/cron/logs/cron-clean.log 2>&1
