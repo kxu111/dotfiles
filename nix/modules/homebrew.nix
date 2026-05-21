@@ -19,11 +19,12 @@
       "figma"
       "adobe-creative-cloud"
       "raycast"
-      "helium-browser"
+      "firefox"
     ];
     masApps = {
       "Davinci Resolve" = 571213070;
       "WhatsApp" = 310633997;
+      # "Proton Authenticator" = 6741758667; # for some reason this doesn't work!!!
     };
   };
 }
