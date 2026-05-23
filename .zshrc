@@ -16,6 +16,7 @@ alias lla='eza -la'
 alias llh='eza -lh'
 alias llah='eza -lah'
 alias lt='eza --tree'
+alias cdr='source ~/.config/scripts/tmux-root.sh'
 
 alias av='source .venv/bin/activate'
 alias dav='deactivate'
