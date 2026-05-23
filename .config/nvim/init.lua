@@ -6,7 +6,6 @@ local mason_pkgs = {
 	"clangd", "clang-format",
 	"rust-analyzer",
 	"tinymist", "typstyle",
-	"svelte-language-server", "ts_ls", "cssls",
 	"pyright", "ruff",
 }
 local ts_parsers = {
@@ -16,7 +15,6 @@ local ts_parsers = {
 	"rust",
 	"markdown_inline", "markdown",
 	"typst",
-	"svelte", "typescript", "css",
 	"python",
 }
 local formatters = {
@@ -44,8 +42,8 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.o.splitright = true
 vim.o.ruler = false
-vim.o.undofile = true
 vim.opt.laststatus = 0
+vim.o.undofile = true
 
 vim.pack.add({
 	"https://github.com/vague-theme/vague.nvim",
@@ -125,8 +123,8 @@ require("fzf-lua").setup({
 			scrollbar = false,
 		},
 	},
-	lsp = { code_actions = { silent = true } },
 })
+require("fzf-lua").register_ui_select()
 vim.keymap.set("n", "<Leader>s", "<Cmd>FzfLua files<CR>")
 vim.keymap.set("n", "<Leader>fh", "<Cmd>FzfLua helptags<CR>")
 vim.keymap.set("n", "<Leader>fb", "<Cmd>FzfLua buffers<CR>")

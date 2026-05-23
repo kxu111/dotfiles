@@ -13,4 +13,4 @@ crontab ~/.config/cron/crontab
 bat cache --build
 open -a AeroSpace
 open -a Karabiner-Elements
-echo "REMINDER TO DISABLE SPOTLIGHT AND SET UP ALFRED"
+echo "REMINDER TO DISABLE SPOTLIGHT AND GAME OVERLAY BINDS"

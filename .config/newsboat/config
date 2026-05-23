@@ -11,4 +11,4 @@ color hint-description    white   black
 color article             white   black
 
 cleanup-on-quit yes
-browser "open -a helium"
+browser "open -a firefox"
