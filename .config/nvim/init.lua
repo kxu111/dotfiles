@@ -5,7 +5,7 @@ local mason_pkgs = {
 	"nil", "alejandra",
 	"clangd", "clang-format",
 	"rust-analyzer",
-	"tinymist", "typstyle",
+	"tinymist",
 	"pyright", "ruff",
 }
 local ts_parsers = {
@@ -95,7 +95,7 @@ require("mini.files").setup({
 	mappings = {
 		go_in = "",
 		go_in_plus = "l",
-		synchronize = "<Leader>w",
+		synchronize = "<CR>",
 	},
 })
 vim.keymap.set("n", "<Leader>e", function()
@@ -103,7 +103,6 @@ vim.keymap.set("n", "<Leader>e", function()
 		MiniFiles.open(vim.api.nvim_buf_get_name(0))
 	end
 end)
-
 vim.api.nvim_create_autocmd("User", {
 	pattern = "MiniFilesWindowUpdate",
 	callback = function()

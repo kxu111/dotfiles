@@ -14,6 +14,7 @@ alt-d = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh dev.vencord.ve
 alt-e = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh net.whatsapp.WhatsApp 3'
 alt-s = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.spotify.client 4'
 alt-f = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.apple.finder 5'
+alt-p = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.apple.Photos 5'
 alt-v = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.obsproject.obs-studio 6'
 alt-g = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.figma.Desktop 7'
 alt-c = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.adobe.acc.AdobeCreativeCloud 8'
@@ -22,9 +23,12 @@ alt-n = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh me.proton.auth
 # hold ctrl before selecting to copy to clip
 alt-shift-s = 'exec-and-forget screencapture -i -p'
 
+alt-o = 'workspace-back-and-forth'
+
 alt-h = 'focus --boundaries-action wrap-around-the-workspace left'
 alt-l = 'focus --boundaries-action wrap-around-the-workspace right'
 
+alt-t = 'layout tiles'
 alt-w = 'layout accordion'
 alt-shift-space = 'layout floating tiling'
 
