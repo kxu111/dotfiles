@@ -2,9 +2,7 @@
 set -euo pipefail
 
 DIRS=(
-	"$HOME/Documents"
-	"$HOME/Documents/Books"
-	"$HOME/Documents/PDFs"
+	"$HOME/Documents/Reading"
 )
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

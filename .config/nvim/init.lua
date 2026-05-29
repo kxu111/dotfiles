@@ -31,19 +31,19 @@ vim.g.mapleader = " "
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.tabstop = 4
-vim.opt.shiftwidth = 4
-vim.o.showtabline = 2
+vim.o.shiftwidth = 4
 vim.o.wrap = false
 vim.o.swapfile = false
 vim.o.winborder = "rounded"
 vim.o.signcolumn = "yes"
 vim.o.termguicolors = true
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
 vim.o.splitright = true
 vim.o.ruler = false
-vim.opt.laststatus = 0
 vim.o.undofile = true
+vim.o.showtabline = 2
+vim.o.laststatus = 0
 
 vim.pack.add({
 	"https://github.com/vague-theme/vague.nvim",
@@ -55,6 +55,7 @@ vim.pack.add({
 	"https://github.com/nvim-treesitter/nvim-treesitter-context",
 	"https://github.com/stevearc/conform.nvim",
 	"https://github.com/nvim-mini/mini.nvim",
+	"https://github.com/windwp/nvim-autopairs",
 	"https://github.com/ibhagwan/fzf-lua",
 	{ src = "https://github.com/Saghen/blink.cmp", version = "v1" },
 	"https://github.com/chomosuke/typst-preview.nvim",
@@ -75,10 +76,13 @@ require("conform").setup({
 })
 
 require("mini.icons").setup()
-require("mini.pairs").setup()
 require("mini.surround").setup()
 require("mini.ai").setup()
 require("mini.splitjoin").setup()
+require("mini.tabline").setup()
+vim.keymap.set("n", "<Tab>", "<Cmd>bnext<CR>")
+vim.keymap.set("n", "<S-Tab>", "<Cmd>bprev<CR>")
+vim.keymap.set("n", "<Leader>x", "<Cmd>bdelete<CR>")
 local hi_words = require("mini.extra").gen_highlighter.words
 require("mini.hipatterns").setup({
 	highlighters = {
@@ -91,7 +95,6 @@ require("mini.hipatterns").setup({
 })
 require("mini.files").setup({
 	options = { permanent_delete = false },
-	windows = { preview = true },
 	mappings = {
 		go_in = "",
 		go_in_plus = "l",
@@ -103,13 +106,16 @@ vim.keymap.set("n", "<Leader>e", function()
 		MiniFiles.open(vim.api.nvim_buf_get_name(0))
 	end
 end)
-vim.api.nvim_create_autocmd("User", {
-	pattern = "MiniFilesWindowUpdate",
-	callback = function()
-		vim.wo.number = true
-		vim.wo.relativenumber = true
-	end,
+require("mini.move").setup({
+	mappings = {
+		left = "H",
+		right = "L",
+		down = "J",
+		up = "K",
+	},
 })
+
+require("nvim-autopairs").setup()
 
 require("fzf-lua").setup({
 	defaults = { formatter = "path.dirname_first" }, -- show greyed-out directory before filename
@@ -128,8 +134,8 @@ vim.keymap.set("n", "<Leader>s", "<Cmd>FzfLua files<CR>")
 vim.keymap.set("n", "<Leader>fh", "<Cmd>FzfLua helptags<CR>")
 vim.keymap.set("n", "<Leader>fb", "<Cmd>FzfLua buffers<CR>")
 vim.keymap.set("n", "<Leader>fl", "<Cmd>FzfLua live_grep<CR>")
-vim.keymap.set("n", "<Leader>ft", "<Cmd>FzfLua diagnostics_document<CR>")
-vim.keymap.set("n", "<Leader>fd", "<Cmd>FzfLua lsp_definitions<CR>")
+vim.keymap.set("n", "<Leader>fd", "<Cmd>FzfLua diagnostics_document<CR>")
+vim.keymap.set("n", "<Leader>fs", "<Cmd>FzfLua lsp_definitions<CR>")
 vim.keymap.set("n", "<Leader>fv", "<Cmd>FzfLua lsp_references<CR>")
 vim.keymap.set("n", "<Leader>fr", "<Cmd>FzfLua resume<CR>")
 vim.keymap.set("n", "<Leader>fa", "<Cmd>FzfLua lsp_code_actions<CR>")
@@ -153,7 +159,6 @@ require("blink.cmp").setup({
 			},
 		},
 		documentation = { auto_show = true, auto_show_delay_ms = 0 },
-		ghost_text = { enabled = true },
 	},
 })
 
@@ -276,6 +281,12 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
 
 		vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "Comment" })
+		vim.api.nvim_set_hl(0, "MiniFilesCursorLine", { bg = "none" })
+		vim.api.nvim_set_hl(
+			0,
+			"MiniTablineCurrent",
+			{ fg = vim.api.nvim_get_hl(0, { name = "Constant" }).fg, bold = true }
+		)
 
 		vim.defer_fn(function()
 			vim.api.nvim_set_hl(0, "BlinkCmpMenu", { bg = "none" })
