@@ -40,9 +40,7 @@ vim.o.termguicolors = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.splitright = true
-vim.o.ruler = false
 vim.o.undofile = true
-vim.o.laststatus = 0
 
 vim.pack.add({
 	"https://github.com/vague-theme/vague.nvim",
