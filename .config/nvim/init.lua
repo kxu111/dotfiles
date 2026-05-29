@@ -75,7 +75,11 @@ require("conform").setup({
 	formatters_by_ft = formatters,
 })
 
-require("mini.icons").setup()
+require("mini.icons").setup({
+	extension = {
+		["typ"] = { glyph = "" },
+	},
+})
 require("mini.surround").setup()
 require("mini.ai").setup()
 require("mini.splitjoin").setup()
@@ -115,6 +119,8 @@ require("mini.move").setup({
 	},
 })
 
+-- I could use mini.pairs but nvim-autopairs is a lot more intelligent at
+-- guessing when to put a pair down
 require("nvim-autopairs").setup()
 
 require("fzf-lua").setup({
@@ -285,7 +291,22 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		vim.api.nvim_set_hl(
 			0,
 			"MiniTablineCurrent",
-			{ fg = vim.api.nvim_get_hl(0, { name = "Constant" }).fg, bold = true }
+			{ fg = vim.api.nvim_get_hl(0, { name = "MiniHipatternsNote" }).fg, bold = true }
+		)
+		vim.api.nvim_set_hl(
+			0,
+			"MiniTablineModifiedCurrent",
+			{ fg = vim.api.nvim_get_hl(0, { name = "String" }).fg, bold = true }
+		)
+		vim.api.nvim_set_hl(
+			0,
+			"MiniTablineVisible",
+			{ fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg, bold = true }
+		)
+		vim.api.nvim_set_hl(
+			0,
+			"MiniTablineHidden",
+			{ fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg, bold = false }
 		)
 
 		vim.defer_fn(function()
