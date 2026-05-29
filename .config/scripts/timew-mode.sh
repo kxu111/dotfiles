@@ -10,7 +10,6 @@ timew_start() {
     current_right=$(echo "$current_right" | sed -E 's/[A-Z]+ #\(timew[^)]+\) *//g')
     tmux set -g status-right "${snippet} ${current_right}"
     tmux set -g @timew_tag "$tag"
-    tmux set -g status-interval 5
 }
 
 timew_stop() {

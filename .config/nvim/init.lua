@@ -280,7 +280,8 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("ColorScheme", {
 	pattern = "*",
 	callback = function()
-		-- vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+		local c = require("vague.config.internal").current.colors
+
 		vim.api.nvim_set_hl(0, "StatusLine", { bg = "none" })
 		vim.api.nvim_set_hl(0, "TabLine", { bg = "none" })
 		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
@@ -288,26 +289,12 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
 		vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "Comment" })
 		vim.api.nvim_set_hl(0, "MiniFilesCursorLine", { bg = "none" })
-		vim.api.nvim_set_hl(
-			0,
-			"MiniTablineCurrent",
-			{ fg = vim.api.nvim_get_hl(0, { name = "MiniHipatternsNote" }).fg, bold = true }
-		)
-		vim.api.nvim_set_hl(
-			0,
-			"MiniTablineModifiedCurrent",
-			{ fg = vim.api.nvim_get_hl(0, { name = "String" }).fg, bold = true }
-		)
-		vim.api.nvim_set_hl(
-			0,
-			"MiniTablineVisible",
-			{ fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg, bold = true }
-		)
-		vim.api.nvim_set_hl(
-			0,
-			"MiniTablineHidden",
-			{ fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg, bold = false }
-		)
+		vim.api.nvim_set_hl(0, "MiniTablineCurrent", { fg = c.parameter, bold = true })
+		-- stylua: ignore start
+		vim.api.nvim_set_hl(0, "MiniTablineModifiedCurrent", { fg = c.parameter, bold = true })
+		vim.api.nvim_set_hl(0, "MiniTablineVisible", { fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg, bold = true })
+		vim.api.nvim_set_hl(0, "MiniTablineHidden", { fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg })
+		-- stylua: ignore end
 
 		vim.defer_fn(function()
 			vim.api.nvim_set_hl(0, "BlinkCmpMenu", { bg = "none" })
@@ -316,11 +303,8 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 				fg = vim.api.nvim_get_hl(0, { name = "Constant" }).fg,
 				bg = vim.api.nvim_get_hl(0, { name = "CursorLine" }).bg,
 			})
-			vim.api.nvim_set_hl(
-				0,
-				"BlinkCmpLabelMatch",
-				{ fg = vim.api.nvim_get_hl(0, { name = "String" }).fg, bold = true }
-			)
+			-- stylua: ignore 
+			vim.api.nvim_set_hl(0, "BlinkCmpLabelMatch", { fg = vim.api.nvim_get_hl(0, { name = "String" }).fg, bold = true })
 			vim.api.nvim_set_hl(0, "BlinkCmpSource", { link = "Normal" })
 			vim.api.nvim_set_hl(0, "BlinkCmpDoc", { link = "Normal" })
 			vim.api.nvim_set_hl(0, "BlinkCmpKind", { link = "Comment" })
