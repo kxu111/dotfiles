@@ -49,10 +49,8 @@ vim.pack.add({
 	"https://github.com/mason-org/mason-lspconfig.nvim",
 	"https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
 	"https://github.com/nvim-treesitter/nvim-treesitter",
-	"https://github.com/nvim-treesitter/nvim-treesitter-context",
 	"https://github.com/stevearc/conform.nvim",
 	"https://github.com/nvim-mini/mini.nvim",
-	"https://github.com/windwp/nvim-autopairs",
 	"https://github.com/ibhagwan/fzf-lua",
 	"https://github.com/chomosuke/typst-preview.nvim",
 })
@@ -62,7 +60,6 @@ require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({ auto_update = true, ensure_installed = servers })
 vim.diagnostic.config({ virtual_text = true })
 require("nvim-treesitter").install(parsers)
-require("treesitter-context").setup({ max_lines = 1 })
 require("conform").setup({
 	format_on_save = { lsp_format = "fallback", timeout_ms = 500 },
 	formatters_by_ft = formatters,
@@ -73,6 +70,7 @@ require("mini.icons").setup({
 		["typ"] = { glyph = "" },
 	},
 })
+require("mini.pairs").setup()
 require("mini.surround").setup()
 require("mini.ai").setup()
 require("mini.splitjoin").setup()
@@ -111,10 +109,6 @@ require("mini.move").setup({
 		up = "K",
 	},
 })
-
--- I could use mini.pairs but nvim-autopairs is a lot more intelligent at
--- guessing when to put a pair down
-require("nvim-autopairs").setup()
 
 require("fzf-lua").setup({
 	defaults = { formatter = "path.dirname_first" }, -- show greyed-out directory before filename

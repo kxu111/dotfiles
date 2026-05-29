@@ -6,4 +6,3 @@ export UV_PYTHON_DOWNLOADS="never"
 export PATH="/Users/kenny/.local/bin:$PATH"
 export EDITOR=nvim
 export MANPAGER="nvim +Man!"
-export VIRTUAL_ENV_DISABLE_PROMPT=1
