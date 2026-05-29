@@ -1,5 +1,5 @@
 -- stylua: ignore start
-local mason_pkgs = {
+local servers = {
 	"tree-sitter-cli",
 	"lua_ls", "stylua",
 	"nil", "alejandra",
@@ -8,7 +8,7 @@ local mason_pkgs = {
 	"tinymist",
 	"pyright", "ruff",
 }
-local ts_parsers = {
+local parsers = {
 	"lua",
 	"nix",
 	"c", "cpp",
@@ -42,7 +42,6 @@ vim.o.smartcase = true
 vim.o.splitright = true
 vim.o.ruler = false
 vim.o.undofile = true
-vim.o.showtabline = 2
 vim.o.laststatus = 0
 
 vim.pack.add({
@@ -57,18 +56,14 @@ vim.pack.add({
 	"https://github.com/nvim-mini/mini.nvim",
 	"https://github.com/windwp/nvim-autopairs",
 	"https://github.com/ibhagwan/fzf-lua",
-	{ src = "https://github.com/Saghen/blink.cmp", version = "v1" },
 	"https://github.com/chomosuke/typst-preview.nvim",
 })
 
 require("mason").setup()
 require("mason-lspconfig").setup()
-require("mason-tool-installer").setup({
-	auto_update = true,
-	ensure_installed = mason_pkgs,
-})
+require("mason-tool-installer").setup({ auto_update = true, ensure_installed = servers })
 vim.diagnostic.config({ virtual_text = true })
-require("nvim-treesitter").install(ts_parsers)
+require("nvim-treesitter").install(parsers)
 require("treesitter-context").setup({ max_lines = 1 })
 require("conform").setup({
 	format_on_save = { lsp_format = "fallback", timeout_ms = 500 },
@@ -86,7 +81,7 @@ require("mini.splitjoin").setup()
 require("mini.tabline").setup()
 vim.keymap.set("n", "<Tab>", "<Cmd>bnext<CR>")
 vim.keymap.set("n", "<S-Tab>", "<Cmd>bprev<CR>")
-vim.keymap.set("n", "<Leader>x", "<Cmd>bdelete<CR>")
+vim.keymap.set("n", "<C-x>", "<Cmd>bdelete<CR>")
 local hi_words = require("mini.extra").gen_highlighter.words
 require("mini.hipatterns").setup({
 	highlighters = {
@@ -146,27 +141,23 @@ vim.keymap.set("n", "<Leader>fv", "<Cmd>FzfLua lsp_references<CR>")
 vim.keymap.set("n", "<Leader>fr", "<Cmd>FzfLua resume<CR>")
 vim.keymap.set("n", "<Leader>fa", "<Cmd>FzfLua lsp_code_actions<CR>")
 
-require("blink.cmp").setup({
-	completion = {
-		menu = {
-			scrollbar = false,
-			draw = {
-				columns = {
-					{ "source_name", "label", "label_description", gap = 2 },
-					{ "kind_icon", "kind", gap = 2 },
-				},
-				components = {
-					source_name = {
-						text = function(ctx)
-							return "[" .. ctx.source_name .. "]"
-						end,
-					},
-				},
-			},
-		},
-		documentation = { auto_show = true, auto_show_delay_ms = 0 },
-	},
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("my.lsp", {}),
+	callback = function(args)
+		local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+		if client:supports_method("textDocument/completion") then
+			-- Optional: trigger autocompletion on EVERY keypress. May be slow!
+			local chars = {}
+			for i = 32, 126 do
+				table.insert(chars, string.char(i))
+			end
+			client.server_capabilities.completionProvider.triggerCharacters = chars
+			vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
+		end
+	end,
 })
+vim.cmd("set completeopt+=noselect")
+vim.o.pumborder = "rounded"
 
 vim.cmd.packadd("nvim.undotree")
 vim.keymap.set("n", "<Leader>u", "<Cmd>Undotree<CR>")
@@ -222,7 +213,7 @@ local function pack_clean()
 	vim.pack.del(unused_plugins)
 end
 
-local function ts_clean(parsers)
+local function ts_clean()
 	local desired = {}
 	local installed = {}
 
@@ -246,23 +237,11 @@ end
 
 local function clean_all()
 	pack_clean()
-	ts_clean(ts_parsers)
+	ts_clean()
 	vim.cmd("MasonToolsClean")
 end
 
 vim.keymap.set("n", "<Leader>c", clean_all)
-
-vim.api.nvim_create_autocmd("PackChanged", {
-	callback = function(ev)
-		local name, kind = ev.data.spec.name, ev.data.kind
-		if name == "nvim-treesitter" and kind == "update" then
-			vim.cmd("TSUpdate")
-		end
-		if name == "blink.cmp" and kind == "install" or kind == "update" then
-			vim.cmd("BlinkCmp build")
-		end
-	end,
-})
 
 vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
@@ -271,7 +250,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = ts_parsers,
+	pattern = parsers,
 	callback = function()
 		vim.treesitter.start()
 	end,
@@ -286,6 +265,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		vim.api.nvim_set_hl(0, "TabLine", { bg = "none" })
 		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 		vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
+		vim.api.nvim_set_hl(0, "Pmenu", { bg = "none" })
 
 		vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "Comment" })
 		vim.api.nvim_set_hl(0, "MiniFilesCursorLine", { bg = "none" })
@@ -295,20 +275,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		vim.api.nvim_set_hl(0, "MiniTablineVisible", { fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg, bold = true })
 		vim.api.nvim_set_hl(0, "MiniTablineHidden", { fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg })
 		-- stylua: ignore end
-
-		vim.defer_fn(function()
-			vim.api.nvim_set_hl(0, "BlinkCmpMenu", { bg = "none" })
-			vim.api.nvim_set_hl(0, "BlinkCmpMenuBorder", { bg = "none" })
-			vim.api.nvim_set_hl(0, "BlinkCmpMenuSelection", {
-				fg = vim.api.nvim_get_hl(0, { name = "Constant" }).fg,
-				bg = vim.api.nvim_get_hl(0, { name = "CursorLine" }).bg,
-			})
-			-- stylua: ignore 
-			vim.api.nvim_set_hl(0, "BlinkCmpLabelMatch", { fg = vim.api.nvim_get_hl(0, { name = "String" }).fg, bold = true })
-			vim.api.nvim_set_hl(0, "BlinkCmpSource", { link = "Normal" })
-			vim.api.nvim_set_hl(0, "BlinkCmpDoc", { link = "Normal" })
-			vim.api.nvim_set_hl(0, "BlinkCmpKind", { link = "Comment" })
-		end, 200)
 	end,
 })
 vim.cmd("colorscheme vague")
