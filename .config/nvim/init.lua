@@ -52,6 +52,7 @@ vim.pack.add({
 	"https://github.com/stevearc/conform.nvim",
 	"https://github.com/nvim-mini/mini.nvim",
 	"https://github.com/ibhagwan/fzf-lua",
+	"https://github.com/folke/flash.nvim",
 	"https://github.com/chomosuke/typst-preview.nvim",
 })
 
@@ -73,7 +74,16 @@ require("mini.icons").setup({
 	},
 })
 require("mini.pairs").setup()
-require("mini.surround").setup()
+require("mini.surround").setup({
+	mappings = {
+		add = "gsa",
+		delete = "gsd",
+		find = "gsf",
+		find_left = "gsF",
+		highlight = "gsh",
+		replace = "gsr",
+	},
+})
 require("mini.ai").setup()
 require("mini.splitjoin").setup()
 require("mini.bufremove").setup()
@@ -174,6 +184,11 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		MiniIcons.tweak_lsp_kind()
 	end,
 })
+
+local flash = require("flash")
+flash.setup({ modes = { char = { enabled = false } } })
+vim.keymap.set({ "n", "v", "o" }, "s", flash.remote)
+vim.keymap.set({ "n", "v", "o" }, "S", flash.treesitter)
 
 vim.cmd.packadd("nvim.undotree")
 vim.keymap.set("n", "<Leader>u", "<Cmd>Undotree<CR>")
