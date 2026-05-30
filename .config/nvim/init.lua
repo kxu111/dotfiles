@@ -40,6 +40,7 @@ vim.o.termguicolors = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.splitright = true
+vim.o.splitbelow = true
 vim.o.undofile = true
 
 vim.pack.add({
@@ -49,10 +50,9 @@ vim.pack.add({
 	"https://github.com/mason-org/mason-lspconfig.nvim",
 	"https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
 	"https://github.com/nvim-treesitter/nvim-treesitter",
-	"https://github.com/stevearc/conform.nvim",
 	"https://github.com/nvim-mini/mini.nvim",
-	"https://github.com/ibhagwan/fzf-lua",
-	"https://github.com/folke/flash.nvim",
+	"https://github.com/folke/trouble.nvim",
+	"https://github.com/stevearc/conform.nvim",
 	"https://github.com/chomosuke/typst-preview.nvim",
 })
 
@@ -61,10 +61,6 @@ require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({ auto_update = true, ensure_installed = servers })
 vim.diagnostic.config({ virtual_text = true })
 require("nvim-treesitter").install(parsers)
-require("conform").setup({
-	format_on_save = { lsp_format = "fallback", timeout_ms = 500 },
-	formatters_by_ft = formatters,
-})
 
 require("mini.icons").setup({
 	extension = {
@@ -73,17 +69,14 @@ require("mini.icons").setup({
 		["hpp"] = { glyph = "󰫵", hl = "MiniIconsBlue" },
 	},
 })
-require("mini.pairs").setup()
-require("mini.surround").setup({
-	mappings = {
-		add = "gsa",
-		delete = "gsd",
-		find = "gsf",
-		find_left = "gsF",
-		highlight = "gsh",
-		replace = "gsr",
-	},
+vim.api.nvim_create_autocmd("VimEnter", {
+	once = true,
+	callback = function()
+		MiniIcons.tweak_lsp_kind()
+	end,
 })
+require("mini.pairs").setup()
+require("mini.surround").setup()
 require("mini.ai").setup()
 require("mini.splitjoin").setup()
 require("mini.bufremove").setup()
@@ -154,41 +147,41 @@ require("mini.statusline").setup({
 		end,
 	},
 })
-
-require("fzf-lua").setup({
-	defaults = { formatter = "path.dirname_first" }, -- show greyed-out directory before filename
-	fzf_opts = { ["--info"] = "hidden" },
-	winopts = {
-		border = "none",
-		fullscreen = true,
-		preview = {
-			border = "rounded",
-			scrollbar = false,
-		},
-	},
-})
-vim.keymap.set("n", "<Leader>s", "<Cmd>FzfLua files<CR>")
-vim.keymap.set("n", "<Leader>fh", "<Cmd>FzfLua helptags<CR>")
-vim.keymap.set("n", "<Leader>fb", "<Cmd>FzfLua buffers<CR>")
-vim.keymap.set("n", "<Leader>fl", "<Cmd>FzfLua live_grep<CR>")
-vim.keymap.set("n", "<Leader>fd", "<Cmd>FzfLua diagnostics_document<CR>")
-vim.keymap.set("n", "<Leader>fs", "<Cmd>FzfLua lsp_definitions<CR>")
-vim.keymap.set("n", "<Leader>fv", "<Cmd>FzfLua lsp_references<CR>")
-vim.keymap.set("n", "<Leader>fr", "<Cmd>FzfLua resume<CR>")
-vim.keymap.set("n", "<Leader>fa", "<Cmd>FzfLua lsp_code_actions<CR>")
+require("mini.extra").setup()
+require("mini.pick").setup()
+vim.ui.select = require("mini.pick").ui_select
+vim.keymap.set("n", "<Leader>s", "<Cmd>Pick files<CR>")
+vim.keymap.set("n", "<Leader>fh", "<Cmd>Pick help<CR>")
+vim.keymap.set("n", "<Leader>fb", "<Cmd>Pick buffers<CR>")
+vim.keymap.set("n", "<Leader>fl", "<Cmd>Pick grep_live<CR>")
+vim.keymap.set("n", "<Leader>fp", "<Cmd>Pick hipatterns<CR>")
+vim.keymap.set("n", "<Leader>a", vim.lsp.buf.code_action)
+vim.keymap.set("n", "z=", "<Cmd>Pick spellsuggest<CR>")
 
 vim.api.nvim_create_autocmd("VimEnter", {
 	once = true,
 	callback = function()
-		require("fzf-lua").register_ui_select()
-		MiniIcons.tweak_lsp_kind()
+		require("trouble").setup()
 	end,
 })
+vim.keymap.set("n", "<Leader>t", "<Cmd>Trouble diagnostics toggle<CR>")
+vim.keymap.set("n", "<C-q>", function()
+	require("trouble").toggle("quickfix")
+	vim.cmd("cclose")
+end)
+vim.keymap.set("n", "<Leader>cq", function()
+	vim.fn.setqflist({})
+	if require("trouble").is_open() then
+		require("trouble").refresh()
+	end
+end)
+vim.keymap.set("n", "<Leader>fd", "<Cmd>Trouble lsp_definitions<CR>")
+vim.keymap.set("n", "<Leader>fr", "<Cmd>Trouble lsp_references<CR>")
 
-local flash = require("flash")
-flash.setup({ modes = { char = { enabled = false } } })
-vim.keymap.set({ "n", "v", "o" }, "s", flash.remote)
-vim.keymap.set({ "n", "v", "o" }, "S", flash.treesitter)
+require("conform").setup({
+	format_on_save = { lsp_format = "fallback", timeout_ms = 500 },
+	formatters_by_ft = formatters,
+})
 
 vim.cmd.packadd("nvim.undotree")
 vim.keymap.set("n", "<Leader>u", "<Cmd>Undotree<CR>")
@@ -199,7 +192,6 @@ vim.keymap.set("n", "<ESC>", "<Cmd>nohlsearch<CR>", { noremap = true, silent = t
 vim.cmd("filetype plugin indent on")
 
 vim.keymap.set("n", "<Leader>q", "<Cmd>quit<CR>")
-vim.keymap.set("n", "<Leader><C-q>", "<Cmd>qa!<CR>")
 vim.keymap.set("n", "<Leader>w", "<Cmd>write<CR>")
 vim.keymap.set("n", "<Leader>r", "<Cmd>source " .. vim.fn.stdpath("config") .. "/init.lua<CR>")
 
@@ -272,7 +264,7 @@ local function clean_all()
 	vim.cmd("MasonToolsClean")
 end
 
-vim.keymap.set("n", "<Leader>c", clean_all)
+vim.keymap.set("n", "<Leader>ca", clean_all)
 
 vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
