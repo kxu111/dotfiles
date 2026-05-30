@@ -67,8 +67,9 @@ require("conform").setup({
 
 require("mini.icons").setup({
 	extension = {
-		["typ"] = { glyph = "" },
-		["cpp"] = { glyph = "" },
+		["typ"] = { glyph = "", hl = "MiniIconsBlue" },
+		["cpp"] = { glyph = "", hl = "MiniIconsBlue" },
+		["hpp"] = { glyph = "󰫵", hl = "MiniIconsBlue" },
 	},
 })
 require("mini.pairs").setup()
