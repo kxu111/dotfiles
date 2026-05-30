@@ -7,7 +7,7 @@
       autoUpdate = true;
       upgrade = true;
     };
-    brews = ["mas" "pkgconfig" "cairo"];
+    brews = ["mas"];
     casks = [
       "vesktop"
       "sioyek"

@@ -3,7 +3,7 @@
 
   environment.systemPackages = with pkgs; [
     fastfetch
-    btop
+    wget
     stow
     neovim
     ripgrep
@@ -27,10 +27,6 @@
     yt-dlp
     nodejs
     mpv
-    poppler
-    p7zip
-    resvg
-    imagemagick
   ];
 
   fonts.packages = with pkgs; [

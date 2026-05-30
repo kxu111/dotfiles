@@ -68,16 +68,30 @@ require("conform").setup({
 require("mini.icons").setup({
 	extension = {
 		["typ"] = { glyph = "" },
+		["cpp"] = { glyph = "" },
 	},
 })
 require("mini.pairs").setup()
 require("mini.surround").setup()
 require("mini.ai").setup()
 require("mini.splitjoin").setup()
+require("mini.bufremove").setup()
 require("mini.tabline").setup()
 vim.keymap.set("n", "<Tab>", "<Cmd>bnext<CR>")
 vim.keymap.set("n", "<S-Tab>", "<Cmd>bprev<CR>")
-vim.keymap.set("n", "<C-x>", "<Cmd>bdelete<CR>")
+vim.keymap.set("n", "<Leader>x", function()
+	require("mini.bufremove").delete(0, false)
+end)
+vim.keymap.set("n", "<leader>o", function()
+	local bufremove = require("mini.bufremove")
+	local cur = vim.api.nvim_get_current_buf()
+
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		if buf ~= cur then
+			bufremove.delete(buf, false)
+		end
+	end
+end)
 local hi_words = require("mini.extra").gen_highlighter.words
 require("mini.hipatterns").setup({
 	highlighters = {
@@ -95,18 +109,38 @@ require("mini.files").setup({
 		go_in_plus = "l",
 		synchronize = "<CR>",
 	},
+	windows = {
+		preview = true,
+		width_preview = 50,
+	},
 })
 vim.keymap.set("n", "<Leader>e", function()
 	if not MiniFiles.close() then
 		MiniFiles.open(vim.api.nvim_buf_get_name(0))
 	end
 end)
-require("mini.move").setup({
-	mappings = {
-		left = "H",
-		right = "L",
-		down = "J",
-		up = "K",
+require("mini.move").setup({ mappings = { left = "H", right = "L", down = "J", up = "K" } })
+require("mini.completion").setup()
+vim.o.pumborder = "rounded"
+require("mini.statusline").setup({
+	content = {
+		active = function()
+			local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
+			local diagnostics = MiniStatusline.section_diagnostics({ trunc_width = 75 })
+			local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
+			local filename = MiniStatusline.section_filename({ trunc_width = 140 })
+			local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 10 ^ 7 })
+			local location = MiniStatusline.section_location({ trunc_width = 75 })
+
+			return MiniStatusline.combine_groups({
+				{ hl = mode_hl, strings = { mode } },
+				"%<", -- Mark general truncate point
+				{ hl = "MiniStatuslineFilename", strings = { filename } },
+				"%=", -- End left alignment
+				{ hl = "MiniStatuslineFileinfo", strings = { fileinfo, diagnostics, lsp } },
+				{ hl = mode_hl, strings = { location } },
+			})
+		end,
 	},
 })
 
@@ -122,7 +156,6 @@ require("fzf-lua").setup({
 		},
 	},
 })
-require("fzf-lua").register_ui_select()
 vim.keymap.set("n", "<Leader>s", "<Cmd>FzfLua files<CR>")
 vim.keymap.set("n", "<Leader>fh", "<Cmd>FzfLua helptags<CR>")
 vim.keymap.set("n", "<Leader>fb", "<Cmd>FzfLua buffers<CR>")
@@ -133,23 +166,13 @@ vim.keymap.set("n", "<Leader>fv", "<Cmd>FzfLua lsp_references<CR>")
 vim.keymap.set("n", "<Leader>fr", "<Cmd>FzfLua resume<CR>")
 vim.keymap.set("n", "<Leader>fa", "<Cmd>FzfLua lsp_code_actions<CR>")
 
-vim.api.nvim_create_autocmd("LspAttach", {
-	group = vim.api.nvim_create_augroup("my.lsp", {}),
-	callback = function(args)
-		local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-		if client:supports_method("textDocument/completion") then
-			-- Optional: trigger autocompletion on EVERY keypress. May be slow!
-			local chars = {}
-			for i = 32, 126 do
-				table.insert(chars, string.char(i))
-			end
-			client.server_capabilities.completionProvider.triggerCharacters = chars
-			vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
-		end
+vim.api.nvim_create_autocmd("VimEnter", {
+	once = true,
+	callback = function()
+		require("fzf-lua").register_ui_select()
+		MiniIcons.tweak_lsp_kind()
 	end,
 })
-vim.cmd("set completeopt+=noselect")
-vim.o.pumborder = "rounded"
 
 vim.cmd.packadd("nvim.undotree")
 vim.keymap.set("n", "<Leader>u", "<Cmd>Undotree<CR>")

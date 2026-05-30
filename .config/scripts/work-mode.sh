@@ -30,17 +30,17 @@ DOMAINS=(
     s.ytimg.com
     googlevideo.com
     www.googlevideo.com
-    # discord.com
-    # www.discord.com
-    # canary.discord.com
-    # ptb.discord.com
-    # discord.gg
-    # www.discord.gg
-    # gateway.discord.gg
-    # discordapp.com
-    # www.discordapp.com
-    # cdn.discordapp.com
-    # media.discordapp.net
+    discord.com
+    www.discord.com
+    canary.discord.com
+    ptb.discord.com
+    discord.gg
+    www.discord.gg
+    gateway.discord.gg
+    discordapp.com
+    www.discordapp.com
+    cdn.discordapp.com
+    media.discordapp.net
     substack.com
     www.substack.com
     app.substack.com
