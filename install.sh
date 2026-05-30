@@ -13,4 +13,5 @@ crontab ~/.config/cron/crontab
 bat cache --build
 open -a AeroSpace
 open -a Karabiner-Elements
+launchctl load ~/Library/LaunchAgents/com.kenny.newtabserver.plist
 echo "REMINDER TO DISABLE SPOTLIGHT AND GAME OVERLAY BINDS"
