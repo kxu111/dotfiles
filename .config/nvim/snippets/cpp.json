@@ -1,0 +1,14 @@
+{
+  "Skeleton": {
+    "prefix": "skel",
+    "body": [
+      "#include <iostream>",
+	  "",
+      "int main() {",
+      "\tstd::cout << \"Hello, world!\\n\";",
+	  "\t$0",
+      "\treturn 0;",
+      "}"
+    ]
+  }
+}

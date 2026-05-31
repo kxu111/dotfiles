@@ -56,6 +56,10 @@ vim.pack.add({
 	"https://github.com/chomosuke/typst-preview.nvim",
 })
 
+require("vague").setup({ transparent = true })
+vim.cmd("colorscheme vague")
+local c = require("vague.config.internal").current.colors
+
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({ auto_update = true, ensure_installed = servers })
@@ -75,24 +79,34 @@ vim.api.nvim_create_autocmd("VimEnter", {
 		MiniIcons.tweak_lsp_kind()
 	end,
 })
+
 require("mini.pairs").setup()
 require("mini.surround").setup()
 require("mini.ai").setup()
 require("mini.splitjoin").setup()
-require("mini.bufremove").setup()
+require("mini.operators").setup()
+
+local gen_loader = require("mini.snippets").gen_loader
+require("mini.snippets").setup({
+	snippets = {
+		gen_loader.from_file("~/.config/nvim/snippets/global.json"),
+		gen_loader.from_lang(),
+	},
+})
+
 require("mini.tabline").setup()
+vim.api.nvim_set_hl(0, "MiniTablineCurrent", { fg = c.parameter, bold = true })
+vim.api.nvim_set_hl(0, "MiniTablineModifiedCurrent", { fg = c.parameter, bold = true })
+vim.api.nvim_set_hl(0, "MiniTablineVisible", { fg = c.comment, bold = true })
+vim.api.nvim_set_hl(0, "MiniTablineHidden", { fg = c.comment })
 vim.keymap.set("n", "<Tab>", "<Cmd>bnext<CR>")
 vim.keymap.set("n", "<S-Tab>", "<Cmd>bprev<CR>")
-vim.keymap.set("n", "<Leader>x", function()
-	require("mini.bufremove").delete(0, false)
-end)
+-- stylua: ignore
+vim.keymap.set("n", "<Leader>x", function() require("mini.bufremove").delete(0, false) end)
 vim.keymap.set("n", "<leader>o", function()
-	local bufremove = require("mini.bufremove")
-	local cur = vim.api.nvim_get_current_buf()
-
 	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-		if buf ~= cur then
-			bufremove.delete(buf, false)
+		if buf ~= vim.api.nvim_get_current_buf() then
+			require("mini.bufremove").delete(buf, false)
 		end
 	end
 end)
@@ -106,6 +120,7 @@ require("mini.hipatterns").setup({
 		hack = hi_words({ "HACK" }, "MiniHipatternsHack"),
 	},
 })
+
 require("mini.files").setup({
 	options = { permanent_delete = false },
 	mappings = {
@@ -118,14 +133,16 @@ require("mini.files").setup({
 		width_preview = 50,
 	},
 })
+vim.api.nvim_set_hl(0, "MiniFilesCursorLine", { bg = "none" })
 vim.keymap.set("n", "<Leader>e", function()
 	if not MiniFiles.close() then
 		MiniFiles.open(vim.api.nvim_buf_get_name(0))
 	end
 end)
-require("mini.move").setup({ mappings = { left = "H", right = "L", down = "J", up = "K" } })
+
 require("mini.completion").setup()
 vim.o.pumborder = "rounded"
+
 require("mini.statusline").setup({
 	content = {
 		active = function()
@@ -147,14 +164,15 @@ require("mini.statusline").setup({
 		end,
 	},
 })
+
 require("mini.extra").setup()
 require("mini.pick").setup()
-vim.ui.select = require("mini.pick").ui_select
 vim.keymap.set("n", "<Leader>s", "<Cmd>Pick files<CR>")
 vim.keymap.set("n", "<Leader>fh", "<Cmd>Pick help<CR>")
 vim.keymap.set("n", "<Leader>fb", "<Cmd>Pick buffers<CR>")
 vim.keymap.set("n", "<Leader>fl", "<Cmd>Pick grep_live<CR>")
 vim.keymap.set("n", "<Leader>fp", "<Cmd>Pick hipatterns<CR>")
+vim.keymap.set("n", "<Leader>fm", "<Cmd>Pick manpages<CR>")
 vim.keymap.set("n", "<Leader>a", vim.lsp.buf.code_action)
 vim.keymap.set("n", "z=", "<Cmd>Pick spellsuggest<CR>")
 
@@ -172,7 +190,7 @@ end)
 vim.keymap.set("n", "<Leader>cq", function()
 	vim.fn.setqflist({})
 	if require("trouble").is_open() then
-		require("trouble").refresh()
+		require("trouble").close()
 	end
 end)
 vim.keymap.set("n", "<Leader>fd", "<Cmd>Trouble lsp_definitions<CR>")
@@ -278,26 +296,3 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.treesitter.start()
 	end,
 })
-
-vim.api.nvim_create_autocmd("ColorScheme", {
-	pattern = "*",
-	callback = function()
-		local c = require("vague.config.internal").current.colors
-
-		vim.api.nvim_set_hl(0, "StatusLine", { bg = "none" })
-		vim.api.nvim_set_hl(0, "TabLine", { bg = "none" })
-		vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
-		vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
-		vim.api.nvim_set_hl(0, "Pmenu", { bg = "none" })
-
-		vim.api.nvim_set_hl(0, "FzfLuaBorder", { link = "Comment" })
-		vim.api.nvim_set_hl(0, "MiniFilesCursorLine", { bg = "none" })
-		vim.api.nvim_set_hl(0, "MiniTablineCurrent", { fg = c.parameter, bold = true })
-		-- stylua: ignore start
-		vim.api.nvim_set_hl(0, "MiniTablineModifiedCurrent", { fg = c.parameter, bold = true })
-		vim.api.nvim_set_hl(0, "MiniTablineVisible", { fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg, bold = true })
-		vim.api.nvim_set_hl(0, "MiniTablineHidden", { fg = vim.api.nvim_get_hl(0, { name = "Comment" }).fg })
-		-- stylua: ignore end
-	end,
-})
-vim.cmd("colorscheme vague")
