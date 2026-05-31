@@ -51,7 +51,6 @@ vim.pack.add({
 	"https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
 	"https://github.com/nvim-treesitter/nvim-treesitter",
 	"https://github.com/nvim-mini/mini.nvim",
-	"https://github.com/folke/trouble.nvim",
 	"https://github.com/stevearc/conform.nvim",
 	"https://github.com/chomosuke/typst-preview.nvim",
 })
@@ -175,26 +174,11 @@ vim.keymap.set("n", "<Leader>fp", "<Cmd>Pick hipatterns<CR>")
 vim.keymap.set("n", "<Leader>fm", "<Cmd>Pick manpages<CR>")
 vim.keymap.set("n", "<Leader>a", vim.lsp.buf.code_action)
 vim.keymap.set("n", "z=", "<Cmd>Pick spellsuggest<CR>")
-
-vim.api.nvim_create_autocmd("VimEnter", {
-	once = true,
-	callback = function()
-		require("trouble").setup()
-	end,
-})
-vim.keymap.set("n", "<Leader>t", "<Cmd>Trouble diagnostics toggle<CR>")
-vim.keymap.set("n", "<C-q>", function()
-	require("trouble").toggle("quickfix")
-	vim.cmd("cclose")
-end)
-vim.keymap.set("n", "<Leader>cq", function()
-	vim.fn.setqflist({})
-	if require("trouble").is_open() then
-		require("trouble").close()
-	end
-end)
-vim.keymap.set("n", "<Leader>fd", "<Cmd>Trouble lsp_definitions<CR>")
-vim.keymap.set("n", "<Leader>fr", "<Cmd>Trouble lsp_references<CR>")
+vim.keymap.set("n", "<Leader>fd", "<Cmd>Pick diagnostic<CR>")
+-- stylua: ignore start
+vim.keymap.set("n", "<Leader>fs", function() MiniExtra.pickers.lsp({ scope = "definition" }) end)
+vim.keymap.set("n", "<Leader>fr", function() MiniExtra.pickers.lsp({ scope = "references" }) end)
+-- stylua: ignore end
 
 require("conform").setup({
 	format_on_save = { lsp_format = "fallback", timeout_ms = 500 },
@@ -228,6 +212,40 @@ vim.keymap.set("n", "<C-t>", "<C-w>T")
 for i = 1, 9 do
 	vim.keymap.set("n", "<Leader>" .. i, "<Cmd>tabnext " .. i .. "<CR>")
 end
+
+vim.keymap.set("n", "<C-q>", function()
+	if vim.fn.getqflist({ size = 1 }).size == 0 then
+		return
+	end
+	local qf_open = false
+	for _, win in ipairs(vim.fn.getwininfo()) do
+		if win.quickfix == 1 and win.winnr == vim.fn.winnr() then
+			qf_open = true
+			break
+		end
+	end
+	if qf_open then
+		vim.cmd("cclose")
+	else
+		vim.cmd("copen")
+	end
+end, { desc = "Toggle quickfix window" })
+vim.keymap.set("n", "<leader>cq", function()
+	vim.fn.setqflist({}, "r")
+	vim.cmd("cclose")
+end, { desc = "Clear quickfix list" })
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "qf",
+	callback = function()
+		vim.keymap.set("n", "dd", function()
+			local linenr = vim.fn.line(".")
+			local items = vim.fn.getqflist()
+			table.remove(items, linenr)
+			vim.fn.setqflist(items, "r")
+			vim.fn.cursor(linenr, 1)
+		end, { buffer = true, desc = "Delete quickfix item" })
+	end,
+})
 
 vim.keymap.set({ "n", "v" }, "<C-n>", ":norm ")
 vim.keymap.set({ "n", "v" }, "<C-s>", [[:s/\V]])
