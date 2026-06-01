@@ -42,6 +42,7 @@ vim.o.smartcase = true
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.undofile = true
+vim.o.laststatus = 0
 
 vim.pack.add({
 	"https://github.com/vague-theme/vague.nvim",
@@ -62,7 +63,6 @@ local c = require("vague.config.internal").current.colors
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({ auto_update = true, ensure_installed = servers })
-vim.diagnostic.config({ virtual_text = true })
 require("nvim-treesitter").install(parsers)
 
 require("mini.icons").setup({
@@ -85,6 +85,8 @@ require("mini.ai").setup()
 require("mini.splitjoin").setup()
 require("mini.operators").setup()
 
+require("mini.completion").setup()
+vim.o.pumborder = "rounded"
 local gen_loader = require("mini.snippets").gen_loader
 require("mini.snippets").setup({
 	snippets = {
@@ -139,31 +141,6 @@ vim.keymap.set("n", "<Leader>e", function()
 	end
 end)
 
-require("mini.completion").setup()
-vim.o.pumborder = "rounded"
-
-require("mini.statusline").setup({
-	content = {
-		active = function()
-			local mode, mode_hl = MiniStatusline.section_mode({ trunc_width = 120 })
-			local diagnostics = MiniStatusline.section_diagnostics({ trunc_width = 75 })
-			local lsp = MiniStatusline.section_lsp({ trunc_width = 75 })
-			local filename = MiniStatusline.section_filename({ trunc_width = 140 })
-			local fileinfo = MiniStatusline.section_fileinfo({ trunc_width = 10 ^ 7 })
-			local location = MiniStatusline.section_location({ trunc_width = 75 })
-
-			return MiniStatusline.combine_groups({
-				{ hl = mode_hl, strings = { mode } },
-				"%<", -- Mark general truncate point
-				{ hl = "MiniStatuslineFilename", strings = { filename } },
-				"%=", -- End left alignment
-				{ hl = "MiniStatuslineFileinfo", strings = { fileinfo, diagnostics, lsp } },
-				{ hl = mode_hl, strings = { location } },
-			})
-		end,
-	},
-})
-
 require("mini.extra").setup()
 require("mini.pick").setup()
 vim.keymap.set("n", "<Leader>s", "<Cmd>Pick files<CR>")
@@ -191,6 +168,8 @@ vim.keymap.set("n", "<Leader>u", "<Cmd>Undotree<CR>")
 vim.cmd.packadd("nohlsearch")
 vim.keymap.set("n", "<ESC>", "<Cmd>nohlsearch<CR>", { noremap = true, silent = true })
 
+vim.diagnostic.config({ virtual_text = true })
+
 vim.cmd("filetype plugin indent on")
 
 vim.keymap.set("n", "<Leader>q", "<Cmd>quit<CR>")
@@ -199,8 +178,8 @@ vim.keymap.set("n", "<Leader>r", "<Cmd>source " .. vim.fn.stdpath("config") .. "
 
 vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y')
 vim.keymap.set({ "n", "v" }, "<Leader>d", '"+d')
-vim.keymap.set({ "n", "v" }, "<Leader>Y", '"+y$')
-vim.keymap.set({ "n", "v" }, "<Leader>D", '"+d$')
+vim.keymap.set({ "n", "v" }, "<Leader>Y", '"+Y')
+vim.keymap.set({ "n", "v" }, "<Leader>D", '"+D')
 
 vim.keymap.set("n", "<Leader>v", "<Cmd>vertical split<CR>")
 vim.keymap.set("n", "<C-h>", "<C-w>h")
@@ -214,9 +193,6 @@ for i = 1, 9 do
 end
 
 vim.keymap.set("n", "<C-q>", function()
-	if vim.fn.getqflist({ size = 1 }).size == 0 then
-		return
-	end
 	local qf_open = false
 	for _, win in ipairs(vim.fn.getwininfo()) do
 		if win.quickfix == 1 and win.winnr == vim.fn.winnr() then
