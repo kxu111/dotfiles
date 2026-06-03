@@ -42,7 +42,6 @@ vim.o.smartcase = true
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.undofile = true
-vim.o.laststatus = 0
 vim.o.ruler = false
 
 vim.pack.add({
@@ -170,10 +169,6 @@ vim.keymap.set("n", "<ESC>", "<Cmd>nohlsearch<CR>", { noremap = true, silent = t
 vim.diagnostic.config({ virtual_text = true })
 
 vim.cmd("filetype plugin indent on")
-
-vim.keymap.set("n", "<Leader>q", "<Cmd>quit<CR>")
-vim.keymap.set("n", "<Leader>w", "<Cmd>write<CR>")
-vim.keymap.set("n", "<Leader>r", "<Cmd>source " .. vim.fn.stdpath("config") .. "/init.lua<CR>")
 
 vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y')
 vim.keymap.set({ "n", "v" }, "<Leader>d", '"+d')

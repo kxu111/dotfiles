@@ -8,6 +8,7 @@ truncate_to_repo = false
 style = "blue"
 
 [git_branch]
+style = "red"
 symbol = '  '
 format = "[$symbol$branch]($style) "
 
