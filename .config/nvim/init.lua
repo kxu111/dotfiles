@@ -43,6 +43,7 @@ vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.undofile = true
 vim.o.laststatus = 0
+vim.o.ruler = false
 
 vim.pack.add({
 	"https://github.com/vague-theme/vague.nvim",
@@ -152,10 +153,8 @@ vim.keymap.set("n", "<Leader>fm", "<Cmd>Pick manpages<CR>")
 vim.keymap.set("n", "<Leader>a", vim.lsp.buf.code_action)
 vim.keymap.set("n", "z=", "<Cmd>Pick spellsuggest<CR>")
 vim.keymap.set("n", "<Leader>fd", "<Cmd>Pick diagnostic<CR>")
--- stylua: ignore start
-vim.keymap.set("n", "<Leader>fs", function() MiniExtra.pickers.lsp({ scope = "definition" }) end)
-vim.keymap.set("n", "<Leader>fr", function() MiniExtra.pickers.lsp({ scope = "references" }) end)
--- stylua: ignore end
+vim.keymap.set("n", "<Leader>fs", "<Cmd>lua MiniExtra.pickers.lsp({ scope = 'definition' })<CR>")
+vim.keymap.set("n", "<Leader>fr", "<Cmd>lua MiniExtra.pickers.lsp({ scope = 'references' })<CR>")
 
 require("conform").setup({
 	format_on_save = { lsp_format = "fallback", timeout_ms = 500 },

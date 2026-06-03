@@ -13,7 +13,6 @@
       show-recents = false;
       minimize-to-application = true;
       persistent-apps = [
-        "/Applications/AeroSpace.app"
         "/Applications/Ghostty.app"
         "/Applications/Firefox.app"
         "/Applications/Vesktop.app"
