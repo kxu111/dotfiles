@@ -108,9 +108,8 @@ require("mini.snippets").setup({
 })
 
 require("mini.tabline").setup()
-vim.api.nvim_set_hl(0, "MiniTablineCurrent", { fg = vim.api.nvim_get_hl(0, { name = "Constant" }).fg, bold = true })
--- stylua: ignore
-vim.api.nvim_set_hl( 0, "MiniTablineModifiedCurrent", { fg = vim.api.nvim_get_hl(0, { name = "Constant" }).fg, bold = true })
+vim.api.nvim_set_hl(0, "MiniTablineCurrent", { fg = "#ffffff", bold = true })
+vim.api.nvim_set_hl(0, "MiniTablineModifiedCurrent", { fg = "#ffffff", bold = true })
 vim.api.nvim_set_hl(0, "MiniTablineVisible", { link = "Comment" })
 vim.api.nvim_set_hl(0, "MiniTablineHidden", { link = "Comment" })
 vim.keymap.set("n", "<Tab>", "<Cmd>bnext<CR>")
