@@ -1,11 +1,35 @@
 add_newline = false
-format = "$directory$fill${custom.py_icon} $git_branch\n$character"
+format = "${custom.path}$fill${custom.py_icon} $git_branch\n$character"
 
-[directory]
-truncation_length = 3
-truncation_symbol = '../'
-truncate_to_repo = false
-style = "bold yellow"
+[custom.path]
+command = '''
+. "$HOME/.config/themes/colors.sh"
+hex_to_rgb() {
+  hex="${1#\#}"
+  printf '%d;%d;%d' "0x$(printf '%s' "$hex" | cut -c1-2)" "0x$(printf '%s' "$hex" | cut -c3-4)" "0x$(printf '%s' "$hex" | cut -c5-6)"
+}
+gray3="$(hex_to_rgb "$comment")"
+gray4="$(hex_to_rgb "$const")"
+home="${HOME%/}"
+pwd="${PWD%/}"
+if [ "$pwd" = "$home" ]; then
+  display="~"
+elif [ "${pwd#"$home"/}" != "$pwd" ]; then
+  display="~/${pwd#"$home"/}"
+else
+  display="$pwd"
+fi
+parent="${display%/*}"
+base="${display##*/}"
+if [ "$display" = "/" ] || [ "$display" = "~" ] || [ "$parent" = "$display" ]; then
+  printf '\033[3;38;2;%sm%s\033[0m' "$gray3" "$display"
+else
+  printf '\033[3;38;2;%sm%s/\033[3;38;2;%sm%s\033[0m' "$gray3" "$parent" "$gray4" "$base"
+fi
+'''
+when = "true"
+format = "$output"
+unsafe_no_escape = true
 
 [git_branch]
 style = "red"
