@@ -1,5 +1,3 @@
-theme = Vague
-background = 000000
 window-padding-x = 28
 window-padding-y = 28
 confirm-close-surface = false
@@ -54,3 +52,36 @@ keybind = super+n=text:\x02n
 keybind = super+shift+v=text:\x02V
 
 keybind = super+r=text:\x02r
+
+# Forces bold text to use the bright color palette
+bold-is-bright = true
+
+# Background and foreground
+background = #000000
+foreground = #ffffff
+
+# Cursor colors
+cursor-color = #b0b0b0
+cursor-text = #000000
+
+# Selection colors
+selection-background = #272727
+selection-foreground = #b0b0b0
+
+# ANSI color palette (0-15)
+palette = 0=#000000
+palette = 1=#ff7676
+palette = 2=#a3d6a3
+palette = 3=#ffffff
+palette = 4=#b3b3b3
+palette = 5=#f4b8e4
+palette = 6=#fafafa
+palette = 7=#a5adce
+palette = 8=#50585d
+palette = 9=#ff5733
+palette = 10=#86cd82
+palette = 11=#d9ba73
+palette = 12=#ffffff
+palette = 13=#f2a4db
+palette = 14=#5abfb5
+palette = 15=#b5bfe2

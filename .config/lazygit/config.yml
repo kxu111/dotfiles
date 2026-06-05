@@ -1,29 +1,24 @@
 gui:
-  authorColors:
-    "*": "#f3be7c"
   theme:
     activeBorderColor:
-      - "#aeaed1"
-      - "bold"
+      - '#d9ba73'
+      - bold
     inactiveBorderColor:
-      - "#606079"
+      - '#777777'
     optionsTextColor:
-      - "#606079"
+      - '#8ebeec'
     selectedLineBgColor:
-      - "#252530"
-    cherryPickedCommitFgColor:
-      - "#d8647e"
+      - '#272727'
     cherryPickedCommitBgColor:
-      - "bg"
-    markedBaseCommitFgColor:
-      - "#f3be7c"
-    markedBaseCommitBgColor:
-      - "bg"
+      - '#272727'
+    cherryPickedCommitFgColor:
+      - '#f2a4db'
     unstagedChangesColor:
-      - "#d8647e"
+      - '#ff7676'
     defaultFgColor:
-      - "#cdcdcd"
+      - '#b0b0b0'
+    searchingActiveBorderColor:
+      - '#ff5733'
 
-git:
-  pagers:
-    - pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}" --syntax-theme="vague"
+  authorColors:
+    '*': '#ffffff'

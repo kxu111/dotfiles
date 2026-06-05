@@ -7,6 +7,7 @@ local servers = {
 	"rust-analyzer",
 	"tinymist",
 	"pyright", "ruff",
+	"svelte-language-server", "cssls"
 }
 local parsers = {
 	"lua",
@@ -16,6 +17,7 @@ local parsers = {
 	"markdown_inline", "markdown",
 	"typst",
 	"python",
+	"svelte", "html", "typescript", "css",
 }
 local formatters = {
 	lua = { "stylua" },
@@ -43,9 +45,10 @@ vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.undofile = true
 vim.o.ruler = false
+vim.o.cursorline = true
 
 vim.pack.add({
-	"https://github.com/vague-theme/vague.nvim",
+	"https://github.com/oskarnurm/koda.nvim",
 	"https://github.com/neovim/nvim-lspconfig",
 	"https://github.com/mason-org/mason.nvim",
 	"https://github.com/mason-org/mason-lspconfig.nvim",
@@ -56,9 +59,9 @@ vim.pack.add({
 	"https://github.com/chomosuke/typst-preview.nvim",
 })
 
-require("vague").setup({ transparent = true })
-vim.cmd("colorscheme vague")
-local c = require("vague.config.internal").current.colors
+require("koda").setup({ transparent = true })
+vim.cmd("colorscheme koda")
+local colors = require("koda").get_palette("dark")
 
 require("mason").setup()
 require("mason-lspconfig").setup()
@@ -69,7 +72,7 @@ require("mini.icons").setup({
 	extension = {
 		["typ"] = { glyph = "", hl = "MiniIconsBlue" },
 		["cpp"] = { glyph = "", hl = "MiniIconsBlue" },
-		["hpp"] = { glyph = "󰫵", hl = "MiniIconsBlue" },
+		["hpp"] = { glyph = "󰫵", hl = "MiniIconsPurple" },
 	},
 })
 vim.api.nvim_create_autocmd("VimEnter", {
@@ -85,6 +88,15 @@ require("mini.ai").setup()
 require("mini.splitjoin").setup()
 require("mini.operators").setup()
 
+require("mini.move").setup({
+	mappings = {
+		left = "H",
+		right = "L",
+		down = "J",
+		up = "K",
+	},
+})
+
 require("mini.completion").setup()
 vim.o.pumborder = "rounded"
 local gen_loader = require("mini.snippets").gen_loader
@@ -96,10 +108,10 @@ require("mini.snippets").setup({
 })
 
 require("mini.tabline").setup()
-vim.api.nvim_set_hl(0, "MiniTablineCurrent", { fg = c.parameter, bold = true })
-vim.api.nvim_set_hl(0, "MiniTablineModifiedCurrent", { fg = c.parameter, bold = true })
-vim.api.nvim_set_hl(0, "MiniTablineVisible", { fg = c.comment, bold = true })
-vim.api.nvim_set_hl(0, "MiniTablineHidden", { fg = c.comment })
+vim.api.nvim_set_hl(0, "MiniTablineCurrent", { fg = colors.pink, bold = true })
+vim.api.nvim_set_hl(0, "MiniTablineModifiedCurrent", { fg = colors.pink, bold = true })
+vim.api.nvim_set_hl(0, "MiniTablineVisible", { link = "Comment" })
+vim.api.nvim_set_hl(0, "MiniTablineHidden", { link = "Comment" })
 vim.keymap.set("n", "<Tab>", "<Cmd>bnext<CR>")
 vim.keymap.set("n", "<S-Tab>", "<Cmd>bprev<CR>")
 -- stylua: ignore
@@ -134,7 +146,6 @@ require("mini.files").setup({
 		width_preview = 50,
 	},
 })
-vim.api.nvim_set_hl(0, "MiniFilesCursorLine", { bg = "none" })
 vim.keymap.set("n", "<Leader>e", function()
 	if not MiniFiles.close() then
 		MiniFiles.open(vim.api.nvim_buf_get_name(0))
@@ -210,6 +221,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set("n", "dd", function()
 			local linenr = vim.fn.line(".")
 			local items = vim.fn.getqflist()
+
 			table.remove(items, linenr)
 			vim.fn.setqflist(items, "r")
 			vim.fn.cursor(linenr, 1)

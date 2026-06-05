@@ -5,7 +5,7 @@ format = "$directory$fill${custom.py_icon} $git_branch\n$character"
 truncation_length = 3
 truncation_symbol = '../'
 truncate_to_repo = false
-style = "blue"
+style = "purple bold"
 
 [git_branch]
 style = "red"
@@ -13,8 +13,8 @@ symbol = '  '
 format = "[$symbol$branch]($style) "
 
 [character]
-success_symbol = '[\$](bold white)'
-error_symbol = '[\$](bold white)'
+success_symbol = '[\$](bold blue)'
+error_symbol = '[\$](bold blue)'
 vicmd_symbol = '[V](bold yellow)'
 
 [fill]
@@ -27,8 +27,8 @@ hex_to_rgb() {
   hex="${1#\#}"
   printf '%d;%d;%d' "0x$(printf '%s' "$hex" | cut -c1-2)" "0x$(printf '%s' "$hex" | cut -c3-4)" "0x$(printf '%s' "$hex" | cut -c5-6)"
 }
-active="$(hex_to_rgb "$Yellow")"
-inactive="$(hex_to_rgb "$Muted")"
+active="$(hex_to_rgb "$const")"
+inactive="$(hex_to_rgb "$dim")"
 dir="$PWD"
 venv=""
 while :; do
