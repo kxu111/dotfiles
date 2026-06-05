@@ -61,7 +61,7 @@ background = #000000
 foreground = #ffffff
 
 # Cursor colors
-cursor-color = #b0b0b0
+cursor-color = #ffffff
 cursor-text = #000000
 
 # Selection colors
