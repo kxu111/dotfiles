@@ -2,7 +2,6 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "$SCRIPT_DIR/timew-mode.sh"
 source "$SCRIPT_DIR/fzf-flags.sh"
 MODES_FILE="$HOME/.config/modes.conf"
 
@@ -30,18 +29,18 @@ done
 case "$action" in
     stop)
         if [[ -f /tmp/workmode-enabled ]]; then
-			tmux display-popup -E 'bash ~/.config/scripts/work-mode.sh off'
+			tmux neww -n work-mode 'bash ~/.config/scripts/work-mode.sh off'
         fi
 	    timew stop > /dev/null 2>&1
         exit 0
         ;;
     off)
         if [[ -f /tmp/workmode-enabled ]]; then
-			tmux display-popup -E 'bash ~/.config/scripts/work-mode.sh off'
+			tmux neww -n work-mode 'bash ~/.config/scripts/work-mode.sh off'
         fi
         ;;
     on)
-		tmux display-popup -E 'bash ~/.config/scripts/work-mode.sh on'
+		tmux neww -n work-mode 'bash ~/.config/scripts/work-mode.sh on'
         ;;
 esac
 

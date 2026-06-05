@@ -1,17 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Shared skim layout for all pickers.
-FZF_FLAGS_BASE=(
-	--style=default 
-	--preview-window=hidden
-	--info=hidden
-	--no-scrollbar
-	--tmux
-)
-
-FZF_FLAGS_PDF=("${FZF_FLAGS_BASE[@]}")
-FZF_FLAGS_SESSION=("${FZF_FLAGS_BASE[@]}" --scheme=path)
+FZF_FLAGS_PDF=()
+FZF_FLAGS_SESSION=(--scheme=path)
 
 fzf_flags() {
     local flags="${1:-}"
@@ -24,5 +15,4 @@ fzf_flags() {
         return 1
     fi
     eval "printf '%s\n' \"\${${var_name}[@]}\""
-
 }
