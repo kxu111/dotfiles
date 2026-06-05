@@ -1,5 +1,5 @@
 add_newline = false
-format = "${custom.path}$fill${custom.py_icon} ${custom.git_icon}\n$character"
+format = "${custom.path}${custom.git_icon}${custom.py_icon}\n$character"
 
 [custom.path]
 command = '''
@@ -9,7 +9,7 @@ hex_to_rgb() {
   printf '%d;%d;%d' "0x$(printf '%s' "$hex" | cut -c1-2)" "0x$(printf '%s' "$hex" | cut -c3-4)" "0x$(printf '%s' "$hex" | cut -c5-6)"
 }
 gray3="$(hex_to_rgb "$comment")"
-gray4="$(hex_to_rgb "$border")"
+gray4="$(hex_to_rgb "$const")"
 home="${HOME%/}"
 pwd="${PWD%/}"
 if [ "$pwd" = "$home" ]; then
@@ -45,16 +45,16 @@ git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
   exit 0
 }
 branch=$(git branch --show-current 2>/dev/null)
-printf '\033[38;2;%sm   \033[38;2;%sm%s\033[0m' "$gray3" "$yellow" "$branch"
+printf '\033[38;2;%sm   \033[38;2;%sm%s\033[0m' "$gray3" "$yellow" "$branch"
 '''
 when = "true"
 format = "$output"
 unsafe_no_escape = true
 
 [character]
-success_symbol = '[\$](bold blue)'
-error_symbol = '[\$](bold blue)'
-vicmd_symbol = '[V](bold yellow)'
+success_symbol = '[\$]()'
+error_symbol   = '[\$]()'
+vicmd_symbol   = 'V'
 
 [fill]
 symbol = ' '
@@ -88,9 +88,9 @@ if [ -z "$venv" ]; then
   exit 0
 fi
 if [ -n "$VIRTUAL_ENV" ] && [ "$VIRTUAL_ENV" = "$venv" ]; then
-  printf '\033[38;2;%sm  \033[0m' "$active"
+  printf '\033[38;2;%sm   \033[0m' "$active"
 else
-  printf '\033[38;2;%sm  \033[0m' "$inactive"
+  printf '\033[38;2;%sm   \033[0m' "$inactive"
 fi
 '''
 when = "true"
