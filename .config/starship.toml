@@ -1,5 +1,5 @@
 add_newline = false
-format = "${custom.path}$fill${custom.py_icon} $git_branch\n$character"
+format = "${custom.path}$fill${custom.py_icon} ${custom.git_icon}\n$character"
 
 [custom.path]
 command = '''
@@ -9,7 +9,7 @@ hex_to_rgb() {
   printf '%d;%d;%d' "0x$(printf '%s' "$hex" | cut -c1-2)" "0x$(printf '%s' "$hex" | cut -c3-4)" "0x$(printf '%s' "$hex" | cut -c5-6)"
 }
 gray3="$(hex_to_rgb "$comment")"
-gray4="$(hex_to_rgb "$const")"
+gray4="$(hex_to_rgb "$border")"
 home="${HOME%/}"
 pwd="${PWD%/}"
 if [ "$pwd" = "$home" ]; then
@@ -31,15 +31,39 @@ when = "true"
 format = "$output"
 unsafe_no_escape = true
 
-[git_branch]
-style = "red"
-symbol = '  '
-format = "[$symbol$branch]($style) "
+[custom.git_icon]
+command = '''
+. "$HOME/.config/themes/colors.sh"
+hex_to_rgb() {
+  hex="${1#\#}"
+  printf '%d;%d;%d' "0x$(printf '%s' "$hex" | cut -c1-2)" "0x$(printf '%s' "$hex" | cut -c3-4)" "0x$(printf '%s' "$hex" | cut -c5-6)"
+}
+yellow="$(hex_to_rgb "$border")"
+gray3="$(hex_to_rgb "$orange")"
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
+  printf '   '
+  exit 0
+}
+branch=$(git branch --show-current 2>/dev/null)
+gst="$(git status --porcelain=2 --branch 2>/dev/null)"
+if printf '%s\n' "$gst" | grep -Eq '^(1|2|u|\?) '; then
+  printf '\033[38;2;%sm   \033[38;2;%sm%s\033[0m' "$gray3" "$yellow" "$branch"
+  exit 0
+fi
+if printf '%s\n' "$gst" | grep -Eq '^# branch\.ab \+[1-9][0-9]* -[0-9]+|^# branch\.ab \+[0-9]+ -[1-9][0-9]*'; then
+  printf '\033[38;2;%sm   \033[38;2;%sm%s\033[0m' "$gray3" "$yellow" "$branch"
+  exit 0
+fi
+printf '\033[38;2;%sm \033[38;2;%sm%s\033[0m' "$gray3" "$gray3" "$branch"
+'''
+when = "true"
+format = "$output"
+unsafe_no_escape = true
 
 [character]
 success_symbol = '[\$](bold blue)'
 error_symbol = '[\$](bold blue)'
-vicmd_symbol = '[V](bold white)'
+vicmd_symbol = '[V](bold yellow)'
 
 [fill]
 symbol = ' '
