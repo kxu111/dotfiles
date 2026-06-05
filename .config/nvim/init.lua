@@ -64,6 +64,7 @@ vim.pack.add({
 
 require("koda").setup({ transparent = true })
 vim.cmd("colorscheme koda")
+
 local function hl(name)
 	return vim.api.nvim_get_hl(0, { name = name, link = false })
 end
@@ -211,7 +212,7 @@ for _, color in ipairs(mini_icons_colors) do
 	local group_name = "BufferLineMiniIcons" .. color .. "Selected"
 	vim.api.nvim_set_hl(0, group_name, {
 		bg = selected.bg,
-		fg = vim.api.nvim_get_hl(0, { name = "MiniIcons" .. color }).fg,
+		fg = hl("MiniIcons" .. color).fg,
 	})
 end
 

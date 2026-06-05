@@ -45,16 +45,7 @@ git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
   exit 0
 }
 branch=$(git branch --show-current 2>/dev/null)
-gst="$(git status --porcelain=2 --branch 2>/dev/null)"
-if printf '%s\n' "$gst" | grep -Eq '^(1|2|u|\?) '; then
-  printf '\033[38;2;%sm   \033[38;2;%sm%s\033[0m' "$gray3" "$yellow" "$branch"
-  exit 0
-fi
-if printf '%s\n' "$gst" | grep -Eq '^# branch\.ab \+[1-9][0-9]* -[0-9]+|^# branch\.ab \+[0-9]+ -[1-9][0-9]*'; then
-  printf '\033[38;2;%sm   \033[38;2;%sm%s\033[0m' "$gray3" "$yellow" "$branch"
-  exit 0
-fi
-printf '\033[38;2;%sm \033[38;2;%sm%s\033[0m' "$gray3" "$gray3" "$branch"
+printf '\033[38;2;%sm   \033[38;2;%sm%s\033[0m' "$gray3" "$yellow" "$branch"
 '''
 when = "true"
 format = "$output"
