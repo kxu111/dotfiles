@@ -100,6 +100,7 @@ require("mini.surround").setup()
 require("mini.ai").setup()
 require("mini.splitjoin").setup()
 require("mini.operators").setup()
+require("mini.align").setup()
 
 require("mini.move").setup({
 	mappings = {

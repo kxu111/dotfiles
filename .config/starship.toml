@@ -9,7 +9,7 @@ hex_to_rgb() {
   printf '%d;%d;%d' "0x$(printf '%s' "$hex" | cut -c1-2)" "0x$(printf '%s' "$hex" | cut -c3-4)" "0x$(printf '%s' "$hex" | cut -c5-6)"
 }
 gray3="$(hex_to_rgb "$comment")"
-gray4="$(hex_to_rgb "$const")"
+gray4="$(hex_to_rgb "$border")"
 home="${HOME%/}"
 pwd="${PWD%/}"
 if [ "$pwd" = "$home" ]; then
@@ -54,7 +54,7 @@ unsafe_no_escape = true
 [character]
 success_symbol = '[\$]()'
 error_symbol   = '[\$]()'
-vicmd_symbol   = 'V'
+vicmd_symbol   = '[V](yellow bold)'
 
 [fill]
 symbol = ' '
