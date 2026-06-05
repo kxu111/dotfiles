@@ -1,15 +1,15 @@
-window-padding-x = 28
-window-padding-y = 28
-confirm-close-surface = false
-macos-titlebar-style = hidden
-cursor-style = block
-cursor-style-blink = false
+window-padding-x           = 15
+window-padding-y           = 15
+confirm-close-surface      = false
+macos-titlebar-style       = hidden
+window-decoration          = none
+cursor-style               = block
+cursor-style-blink         = false
 shell-integration-features = no-cursor
-font-size = 17
-font-family = "Iosevka Nerd Font Propo"
-font-thicken = true
-font-thicken-strength = 255
-copy-on-select = clipboard
+font-size                  = 17
+font-family                = "Iosevka Nerd Font Propo"
+font-thicken               = true
+copy-on-select             = clipboard
 
 
 keybind = super+t=text:\x02t
@@ -26,10 +26,12 @@ keybind = super+digit_9=text:\x02\x39
 
 keybind = super+c=text:\x02c
 keybind = super+d=text:\x02x
+keybind = super+s=text:\x02s
 keybind = super+i=text:\x02i
 keybind = super+o=text:\x02o
 keybind = super+h=text:\x02h
 keybind = super+l=text:\x02l
+keybind = super+j=text:\x02j
 
 keybind = super+f=text:\x02f
 keybind = super+shift+h=text:\x02H
@@ -53,35 +55,27 @@ keybind = super+shift+v=text:\x02V
 
 keybind = super+r=text:\x02r
 
-# Forces bold text to use the bright color palette
-bold-is-bright = true
-
-# Background and foreground
-background = #000000
-foreground = #ffffff
-
-# Cursor colors
-cursor-color = #ffffff
-cursor-text = #000000
-
-# Selection colors
-selection-background = #272727
-selection-foreground = #ffffff
-
-# ANSI color palette (0-15)
-palette = 0=#000000
-palette = 1=#ff7676
-palette = 2=#a3d6a3
-palette = 3=#ffffff
-palette = 4=#b3b3b3
-palette = 5=#f4b8e4
-palette = 6=#fafafa
-palette = 7=#a5adce
-palette = 8=#50585d
-palette = 9=#ff5733
-palette = 10=#86cd82
-palette = 11=#d9ba73
-palette = 12=#ffffff
-palette = 13=#f2a4db
-palette = 14=#5abfb5
-palette = 15=#b5bfe2
+# koda dark theme
+bold-is-bright       =   true
+background           =   #000000
+foreground           =   #ffffff
+cursor-color         =   #ffffff
+cursor-text          =   #000000
+selection-background =   #272727
+selection-foreground =   #ffffff
+palette           = 0  = #000000
+palette           = 1  = #ff7676
+palette           = 2  = #a3d6a3
+palette           = 3  = #ffffff
+palette           = 4  = #b3b3b3
+palette           = 5  = #f4b8e4
+palette           = 6  = #fafafa
+palette           = 7  = #a5adce
+palette           = 8  = #50585d
+palette           = 9  = #ff5733
+palette           = 10 = #86cd82
+palette           = 11 = #d9ba73
+palette           = 12 = #ffffff
+palette           = 13 = #f2a4db
+palette           = 14 = #5abfb5
+palette           = 15 = #b5bfe2
