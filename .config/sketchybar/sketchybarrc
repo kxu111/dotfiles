@@ -25,8 +25,8 @@ for sid in $(aerospace list-workspaces --all); do
         background.corner_radius=0 \
         background.height=20 \
         label="$sid" \
-  		label.padding_left=0 \
-  		label.padding_right=11 \
+  	label.padding_left=0 \
+  	label.padding_right=11 \
         click_script="aerospace workspace $sid" \
         script="$CONFIG_DIR/plugins/aerospace.sh $sid"
 done
@@ -37,7 +37,7 @@ sketchybar --add item front_app left \
 
 sketchybar --add item clock right \
            --set clock update_freq=10 icon=  script="$PLUGIN_DIR/clock.sh" \
-		   --add item volume right \
+	   --add item volume right \
            --set volume script="$PLUGIN_DIR/volume.sh" \
            --subscribe volume volume_change \
            --add item battery right \

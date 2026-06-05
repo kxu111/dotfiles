@@ -5,9 +5,12 @@ enable-normalization-opposite-orientation-for-nested-containers = true
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 accordion-padding = 0
 default-root-container-layout = 'accordion'
+after-startup-command = ['exec-and-forget sketchybar']
 exec-on-workspace-change = ['/bin/bash', '-c',
     'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
 ]
+
+persistent-workspaces=["1","2","3","4","5"]
 
 [mode.main.binding]
 alt-a = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.mitchellh.ghostty 1'
