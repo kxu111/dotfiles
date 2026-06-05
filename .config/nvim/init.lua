@@ -56,12 +56,12 @@ vim.pack.add({
 	"https://github.com/nvim-treesitter/nvim-treesitter",
 	"https://github.com/nvim-mini/mini.nvim",
 	"https://github.com/stevearc/conform.nvim",
+	"https://github.com/sphamba/smear-cursor.nvim",
 	"https://github.com/chomosuke/typst-preview.nvim",
 })
 
 require("koda").setup({ transparent = true })
 vim.cmd("colorscheme koda")
-local colors = require("koda").get_palette("dark")
 
 require("mason").setup()
 require("mason-lspconfig").setup()
@@ -108,8 +108,9 @@ require("mini.snippets").setup({
 })
 
 require("mini.tabline").setup()
-vim.api.nvim_set_hl(0, "MiniTablineCurrent", { fg = colors.pink, bold = true })
-vim.api.nvim_set_hl(0, "MiniTablineModifiedCurrent", { fg = colors.pink, bold = true })
+vim.api.nvim_set_hl(0, "MiniTablineCurrent", { fg = vim.api.nvim_get_hl(0, { name = "Constant" }).fg, bold = true })
+-- stylua: ignore
+vim.api.nvim_set_hl( 0, "MiniTablineModifiedCurrent", { fg = vim.api.nvim_get_hl(0, { name = "Constant" }).fg, bold = true })
 vim.api.nvim_set_hl(0, "MiniTablineVisible", { link = "Comment" })
 vim.api.nvim_set_hl(0, "MiniTablineHidden", { link = "Comment" })
 vim.keymap.set("n", "<Tab>", "<Cmd>bnext<CR>")
@@ -169,6 +170,19 @@ vim.keymap.set("n", "<Leader>fr", "<Cmd>lua MiniExtra.pickers.lsp({ scope = 'ref
 require("conform").setup({
 	format_on_save = { lsp_format = "fallback", timeout_ms = 500 },
 	formatters_by_ft = formatters,
+})
+
+require("smear_cursor").setup({
+	never_draw_over_target = true,
+
+	smear_insert_mode = false,
+	min_vertical_distance_smear = 2,
+	min_horizontal_distance_smear = 2,
+
+	time_interval = 17,
+	stiffness = 0.9,
+	trailing_stiffness = 0.4,
+	damping = 0.99,
 })
 
 vim.cmd.packadd("nvim.undotree")

@@ -5,7 +5,7 @@ format = "$directory$fill${custom.py_icon} $git_branch\n$character"
 truncation_length = 3
 truncation_symbol = '../'
 truncate_to_repo = false
-style = "purple bold"
+style = "bold yellow"
 
 [git_branch]
 style = "red"
@@ -15,7 +15,7 @@ format = "[$symbol$branch]($style) "
 [character]
 success_symbol = '[\$](bold blue)'
 error_symbol = '[\$](bold blue)'
-vicmd_symbol = '[V](bold yellow)'
+vicmd_symbol = '[V](bold white)'
 
 [fill]
 symbol = ' '
