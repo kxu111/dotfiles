@@ -66,7 +66,7 @@ cursor-text = #000000
 
 # Selection colors
 selection-background = #272727
-selection-foreground = #b0b0b0
+selection-foreground = #ffffff
 
 # ANSI color palette (0-15)
 palette = 0=#000000

@@ -83,6 +83,8 @@ require("mini.icons").setup({
 		["typ"] = { glyph = "", hl = "MiniIconsBlue" },
 		["cpp"] = { glyph = "", hl = "MiniIconsBlue" },
 		["hpp"] = { glyph = "󰫵", hl = "MiniIconsPurple" },
+		["svelte"] = { hl = "MiniIconsRed" },
+		["toml"] = { hl = "MiniIconsRed" },
 	},
 })
 vim.api.nvim_create_autocmd("VimEnter", {
