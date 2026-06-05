@@ -32,7 +32,7 @@ case "$action" in
         if [[ -f /tmp/workmode-enabled ]]; then
 			tmux display-popup -E 'bash ~/.config/scripts/work-mode.sh off'
         fi
-        timew_stop
+	    timew stop > /dev/null 2>&1
         exit 0
         ;;
     off)
@@ -45,4 +45,4 @@ case "$action" in
         ;;
 esac
 
-timew_start "$selected"
+timew start "$selected" > /dev/null 2>&1
