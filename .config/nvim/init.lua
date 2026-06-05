@@ -46,6 +46,7 @@ vim.o.splitbelow = true
 vim.o.undofile = true
 vim.o.ruler = false
 vim.o.cursorline = true
+vim.o.laststatus = 0
 
 vim.pack.add({
 	"https://github.com/oskarnurm/koda.nvim",
@@ -55,6 +56,7 @@ vim.pack.add({
 	"https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
 	"https://github.com/nvim-treesitter/nvim-treesitter",
 	"https://github.com/nvim-mini/mini.nvim",
+	"https://github.com/akinsho/bufferline.nvim",
 	"https://github.com/stevearc/conform.nvim",
 	"https://github.com/sphamba/smear-cursor.nvim",
 	"https://github.com/chomosuke/typst-preview.nvim",
@@ -62,6 +64,13 @@ vim.pack.add({
 
 require("koda").setup({ transparent = true })
 vim.cmd("colorscheme koda")
+local function hl(name)
+	return vim.api.nvim_get_hl(0, { name = name, link = false })
+end
+local function fg_or_nil(group)
+	local value = hl(group)
+	return value and value.fg or nil
+end
 
 require("mason").setup()
 require("mason-lspconfig").setup()
@@ -78,6 +87,7 @@ require("mini.icons").setup({
 vim.api.nvim_create_autocmd("VimEnter", {
 	once = true,
 	callback = function()
+		MiniIcons.mock_nvim_web_devicons()
 		MiniIcons.tweak_lsp_kind()
 	end,
 })
@@ -107,22 +117,6 @@ require("mini.snippets").setup({
 	},
 })
 
-require("mini.tabline").setup()
-vim.api.nvim_set_hl(0, "MiniTablineCurrent", { fg = "#ffffff", bold = true })
-vim.api.nvim_set_hl(0, "MiniTablineModifiedCurrent", { fg = "#ffffff", bold = true })
-vim.api.nvim_set_hl(0, "MiniTablineVisible", { link = "Comment" })
-vim.api.nvim_set_hl(0, "MiniTablineHidden", { link = "Comment" })
-vim.keymap.set("n", "<Tab>", "<Cmd>bnext<CR>")
-vim.keymap.set("n", "<S-Tab>", "<Cmd>bprev<CR>")
--- stylua: ignore
-vim.keymap.set("n", "<Leader>x", function() require("mini.bufremove").delete(0, false) end)
-vim.keymap.set("n", "<leader>o", function()
-	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-		if buf ~= vim.api.nvim_get_current_buf() then
-			require("mini.bufremove").delete(buf, false)
-		end
-	end
-end)
 local hi_words = require("mini.extra").gen_highlighter.words
 require("mini.hipatterns").setup({
 	highlighters = {
@@ -166,12 +160,69 @@ vim.keymap.set("n", "<Leader>fd", "<Cmd>Pick diagnostic<CR>")
 vim.keymap.set("n", "<Leader>fs", "<Cmd>lua MiniExtra.pickers.lsp({ scope = 'definition' })<CR>")
 vim.keymap.set("n", "<Leader>fr", "<Cmd>lua MiniExtra.pickers.lsp({ scope = 'references' })<CR>")
 
+require("bufferline").setup({
+	options = {
+		mode = "buffers",
+		separator_style = "thin",
+		always_show_bufferline = true,
+		sort_by = "insert_after_current",
+		show_buffer_close_icons = false,
+		show_close_icon = false,
+		diagnostics = "nvim_lsp",
+	},
+})
+vim.keymap.set("n", "<Tab>", "<Cmd>bnext<CR>")
+vim.keymap.set("n", "<S-Tab>", "<Cmd>bprev<CR>")
+-- stylua: ignore
+vim.keymap.set("n", "<Leader>x", function() require("mini.bufremove").delete(0, false) end)
+vim.keymap.set("n", "<leader>o", function()
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		if buf ~= vim.api.nvim_get_current_buf() then
+			require("mini.bufremove").delete(buf, false)
+		end
+	end
+end)
+vim.keymap.set("n", "<leader>h", ":BufferLineMovePrev<CR>", { silent = true, desc = "Move buffer left" })
+vim.keymap.set("n", "<leader>l", ":BufferLineMoveNext<CR>", { silent = true, desc = "Move buffer right" })
+local base = hl("TabLine")
+local selected = hl("TabLineSel")
+vim.api.nvim_set_hl(0, "BufferLineBufferSelected", { bg = selected.bg, fg = selected.fg, bold = true })
+vim.api.nvim_set_hl(0, "BufferLineBackground", { bg = base.bg, fg = base.fg })
+vim.api.nvim_set_hl(0, "BufferLineBufferVisible", { bg = base.bg, fg = base.fg })
+vim.api.nvim_set_hl(0, "BufferLineBufferSelected", { bg = selected.bg, fg = selected.fg, bold = true })
+vim.api.nvim_set_hl(0, "BufferLineDuplicate", { bg = base.bg, fg = base.fg })
+vim.api.nvim_set_hl(0, "BufferLineDuplicateVisible", { bg = base.bg, fg = base.fg })
+vim.api.nvim_set_hl(0, "BufferLineDuplicateSelected", { bg = selected.bg, fg = selected.fg, bold = true })
+vim.api.nvim_set_hl(0, "BufferLineModified", { bg = base.bg, fg = fg_or_nil("DiagnosticWarn") or base.fg })
+vim.api.nvim_set_hl(0, "BufferLineModifiedVisible", { bg = base.bg, fg = fg_or_nil("DiagnosticWarn") or base.fg })
+-- stylua: ignore
+vim.api.nvim_set_hl( 0, "BufferLineModifiedSelected", { bg = selected.bg, fg = fg_or_nil("DiagnosticWarn") or selected.fg })
+vim.api.nvim_set_hl(0, "BufferLineSeparator", { bg = base.bg, fg = base.bg })
+vim.api.nvim_set_hl(0, "BufferLineSeparatorVisible", { bg = base.bg, fg = base.bg })
+vim.api.nvim_set_hl(0, "BufferLineSeparatorSelected", { bg = selected.bg, fg = selected.bg })
+vim.api.nvim_set_hl(0, "BufferLineIndicatorSelected", { bg = selected.bg, fg = fg_or_nil("Special") or selected.fg })
+-- stylua: ignore start
+vim.api.nvim_set_hl( 0, "BufferLineHintSelected", { bg = selected.bg, fg = fg_or_nil("BufferLineHintSelected") or selected.fg, bold = true })
+vim.api.nvim_set_hl( 0, "BufferLineWarningSelected", { bg = selected.bg, fg = fg_or_nil("BufferLineWarningSelected") or selected.fg, bold = true })
+vim.api.nvim_set_hl( 0, "BufferLineErrorSelected", { bg = selected.bg, fg = fg_or_nil("BufferLineErrorSelected") or selected.fg, bold = true })
+-- stylua: ignore end
+local mini_icons_colors = { "Azure", "Blue", "Grey", "Red", "Cyan", "Orange", "Green", "Yellow", "Purple" }
+for _, color in ipairs(mini_icons_colors) do
+	local group_name = "BufferLineMiniIcons" .. color .. "Selected"
+	vim.api.nvim_set_hl(0, group_name, {
+		bg = selected.bg,
+		fg = vim.api.nvim_get_hl(0, { name = "MiniIcons" .. color }).fg,
+	})
+end
+
 require("conform").setup({
 	format_on_save = { lsp_format = "fallback", timeout_ms = 500 },
 	formatters_by_ft = formatters,
 })
 
 require("smear_cursor").setup({
+	cursor_color = "#ffffff",
+
 	never_draw_over_target = true,
 
 	smear_insert_mode = false,
