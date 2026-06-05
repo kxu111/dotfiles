@@ -13,6 +13,6 @@ crontab ~/.config/cron/crontab
 bat cache --build
 open -a AeroSpace
 open -a Karabiner-Elements
-launchctl load ~/Library/LaunchAgents/com.kenny.newtabserver.plist
+brew services start sketchybar
 echo "REMINDER TO DISABLE SPOTLIGHT AND GAME OVERLAY BINDS"
 echo "REMINDER TO ENABLE INCREASE CONTRAST AND SET BG TO BLACK"

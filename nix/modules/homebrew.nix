@@ -7,7 +7,7 @@
       autoUpdate = true;
       upgrade = true;
     };
-    brews = ["mas"];
+    brews = ["mas" "sketchybar"];
     casks = [
       "vesktop"
       "sioyek"
