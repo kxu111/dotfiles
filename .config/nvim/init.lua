@@ -58,7 +58,7 @@ vim.pack.add({
 	"https://github.com/nvim-mini/mini.nvim",
 	"https://github.com/akinsho/bufferline.nvim",
 	"https://github.com/stevearc/conform.nvim",
-	"https://github.com/sphamba/smear-cursor.nvim",
+	"https://github.com/stevearc/dressing.nvim",
 	"https://github.com/chomosuke/typst-preview.nvim",
 })
 
@@ -98,8 +98,8 @@ vim.api.nvim_create_autocmd("VimEnter", {
 require("mini.pairs").setup()
 require("mini.surround").setup()
 require("mini.ai").setup()
-require("mini.splitjoin").setup()
 require("mini.operators").setup()
+require("mini.splitjoin").setup()
 require("mini.align").setup()
 
 require("mini.move").setup({
@@ -158,10 +158,11 @@ vim.keymap.set("n", "<Leader>fb", "<Cmd>Pick buffers<CR>")
 vim.keymap.set("n", "<Leader>fl", "<Cmd>Pick grep_live<CR>")
 vim.keymap.set("n", "<Leader>fp", "<Cmd>Pick hipatterns<CR>")
 vim.keymap.set("n", "<Leader>fm", "<Cmd>Pick manpages<CR>")
-vim.keymap.set("n", "<Leader>a", vim.lsp.buf.code_action)
 vim.keymap.set("n", "z=", "<Cmd>Pick spellsuggest<CR>")
+vim.keymap.set("n", "<Leader>a", vim.lsp.buf.code_action)
+vim.keymap.set("n", "<Leader>fs", vim.lsp.buf.implementation)
+vim.keymap.set("n", "<Leader>gr", vim.lsp.buf.rename)
 vim.keymap.set("n", "<Leader>fd", "<Cmd>Pick diagnostic<CR>")
-vim.keymap.set("n", "<Leader>fs", "<Cmd>lua MiniExtra.pickers.lsp({ scope = 'definition' })<CR>")
 vim.keymap.set("n", "<Leader>fr", "<Cmd>lua MiniExtra.pickers.lsp({ scope = 'references' })<CR>")
 
 require("bufferline").setup({
@@ -224,20 +225,7 @@ require("conform").setup({
 	formatters_by_ft = formatters,
 })
 
-require("smear_cursor").setup({
-	cursor_color = "#ffffff",
-
-	never_draw_over_target = true,
-
-	smear_insert_mode = false,
-	min_vertical_distance_smear = 2,
-	min_horizontal_distance_smear = 2,
-
-	time_interval = 17,
-	stiffness = 0.9,
-	trailing_stiffness = 0.4,
-	damping = 0.99,
-})
+require("dressing").setup()
 
 vim.cmd.packadd("nvim.undotree")
 vim.keymap.set("n", "<Leader>u", "<Cmd>Undotree<CR>")
