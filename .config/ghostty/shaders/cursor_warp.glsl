@@ -42,10 +42,10 @@ const float SPRING_DAMPING = 0.9;
 //     return 1.0 - pow(1.0 - x, 3.0);
 // }
 
-// // EaseOutQuart
-// float ease(float x) {
-//     return 1.0 - pow(1.0 - x, 4.0);
-// }
+// EaseOutQuart
+float ease(float x) {
+    return 1.0 - pow(1.0 - x, 4.0);
+}
 
 // // EaseOutQuint
 // float ease(float x) {
@@ -62,10 +62,10 @@ const float SPRING_DAMPING = 0.9;
 //     return x == 1.0 ? 1.0 : 1.0 - pow(2.0, -10.0 * x);
 // }
 
-// EaseOutCirc
-float ease(float x) {
-    return sqrt(1.0 - pow(x - 1.0, 2.0));
-}
+// // EaseOutCirc
+// float ease(float x) {
+//     return sqrt(1.0 - pow(x - 1.0, 2.0));
+// }
 
 // // EaseOutBack
 // float ease(float x) {

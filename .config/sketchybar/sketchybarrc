@@ -43,8 +43,8 @@ sketchybar --add item clock right \
 	   --add item volume right \
            --set volume script="$PLUGIN_DIR/volume.sh" \
            --subscribe volume volume_change \
-	   --add item spotify right \
-	   --set spotify update_freq=5 \
-	   --set spotify script="$CONFIG_DIR/plugins/spotify.sh" \
+	   --add item music right \
+	   --set music update_freq=5 \
+	   --set music script="$CONFIG_DIR/plugins/music.sh" \
 
 sketchybar --update
