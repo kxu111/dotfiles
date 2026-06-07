@@ -26,6 +26,7 @@
     yt-dlp
     nodejs
     mpv
+    pastel
   ];
 
   fonts.packages = with pkgs; [
