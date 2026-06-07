@@ -7,7 +7,14 @@
       autoUpdate = true;
       upgrade = true;
     };
-    brews = ["mas" "sketchybar"];
+    brews = [
+      "mas"
+      "sketchybar"
+      "mole"
+      "pkgconfig"
+      "cairo"
+      "raylib"
+    ];
     casks = [
       "vesktop"
       "sioyek"

@@ -32,20 +32,17 @@ local formatters = {
 vim.g.mapleader = " "
 vim.o.number = true
 vim.o.relativenumber = true
-vim.o.tabstop = 8
-vim.o.shiftwidth = 8
-vim.o.wrap = false
+vim.o.cursorline = true
 vim.o.swapfile = false
 vim.o.winborder = "rounded"
+vim.o.pumborder = "rounded"
 vim.o.signcolumn = "yes"
 vim.o.termguicolors = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.splitright = true
-vim.o.splitbelow = true
 vim.o.undofile = true
 vim.o.ruler = false
-vim.o.cursorline = true
 vim.o.laststatus = 0
 
 vim.pack.add({
@@ -58,7 +55,6 @@ vim.pack.add({
 	"https://github.com/nvim-mini/mini.nvim",
 	"https://github.com/akinsho/bufferline.nvim",
 	"https://github.com/stevearc/conform.nvim",
-	"https://github.com/stevearc/dressing.nvim",
 	"https://github.com/chomosuke/typst-preview.nvim",
 })
 
@@ -102,7 +98,7 @@ require("mini.splitjoin").setup()
 require("mini.align").setup()
 
 require("mini.operators").setup()
-vim.keymap.set("n", "<Leader>gr", vim.lsp.buf.rename)
+vim.keymap.set("n", "<Leader>r", vim.lsp.buf.rename)
 
 require("mini.move").setup({
 	mappings = {
@@ -114,7 +110,7 @@ require("mini.move").setup({
 })
 
 require("mini.completion").setup()
-vim.o.pumborder = "rounded"
+
 local gen_loader = require("mini.snippets").gen_loader
 require("mini.snippets").setup({
 	snippets = {
@@ -226,8 +222,6 @@ require("conform").setup({
 	format_on_save = { lsp_format = "fallback", timeout_ms = 500 },
 	formatters_by_ft = formatters,
 })
-
-require("dressing").setup()
 
 vim.cmd.packadd("nvim.undotree")
 vim.keymap.set("n", "<Leader>u", "<Cmd>Undotree<CR>")
