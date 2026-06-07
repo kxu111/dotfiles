@@ -4,7 +4,7 @@
     "lua/?.lua",
     "lua/?/init.lua"
   ],
-  "diagnostics.globals": ["vim", "MiniFiles", "MiniIcons", "MiniStatusline", "MiniExtra"],
+  "diagnostics.globals": ["vim", "MiniIcons", "MiniFiles", "MiniInput", "MiniPick"],
   "workspace.checkThirdParty": false,
   "workspace.library": [
     "$VIMRUNTIME"

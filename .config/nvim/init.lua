@@ -96,6 +96,23 @@ require("mini.surround").setup()
 require("mini.ai").setup()
 require("mini.splitjoin").setup()
 require("mini.align").setup()
+require("mini.cmdline").setup({ autocomplete = { enable = false } })
+require("mini.comment").setup()
+require("mini.notify").setup()
+require("mini.completion").setup()
+require("mini.jump").setup()
+
+local key_handler = function(state, key)
+	-- <C-a> - move caret to start of line
+	if key == "\1" then
+		state.caret = 1
+		return
+	else
+		-- IMPORTANT: Fall back to processing as usual
+		return MiniInput.default_key(state, key)
+	end
+end
+require("mini.input").setup({ handlers = { key = key_handler } })
 
 require("mini.operators").setup()
 vim.keymap.set("n", "<Leader>r", vim.lsp.buf.rename)
@@ -108,8 +125,6 @@ require("mini.move").setup({
 		up = "K",
 	},
 })
-
-require("mini.completion").setup()
 
 local gen_loader = require("mini.snippets").gen_loader
 require("mini.snippets").setup({
@@ -149,7 +164,38 @@ vim.keymap.set("n", "<Leader>e", function()
 end)
 
 require("mini.extra").setup()
-require("mini.pick").setup()
+require("mini.pick").setup({
+	mappings = {
+		mark_and_choose = {
+			char = "<C-q>",
+			func = function()
+				-- Get current picker state
+				local matches = MiniPick.get_picker_matches()
+				if not matches then
+					return
+				end
+				-- Get all matched items
+				if not matches.all or #matches.all == 0 then
+					return
+				end
+
+				-- Mark all items by setting marked indexes to all matched indexes
+				MiniPick.set_picker_match_inds(matches.all_inds, "marked")
+
+				local source = MiniPick.get_picker_opts().source
+				-- Call choose_marked with all marked items
+				if source.choose_marked then
+					-- Get the updated marked items
+					local updated_matches = MiniPick.get_picker_matches()
+					source.choose_marked(updated_matches.marked)
+				end
+
+				-- Stop the picker
+				return true
+			end,
+		},
+	},
+})
 vim.keymap.set("n", "<Leader>s", "<Cmd>Pick files<CR>")
 vim.keymap.set("n", "<Leader>fh", "<Cmd>Pick help<CR>")
 vim.keymap.set("n", "<Leader>fb", "<Cmd>Pick buffers<CR>")
@@ -172,21 +218,30 @@ require("bufferline").setup({
 		show_buffer_close_icons = false,
 		show_close_icon = false,
 		diagnostics = "nvim_lsp",
+		groups = { items = { require("bufferline.groups").builtin.pinned:with({ icon = "  " }) } },
+		custom_filter = function(buf_number, _)
+			if vim.bo[buf_number].filetype == "qf" then
+				return false
+			end
+
+			return true
+		end,
 	},
 })
 vim.keymap.set("n", "<Tab>", "<Cmd>bnext<CR>")
 vim.keymap.set("n", "<S-Tab>", "<Cmd>bprev<CR>")
--- stylua: ignore
-vim.keymap.set("n", "<Leader>x", function() require("mini.bufremove").delete(0, false) end)
-vim.keymap.set("n", "<leader>o", function()
-	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-		if buf ~= vim.api.nvim_get_current_buf() then
-			require("mini.bufremove").delete(buf, false)
-		end
-	end
+local br = require("bufremove")
+vim.keymap.set("n", "<Leader>x", br.bufdelete_cur, { desc = "Delete" })
+vim.keymap.set("n", "<leader>o", br.bufdelete_others, { desc = "Delete Others" })
+vim.keymap.set("n", "<leader>W", br.bufwipeout_cur, { desc = "Wipeout!" })
+vim.keymap.set("n", "<leader>h", br.bufdelete_left, { desc = "Delete Left" })
+vim.keymap.set("n", "<leader>l", br.bufdelete_right, { desc = "Delete Right" })
+vim.keymap.set("n", "<leader>b", "<Cmd>BufferLinePick<CR>")
+vim.keymap.set("n", "<leader>p", function()
+	vim.cmd("BufferLineTogglePin")
+	require("bufpin").toggle()
 end)
-vim.keymap.set("n", "<leader>h", ":BufferLineMovePrev<CR>", { silent = true, desc = "Move buffer left" })
-vim.keymap.set("n", "<leader>l", ":BufferLineMoveNext<CR>", { silent = true, desc = "Move buffer right" })
+
 local base = hl("TabLine")
 local selected = hl("TabLineSel")
 vim.api.nvim_set_hl(0, "BufferLineBufferSelected", { bg = selected.bg, fg = selected.fg, bold = true })
@@ -235,7 +290,7 @@ vim.cmd("filetype plugin indent on")
 
 vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y')
 vim.keymap.set({ "n", "v" }, "<Leader>d", '"+d')
-vim.keymap.set({ "n", "v" }, "<Leader>Y", '"+Y')
+vim.keymap.set({ "n", "v" }, "<Leader>Y", '"+y$') -- for some reason capital Y doesn't work *when i press the keymap*
 vim.keymap.set({ "n", "v" }, "<Leader>D", '"+D')
 
 vim.keymap.set("n", "<Leader>v", "<Cmd>vertical split<CR>")
@@ -244,6 +299,7 @@ vim.keymap.set("n", "<C-j>", "<C-w>j")
 vim.keymap.set("n", "<C-k>", "<C-w>k")
 vim.keymap.set("n", "<C-l>", "<C-w>l")
 
+vim.keymap.set({ "n", "v" }, "<C-s>", [[:s/\V]])
 vim.keymap.set("n", "<C-t>", "<C-w>T")
 for i = 1, 9 do
 	vim.keymap.set("n", "<Leader>" .. i, "<Cmd>tabnext " .. i .. "<CR>")
@@ -273,7 +329,6 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.keymap.set("n", "dd", function()
 			local linenr = vim.fn.line(".")
 			local items = vim.fn.getqflist()
-
 			table.remove(items, linenr)
 			vim.fn.setqflist(items, "r")
 			vim.fn.cursor(linenr, 1)
@@ -281,8 +336,10 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-vim.keymap.set({ "n", "v" }, "<C-n>", ":norm ")
-vim.keymap.set({ "n", "v" }, "<C-s>", [[:s/\V]])
+vim.keymap.set("n", "<C-n>", "<Cmd>cnext<CR>")
+vim.keymap.set("n", "<C-p>", "<Cmd>cprev<CR>")
+
+vim.keymap.set("v", "<C-s>", [[:s/\V]])
 
 local function pack_clean()
 	local active_plugins = {}

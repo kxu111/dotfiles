@@ -5,7 +5,7 @@
 			"#include <iostream>",
 			"",
 			"int main() {",
-			"\tstd::cout << \"Hello, world!\\n\";",
+			"\tstd::cout << \"Hello, world!\" << std::endl;",
 			"\t$0",
 			"\treturn 0;",
 			"}"
