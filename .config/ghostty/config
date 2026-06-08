@@ -1,4 +1,4 @@
-custom-shader = ./shaders/cursor_sweep.glsl
+custom-shader = ./shaders/cursor_warp.glsl
 theme         = Koda Dark
 
 window-padding-x           = 15
