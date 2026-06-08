@@ -32,6 +32,7 @@
     resvg
     imagemagick
     pastel
+    cmake
   ];
 
   fonts.packages = with pkgs; [

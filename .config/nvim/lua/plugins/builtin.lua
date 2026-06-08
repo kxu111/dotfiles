@@ -6,6 +6,11 @@ vim.keymap.set("n", "<ESC>", "<Cmd>nohlsearch<CR>", { noremap = true, silent = t
 
 vim.api.nvim_create_autocmd("TextYankPost", {
 	callback = function()
-		vim.hl.hl_op()
+		vim.hl.hl_op({ higroup = "IncSearch", timeout = 300 })
+	end,
+})
+vim.api.nvim_create_autocmd("TextPutPost", {
+	callback = function()
+		vim.hl.hl_op({ higroup = "IncSearch", timeout = 300 })
 	end,
 })

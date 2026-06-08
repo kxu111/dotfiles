@@ -28,9 +28,7 @@ require("mini.splitjoin").setup()
 require("mini.align").setup()
 require("mini.cmdline").setup({ autocomplete = { enable = false } })
 require("mini.comment").setup()
-require("mini.notify").setup({
-	lsp_progress = { enable = false },
-})
+require("mini.notify").setup()
 require("mini.completion").setup()
 require("mini.jump").setup({ delay = { idle_stop = 1000 } })
 
