@@ -1,0 +1,5 @@
+require("plugins.lsp")
+require("plugins.treesitter")
+require("plugins.mini")
+require("plugins.bufferline")
+require("plugins.builtin")

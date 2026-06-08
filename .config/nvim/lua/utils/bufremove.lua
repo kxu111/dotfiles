@@ -1,5 +1,5 @@
 local bufremove = require("mini.bufremove")
-local pin = require("bufpin")
+local pin = require("utils.bufpin")
 
 local M = {}
 
