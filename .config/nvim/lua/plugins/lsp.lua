@@ -11,6 +11,8 @@ local servers = {
 	"pyright",
 	"ruff",
 	"svelte-language-server",
+	"html",
+	"ts_ls",
 	"cssls",
 }
 local formatters = {

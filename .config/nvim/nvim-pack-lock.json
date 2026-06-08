@@ -12,6 +12,10 @@
       "rev": "ac7e746882b31a68bdcd533464a20ca40b712bcb",
       "src": "https://github.com/oskarnurm/koda.nvim"
     },
+    "lspeek.nvim": {
+      "rev": "d4bba417c27dc84a4ba9900256fd8eea3c8f18c0",
+      "src": "https://github.com/r4ppz/lspeek.nvim"
+    },
     "mason-lspconfig.nvim": {
       "rev": "0a695750d747db1e7e70bcf0267ef8951c95fc83",
       "src": "https://github.com/mason-org/mason-lspconfig.nvim"
