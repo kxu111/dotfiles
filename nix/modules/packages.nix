@@ -23,9 +23,14 @@
     typst
     python3
     uv
+    delta
     yt-dlp
     nodejs
     mpv
+    poppler
+    p7zip
+    resvg
+    imagemagick
     pastel
   ];
 
