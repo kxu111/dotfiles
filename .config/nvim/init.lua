@@ -100,19 +100,30 @@ require("mini.cmdline").setup({ autocomplete = { enable = false } })
 require("mini.comment").setup()
 require("mini.notify").setup()
 require("mini.completion").setup()
-require("mini.jump").setup()
+require("mini.jump").setup({ delay = { idle_stop = 1000 } })
 
-local key_handler = function(state, key)
-	-- <C-a> - move caret to start of line
-	if key == "\1" then
-		state.caret = 1
-		return
-	else
-		-- IMPORTANT: Fall back to processing as usual
-		return MiniInput.default_key(state, key)
-	end
-end
-require("mini.input").setup({ handlers = { key = key_handler } })
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*",
+	callback = function()
+		require("mini.trailspace").trim()
+	end,
+})
+
+require("mini.input").setup({
+	handlers = {
+		key = function(state, key)
+			-- <C-a> - move caret to start of line
+			if key == "\1" then
+				state.caret = 1
+				return
+			else
+				-- IMPORTANT: Fall back to processing as usual
+				return MiniInput.default_key(state, key)
+			end
+		end,
+	},
+	scope = "cursor",
+})
 
 require("mini.operators").setup()
 vim.keymap.set("n", "<Leader>r", vim.lsp.buf.rename)
