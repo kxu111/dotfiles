@@ -1,0 +1,48 @@
+{
+  "plugins": {
+    "bufferline.nvim": {
+      "rev": "655133c3b4c3e5e05ec549b9f8cc2894ac6f51b3",
+      "src": "https://github.com/akinsho/bufferline.nvim"
+    },
+    "conform.nvim": {
+      "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
+      "src": "https://github.com/stevearc/conform.nvim"
+    },
+    "koda.nvim": {
+      "rev": "ac7e746882b31a68bdcd533464a20ca40b712bcb",
+      "src": "https://github.com/oskarnurm/koda.nvim"
+    },
+    "mason-lspconfig.nvim": {
+      "rev": "0a695750d747db1e7e70bcf0267ef8951c95fc83",
+      "src": "https://github.com/mason-org/mason-lspconfig.nvim"
+    },
+    "mason-tool-installer.nvim": {
+      "rev": "443f1ef8b5e6bf47045cb2217b6f748a223cf7dc",
+      "src": "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim"
+    },
+    "mason.nvim": {
+      "rev": "16ba83bfc8a25f52bb545134f5bee082b195c460",
+      "src": "https://github.com/mason-org/mason.nvim"
+    },
+    "mini.nvim": {
+      "rev": "d5e6f5b843f1d813d9c4bfb242b751dc5ab6f8ae",
+      "src": "https://github.com/nvim-mini/mini.nvim"
+    },
+    "nvim-lspconfig": {
+      "rev": "229b79051b380377664edc4cbd534930154921a1",
+      "src": "https://github.com/neovim/nvim-lspconfig"
+    },
+    "nvim-tree.lua": {
+      "rev": "82f58063d67defc620e1ef8be606fc62a7b5dc1e",
+      "src": "https://github.com/nvim-tree/nvim-tree.lua"
+    },
+    "nvim-treesitter": {
+      "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    },
+    "typst-preview.nvim": {
+      "rev": "87db18b8d19c8b0eed399f52e4c527ce5afe4817",
+      "src": "https://github.com/chomosuke/typst-preview.nvim"
+    }
+  }
+}

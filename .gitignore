@@ -2,7 +2,6 @@
 .config/karabiner/automatic_backups/
 .config/cron/logs/*
 Pictures/Screenshots/*
-nvim-pack-lock.json
 
 
 
