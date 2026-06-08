@@ -6,3 +6,4 @@ export UV_PYTHON_DOWNLOADS="never"
 export PATH="/Users/kenny/.local/bin:$PATH"
 export EDITOR=nvim
 export MANPAGER="nvim +Man!"
+. "/Users/kenny/.local/share/bob/env/env.sh"

@@ -25,8 +25,8 @@ require("bufferline").setup({
 		end,
 	},
 })
-vim.keymap.set("n", "<Tab>", "<Cmd>bnext<CR>")
-vim.keymap.set("n", "<S-Tab>", "<Cmd>bprev<CR>")
+vim.keymap.set("n", "<C-l>", "<Cmd>BufferLineCycleNext<CR>")
+vim.keymap.set("n", "<C-h>", "<Cmd>BufferLineCyclePrev<CR>")
 local br = require("utils.bufremove")
 vim.keymap.set("n", "<Leader>x", br.bufdelete_cur, { desc = "Delete" })
 vim.keymap.set("n", "<leader>o", br.bufdelete_others, { desc = "Delete Others" })
@@ -44,6 +44,7 @@ function M.bufferline_hl_groups()
 	local selected = c.hl("TabLineSel")
 	vim.api.nvim_set_hl(0, "BufferLineBufferSelected", { bg = selected.bg, fg = selected.fg, bold = true })
 	vim.api.nvim_set_hl(0, "BufferLineBackground", { bg = base.bg, fg = base.fg })
+	vim.api.nvim_set_hl(0, "BufferLineFill", { bg = base.bg, fg = base.fg })
 	vim.api.nvim_set_hl(0, "BufferLineBufferVisible", { bg = base.bg, fg = base.fg })
 	vim.api.nvim_set_hl(0, "BufferLineBufferSelected", { bg = selected.bg, fg = selected.fg, bold = true })
 	vim.api.nvim_set_hl(0, "BufferLineDuplicate", { bg = base.bg, fg = base.fg })

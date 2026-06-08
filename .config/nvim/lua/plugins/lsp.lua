@@ -31,6 +31,7 @@ vim.pack.add({
 	"https://github.com/mason-org/mason-lspconfig.nvim",
 	"https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
 	"https://github.com/stevearc/conform.nvim",
+	"https://github.com/r4ppz/lspeek.nvim",
 })
 
 require("mason").setup()
@@ -43,3 +44,13 @@ require("conform").setup({
 	format_on_save = { lsp_format = "fallback", timeout_ms = 500 },
 	formatters_by_ft = formatters,
 })
+
+local lspeek = require("lspeek")
+lspeek.setup({
+	window = {
+		border = "single",
+	},
+})
+
+vim.keymap.set("n", "gD", lspeek.peek_definition)
+vim.keymap.set("n", "gT", lspeek.peek_type_definition)

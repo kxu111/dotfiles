@@ -8,6 +8,10 @@
       "rev": "619363c30309d29ffa631e67c8183f2a72caa373",
       "src": "https://github.com/stevearc/conform.nvim"
     },
+    "gitsigns.nvim": {
+      "rev": "25050e4ed39e628282831d4cbecb1850454ce915",
+      "src": "https://github.com/lewis6991/gitsigns.nvim"
+    },
     "koda.nvim": {
       "rev": "ac7e746882b31a68bdcd533464a20ca40b712bcb",
       "src": "https://github.com/oskarnurm/koda.nvim"
@@ -15,6 +19,10 @@
     "lspeek.nvim": {
       "rev": "d4bba417c27dc84a4ba9900256fd8eea3c8f18c0",
       "src": "https://github.com/r4ppz/lspeek.nvim"
+    },
+    "lualine.nvim": {
+      "rev": "221ce6b2d999187044529f49da6554a92f740a96",
+      "src": "https://github.com/nvim-lualine/lualine.nvim"
     },
     "mason-lspconfig.nvim": {
       "rev": "0a695750d747db1e7e70bcf0267ef8951c95fc83",
@@ -31,6 +39,18 @@
     "mini.nvim": {
       "rev": "d5e6f5b843f1d813d9c4bfb242b751dc5ab6f8ae",
       "src": "https://github.com/nvim-mini/mini.nvim"
+    },
+    "noice.nvim": {
+      "rev": "7bfd942445fb63089b59f97ca487d605e715f155",
+      "src": "https://github.com/folke/noice.nvim"
+    },
+    "nui.nvim": {
+      "rev": "de740991c12411b663994b2860f1a4fd0937c130",
+      "src": "https://github.com/MunifTanjim/nui.nvim"
+    },
+    "nvim-cmp": {
+      "rev": "a1d504892f2bc56c2e79b65c6faded2fd21f3eca",
+      "src": "https://github.com/hrsh7th/nvim-cmp"
     },
     "nvim-lspconfig": {
       "rev": "229b79051b380377664edc4cbd534930154921a1",

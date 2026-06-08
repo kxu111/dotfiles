@@ -2,19 +2,19 @@
 bold-is-bright = true
 
 # Background and foreground
-background = #000000
+background = #101010
 foreground = #ffffff
 
 # Cursor colors
-cursor-color = #ffffff
-cursor-text = #000000
+cursor-color = #b0b0b0
+cursor-text = #101010
 
 # Selection colors
 selection-background = #272727
-selection-foreground = #ffffff
+selection-foreground = #b0b0b0
 
 # ANSI color palette (0-15)
-palette = 0=#000000
+palette = 0=#101010
 palette = 1=#ff7676
 palette = 2=#a3d6a3
 palette = 3=#ffffff

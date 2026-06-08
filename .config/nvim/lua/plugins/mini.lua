@@ -28,9 +28,18 @@ require("mini.splitjoin").setup()
 require("mini.align").setup()
 require("mini.cmdline").setup({ autocomplete = { enable = false } })
 require("mini.comment").setup()
-require("mini.notify").setup()
+require("mini.notify").setup({
+	lsp_progress = { enable = false },
+})
 require("mini.completion").setup()
 require("mini.jump").setup({ delay = { idle_stop = 1000 } })
+
+require("mini.diff").setup({
+	view = {
+		style = "sign",
+		signs = { add = " ▍", change = " ▍", delete = " ▍" },
+	},
+})
 
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*",
@@ -75,6 +84,25 @@ require("mini.snippets").setup({
 	},
 })
 
+require("mini.files").setup({
+	options = { permanent_delete = false },
+	mappings = {
+		go_in = "",
+		go_in_plus = "l",
+		synchronize = "<CR>",
+		close = "<C-c>",
+	},
+	windows = {
+		preview = true,
+		width_preview = 50,
+	},
+})
+vim.keymap.set("n", "<C-e>", function()
+	if not MiniFiles.close() then
+		MiniFiles.open(vim.api.nvim_buf_get_name(0))
+	end
+end)
+
 local hi_words = require("mini.extra").gen_highlighter.words
 require("mini.hipatterns").setup({
 	highlighters = {
@@ -85,24 +113,6 @@ require("mini.hipatterns").setup({
 		hack = hi_words({ "HACK" }, "MiniHipatternsHack"),
 	},
 })
-
-require("mini.files").setup({
-	options = { permanent_delete = false },
-	mappings = {
-		go_in = "",
-		go_in_plus = "l",
-		synchronize = "<CR>",
-	},
-	windows = {
-		preview = true,
-		width_preview = 50,
-	},
-})
-vim.keymap.set("n", "<Leader>e", function()
-	if not MiniFiles.close() then
-		MiniFiles.open(vim.api.nvim_buf_get_name(0))
-	end
-end)
 
 require("mini.extra").setup()
 require("mini.pick").setup({
@@ -137,15 +147,15 @@ require("mini.pick").setup({
 		},
 	},
 })
-vim.keymap.set("n", "<Leader>s", "<Cmd>Pick files<CR>")
-vim.keymap.set("n", "<Leader>fh", "<Cmd>Pick help<CR>")
-vim.keymap.set("n", "<Leader>fb", "<Cmd>Pick buffers<CR>")
-vim.keymap.set("n", "<Leader>fl", "<Cmd>Pick grep_live<CR>")
-vim.keymap.set("n", "<Leader>fp", "<Cmd>Pick hipatterns<CR>")
-vim.keymap.set("n", "<Leader>fm", "<Cmd>Pick manpages<CR>")
+vim.keymap.set("n", "<C-p>", "<Cmd>Pick files<CR>")
+vim.keymap.set("n", "<Leader>sh", "<Cmd>Pick help<CR>")
+vim.keymap.set("n", "<Leader>sb", "<Cmd>Pick buffers<CR>")
+vim.keymap.set("n", "<Leader>sl", "<Cmd>Pick grep_live<CR>")
+vim.keymap.set("n", "<Leader>sp", "<Cmd>Pick hipatterns<CR>")
+vim.keymap.set("n", "<Leader>sm", "<Cmd>Pick manpages<CR>")
 vim.keymap.set("n", "z=", "<Cmd>Pick spellsuggest<CR>")
 vim.keymap.set("n", "<Leader>a", vim.lsp.buf.code_action)
 -- vim.keymap.set("n", "<Leader>fs", "<Cmd>lua MiniExtra.pickers.lsp({ scope = 'definition' })<CR>")
-vim.keymap.set("n", "<Leader>fd", "<Cmd>Pick diagnostic<CR>")
-vim.keymap.set("n", "<Leader>fc", "<Cmd>Pick resume<CR>")
+vim.keymap.set("n", "<Leader>d", "<Cmd>Pick diagnostic<CR>")
+vim.keymap.set("n", "<Leader>sc", "<Cmd>Pick resume<CR>")
 vim.keymap.set("n", "<Leader>fr", "<Cmd>lua MiniExtra.pickers.lsp({ scope = 'references' })<CR>")

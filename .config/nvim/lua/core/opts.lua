@@ -12,5 +12,8 @@ vim.o.smartcase = true
 vim.o.splitright = true
 vim.o.undofile = true
 vim.o.ruler = false
-vim.o.laststatus = 0
+-- vim.o.laststatus = 0
 vim.cmd("filetype plugin indent on")
+vim.o.scrolloff = 24
+vim.o.numberwidth = 1
+vim.opt.statuscolumn = "%l%r%s" -- %s: status, %l: line, %r: relative line
