@@ -1,3 +1,7 @@
+vim.pack.add({
+	"https://github.com/nvim-mini/mini.nvim",
+})
+
 local bufremove = require("mini.bufremove")
 local pin = require("utils.bufpin")
 
