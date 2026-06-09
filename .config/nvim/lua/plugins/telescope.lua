@@ -59,14 +59,6 @@ telescope.setup({
 			},
 		},
 	},
-	pickers = {
-		git_status = {
-			initial_mode = "normal",
-		},
-		buffers = {
-			initial_mode = "normal",
-		},
-	},
 })
 telescope.load_extension("fzf")
 require("actions-preview").setup({
@@ -75,15 +67,11 @@ require("actions-preview").setup({
 	telescope = vim.tbl_extend("force", require("telescope.themes").get_dropdown(), {}),
 })
 
-vim.keymap.set("n", "<C-p>", builtin.find_files, { desc = "Telescope find files" })
-vim.keymap.set("n", "<leader>sl", builtin.live_grep, { desc = "Telescope live grep" })
-vim.keymap.set("n", "<leader>sg", builtin.current_buffer_fuzzy_find, { desc = "Telescope live grep" })
-vim.keymap.set("n", "<leader>sb", function()
-	builtin.buffers({
-		initial_mode = "insert",
-	})
-end, { desc = "Telescope buffers" })
-vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "Telescope help tags" })
+vim.keymap.set("n", "<C-p>", "<Cmd>Telescope find_files<CR>", { desc = "Telescope find files" })
+vim.keymap.set("n", "<leader>sl", "<Cmd>Telescope live_grep<CR>", { desc = "Telescope live grep" })
+vim.keymap.set("n", "<leader>sg", "<Cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "Telescope live grep" })
+vim.keymap.set("n", "<leader>sb", "<Cmd>Telescope buffers<CR>", { desc = "Telescope buffers" })
+vim.keymap.set("n", "<leader>sh", "<Cmd>Telescope help_tags<CR>", { desc = "Telescope help tags" })
 vim.keymap.set("n", "<leader>fr", "<Cmd>Telescope lsp_references<CR>")
 vim.keymap.set("n", "<leader>a", require("actions-preview").code_actions)
 vim.keymap.set("n", "<leader>d", "<Cmd>Telescope diagnostics<CR>")

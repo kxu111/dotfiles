@@ -1,4 +1,6 @@
 require("utils.buildhooks")
+
+require("plugins.devicons")
 require("plugins.lsp")
 require("plugins.treesitter")
 require("plugins.telescope")

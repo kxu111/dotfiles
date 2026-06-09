@@ -2,21 +2,6 @@ vim.pack.add({
 	"https://github.com/nvim-mini/mini.nvim",
 })
 
-require("mini.icons").setup({
-	extension = {
-		["typ"] = { glyph = "", hl = "MiniIconsBlue" },
-		["cpp"] = { glyph = "", hl = "MiniIconsBlue" },
-		["hpp"] = { glyph = "󰫵", hl = "MiniIconsPurple" },
-	},
-})
-vim.api.nvim_create_autocmd("VimEnter", {
-	once = true,
-	callback = function()
-		MiniIcons.mock_nvim_web_devicons()
-		MiniIcons.tweak_lsp_kind()
-	end,
-})
-
 require("mini.pairs").setup()
 require("mini.surround").setup()
 require("mini.ai").setup()
@@ -24,8 +9,7 @@ require("mini.splitjoin").setup()
 require("mini.align").setup()
 require("mini.cmdline").setup({ autocomplete = { enable = false } })
 require("mini.comment").setup()
-require("mini.notify").setup({ lsp_progress = { enable = false } })
--- require("mini.completion").setup()
+require("mini.notify").setup()
 
 require("mini.jump").setup({
 	delay = {
@@ -33,13 +17,6 @@ require("mini.jump").setup({
 		idle_stop = 1000,
 	},
 })
-
--- require("mini.diff").setup({
--- 	view = {
--- 		style = "sign",
--- 		signs = { add = " ▍", change = " ▍", delete = " ▍" },
--- 	},
--- })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*",

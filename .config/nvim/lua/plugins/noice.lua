@@ -10,4 +10,9 @@ require("noice").setup({
 	},
 	format = { level = { icons = false } },
 	views = { mini = { win_options = { winblend = 0 } } },
+	notify = { enabled = false },
+	lsp = {
+		progress = { enabled = false },
+		message = { enabled = false },
+	},
 })
