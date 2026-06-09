@@ -90,3 +90,49 @@ require("mini.hipatterns").setup({
 		hack = hi_words({ "HACK" }, "MiniHipatternsHack"),
 	},
 })
+
+require("mini.extra").setup()
+require("mini.pick").setup({
+	mappings = {
+		mark_and_choose = {
+			char = "<C-q>",
+			func = function()
+				-- Get current picker state
+				local matches = MiniPick.get_picker_matches()
+				if not matches then
+					return
+				end
+				-- Get all matched items
+				if not matches.all or #matches.all == 0 then
+					return
+				end
+
+				-- Mark all items by setting marked indexes to all matched indexes
+				MiniPick.set_picker_match_inds(matches.all_inds, "marked")
+
+				local source = MiniPick.get_picker_opts().source
+				-- Call choose_marked with all marked items
+				if source.choose_marked then
+					-- Get the updated marked items
+					local updated_matches = MiniPick.get_picker_matches()
+					source.choose_marked(updated_matches.marked)
+				end
+
+				-- Stop the picker
+				return true
+			end,
+		},
+	},
+})
+
+vim.keymap.set("n", "<C-p>", "<Cmd>Pick files<CR>")
+vim.keymap.set("n", "<Leader>sh", "<Cmd>Pick help<CR>")
+vim.keymap.set("n", "<Leader>sb", "<Cmd>Pick buffers<CR>")
+vim.keymap.set("n", "<Leader>sl", "<Cmd>Pick grep_live<CR>")
+vim.keymap.set("n", "<Leader>sp", "<Cmd>Pick hipatterns<CR>")
+vim.keymap.set("n", "<Leader>sm", "<Cmd>Pick manpages<CR>")
+vim.keymap.set("n", "z=", "<Cmd>Pick spellsuggest<CR>")
+vim.keymap.set("n", "<Leader>a", vim.lsp.buf.code_action)
+vim.keymap.set("n", "<Leader>d", "<Cmd>Pick diagnostic<CR>")
+vim.keymap.set("n", "<Leader>sc", "<Cmd>Pick resume<CR>")
+vim.keymap.set("n", "<Leader>fr", "<Cmd>lua MiniExtra.pickers.lsp({ scope = 'references' })<CR>")

@@ -245,6 +245,12 @@ M.setup = function()
 		MiniInputCaret = { link = "TelescopeSelectionCaret" },
 		MiniInputPrompt = { link = "TelescopeSelectionCaret" },
 		MiniCompletionActiveParameter = { link = "TelescopeSelectionCaret" },
+
+		MiniPickMatchCurrent = { link = "TelescopeSelection" },
+		MiniPickMatchRanges = { link = "TelescopeMatching" },
+		MiniPickPrompt = { link = "TelescopeNormal" },
+		MiniPickPromptCaret = { link = "TelescopeSelectionCaret" },
+		MiniPickPromptPrefix = { link = "TelescopeNormal" },
 	}
 end
 
