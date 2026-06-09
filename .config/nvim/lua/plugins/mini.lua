@@ -65,7 +65,7 @@ require("mini.input").setup({
 })
 
 require("mini.operators").setup()
-vim.keymap.set("n", "<Leader>r", vim.lsp.buf.rename)
+vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename)
 
 require("mini.move").setup({
 	mappings = {

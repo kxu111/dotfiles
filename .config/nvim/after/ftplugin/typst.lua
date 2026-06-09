@@ -9,4 +9,4 @@ vim.cmd([[
 	setlocal spell
 ]])
 
-vim.keymap.set("n", "<Leader>tp", "<Cmd>TypstPreview<CR>", { desc = "Typst preview" })
+vim.keymap.set("n", "<leader>tp", "<Cmd>TypstPreview<CR>", { desc = "Typst preview" })

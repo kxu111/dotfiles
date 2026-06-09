@@ -1,5 +1,5 @@
 vim.cmd.packadd("nvim.undotree")
-vim.keymap.set("n", "<Leader>u", "<Cmd>Undotree<CR>")
+vim.keymap.set("n", "<leader>u", "<Cmd>Undotree<CR>")
 
 vim.cmd.packadd("nohlsearch")
 vim.keymap.set("n", "<ESC>", "<Cmd>nohlsearch<CR>", { noremap = true, silent = true })

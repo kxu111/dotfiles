@@ -1,15 +1,15 @@
 vim.keymap.set({ "n", "v" }, "<C-u>", "<C-u>zz")
 vim.keymap.set({ "n", "v" }, "<C-d>", "<C-d>zz")
 
-vim.keymap.set({ "n", "v" }, "<Leader>y", '"+y')
-vim.keymap.set("n", "<Leader>Y", '"+y$')
+vim.keymap.set({ "n", "v" }, "<leader>y", '"+y')
+vim.keymap.set("n", "<leader>Y", '"+y$')
 
-vim.keymap.set("n", "<Leader>v", "<Cmd>vertical split<CR>")
+vim.keymap.set("n", "<leader>v", "<Cmd>vertical split<CR>")
 
 vim.keymap.set({ "n", "v" }, "<C-s>", [[:s/\V]])
 vim.keymap.set("n", "<C-t>", "<C-w>T")
 for i = 1, 9 do
-	vim.keymap.set("n", "<Leader>" .. i, "<Cmd>tabnext " .. i .. "<CR>")
+	vim.keymap.set("n", "<leader>" .. i, "<Cmd>tabnext " .. i .. "<CR>")
 end
 
 vim.keymap.set("n", "<C-q>", function()
