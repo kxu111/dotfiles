@@ -1,5 +1,5 @@
 custom-shader = ./shaders/cursor_warp.glsl
-theme         = Koda Dark
+theme         = Mono Dark
 
 window-padding-x           = 15
 window-padding-y           = 15

@@ -43,7 +43,7 @@ vim.api.nvim_create_autocmd("FileType", {
 	end,
 })
 
-vim.keymap.set("n", "<C-n>", "<Cmd>cnext<CR>")
-vim.keymap.set("n", "<C-p>", "<Cmd>cprev<CR>")
+vim.keymap.set("n", "<C-j>", "<Cmd>cnext<CR>")
+vim.keymap.set("n", "<C-k>", "<Cmd>cprev<CR>")
 
 vim.keymap.set("v", "<C-s>", [[:s/\V]])

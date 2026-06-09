@@ -38,7 +38,28 @@ require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({ auto_update = true, ensure_installed = servers })
 
-vim.diagnostic.config({ virtual_text = true })
+vim.diagnostic.config({
+	virtual_text = {
+		severity = {
+			min = vim.diagnostic.severity.WARN,
+		},
+	},
+	float = {
+		header = "",
+		border = "single",
+	},
+	signs = {
+		severity = {
+			min = vim.diagnostic.severity.WARN,
+		},
+		text = {
+			[vim.diagnostic.severity.ERROR] = "▪",
+			[vim.diagnostic.severity.WARN] = "▪",
+			[vim.diagnostic.severity.INFO] = "▪",
+			[vim.diagnostic.severity.HINT] = "▪",
+		},
+	},
+})
 
 require("conform").setup({
 	format_on_save = { lsp_format = "fallback", timeout_ms = 500 },
