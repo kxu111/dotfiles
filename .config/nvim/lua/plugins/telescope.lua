@@ -38,8 +38,8 @@ telescope.setup({
 		layout_strategy = "vertical_fused",
 		layout_config = {
 			preview_cutoff = 1,
-			width = 0.60,
-			height = 0.80,
+			width = 0.50,
+			height = 0.60,
 		},
 		prompt_prefix = "   ",
 		selection_caret = "  ",

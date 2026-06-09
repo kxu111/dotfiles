@@ -34,12 +34,12 @@ require("mini.jump").setup({
 	},
 })
 
-require("mini.diff").setup({
-	view = {
-		style = "sign",
-		signs = { add = " ▍", change = " ▍", delete = " ▍" },
-	},
-})
+-- require("mini.diff").setup({
+-- 	view = {
+-- 		style = "sign",
+-- 		signs = { add = " ▍", change = " ▍", delete = " ▍" },
+-- 	},
+-- })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
 	pattern = "*",

@@ -1,6 +1,6 @@
 vim.g.mapleader = " "
-vim.o.number = true
-vim.o.relativenumber = true
+-- vim.o.number = true
+-- vim.o.relativenumber = true
 vim.o.cursorline = true
 vim.o.swapfile = false
 vim.o.winborder = "single"

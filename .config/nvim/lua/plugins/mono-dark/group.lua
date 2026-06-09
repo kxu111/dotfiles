@@ -244,6 +244,7 @@ M.setup = function()
 
 		MiniInputCaret = { link = "TelescopeSelectionCaret" },
 		MiniInputPrompt = { link = "TelescopeSelectionCaret" },
+		MiniCompletionActiveParameter = { link = "TelescopeSelectionCaret" },
 	}
 end
 
