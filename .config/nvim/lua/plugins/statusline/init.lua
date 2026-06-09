@@ -19,12 +19,12 @@ function StatusLine()
 	return table.concat({
 		components.get_component("StatusMode", mode),
 		components.get_component("StatusBranch", branch),
+		components.get_component("StatusBranchChanges", changes),
 		components.get_component("StatusErrors", errors),
 		components.get_component("StatusWarnings", warnings),
 		components.get_component("StatusInfos", infos),
 		components.get_component("StatusHints", hints),
 		components.get_component_separator(),
-		components.get_component("StatusBranchChanges", changes),
 		components.get_component("StatusSaved", saved),
 	})
 end
