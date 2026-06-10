@@ -8,8 +8,8 @@ hex_to_rgb() {
   hex="${1#\#}"
   printf '%d;%d;%d' "0x$(printf '%s' "$hex" | cut -c1-2)" "0x$(printf '%s' "$hex" | cut -c3-4)" "0x$(printf '%s' "$hex" | cut -c5-6)"
 }
-gray3="$(hex_to_rgb "$comment")"
-gray4="$(hex_to_rgb "$border")"
+gray3="$(hex_to_rgb "$dark3")"
+gray4="$(hex_to_rgb "$blue")"
 home="${HOME%/}"
 pwd="${PWD%/}"
 if [ "$pwd" = "$home" ]; then
@@ -38,8 +38,8 @@ hex_to_rgb() {
   hex="${1#\#}"
   printf '%d;%d;%d' "0x$(printf '%s' "$hex" | cut -c1-2)" "0x$(printf '%s' "$hex" | cut -c3-4)" "0x$(printf '%s' "$hex" | cut -c5-6)"
 }
-yellow="$(hex_to_rgb "$border")"
-gray3="$(hex_to_rgb "$orange")"
+yellow="$(hex_to_rgb "$fg")"
+gray3="$(hex_to_rgb "$red1")"
 git rev-parse --is-inside-work-tree >/dev/null 2>&1 || {
   printf '   '
   exit 0
@@ -66,8 +66,8 @@ hex_to_rgb() {
   hex="${1#\#}"
   printf '%d;%d;%d' "0x$(printf '%s' "$hex" | cut -c1-2)" "0x$(printf '%s' "$hex" | cut -c3-4)" "0x$(printf '%s' "$hex" | cut -c5-6)"
 }
-active="$(hex_to_rgb "$const")"
-inactive="$(hex_to_rgb "$dim")"
+active="$(hex_to_rgb "$yellow")"
+inactive="$(hex_to_rgb "$comment")"
 dir="$PWD"
 venv=""
 while :; do
