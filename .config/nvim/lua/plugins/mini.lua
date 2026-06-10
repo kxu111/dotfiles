@@ -3,7 +3,17 @@ vim.pack.add({
 })
 
 require("mini.pairs").setup()
-require("mini.surround").setup()
+require("mini.surround").setup({
+	mappings = {
+		add = "ys",
+		delete = "ds",
+		find = "gs",
+		find_left = "gS",
+		highlight = "gsh",
+		replace = "cs",
+	},
+})
+
 require("mini.ai").setup()
 require("mini.splitjoin").setup()
 require("mini.align").setup()
@@ -53,14 +63,6 @@ require("mini.move").setup({
 	},
 })
 
-local gen_loader = require("mini.snippets").gen_loader
-require("mini.snippets").setup({
-	snippets = {
-		gen_loader.from_file("~/.config/nvim/snippets/global.json"),
-		gen_loader.from_lang(),
-	},
-})
-
 require("mini.files").setup({
 	options = { permanent_delete = false },
 	mappings = {
@@ -73,7 +75,20 @@ require("mini.files").setup({
 		preview = true,
 		width_preview = 50,
 	},
+	content = {
+		prefix = function(fs_entry)
+			if fs_entry.fs_type == "directory" then
+				return " ", "MiniFilesDirectory"
+			end
+			if fs_entry.fs_type == "file" then
+				return " ", "MiniFilesFile"
+			end
+
+			return MiniFiles.default_prefix(fs_entry)
+		end,
+	},
 })
+
 vim.keymap.set("n", "<C-e>", function()
 	if not MiniFiles.close() then
 		MiniFiles.open(vim.api.nvim_buf_get_name(0))
@@ -92,21 +107,11 @@ require("mini.hipatterns").setup({
 })
 
 require("mini.extra").setup()
-require("mini.pick").setup({
-	mappings = {
-		mark_and_choose = {
-			char = "<C-q>",
-			func = function()
-				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-a>", true, false, true), "t", false)
-				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<M-CR>", true, false, true), "t", false)
-			end,
-		},
-	},
-})
+require("mini.pick").setup()
 vim.keymap.set("n", "<C-p>", "<Cmd>Pick files<CR>")
 vim.keymap.set("n", "<Leader>sh", "<Cmd>Pick help<CR>")
 vim.keymap.set("n", "<Leader>sb", "<Cmd>Pick buffers<CR>")
-vim.keymap.set("n", "<Leader>sl", "<Cmd>Pick grep_live<CR>")
+vim.keymap.set("n", "<C-g>", "<Cmd>Pick grep_live<CR>")
 vim.keymap.set("n", "<Leader>sp", "<Cmd>Pick hipatterns<CR>")
 vim.keymap.set("n", "<Leader>sm", "<Cmd>Pick manpages<CR>")
 vim.keymap.set("n", "z=", "<Cmd>Pick spellsuggest<CR>")

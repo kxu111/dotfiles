@@ -1,8 +1,17 @@
 -- i use nvim cmp because noice.nvim breaks mini completion
 
 vim.pack.add({
+	"https://github.com/nvim-mini/mini.nvim",
 	"https://github.com/hrsh7th/nvim-cmp",
 	"https://github.com/hrsh7th/cmp-nvim-lsp",
+})
+
+local gen_loader = require("mini.snippets").gen_loader
+require("mini.snippets").setup({
+	snippets = {
+		gen_loader.from_file("~/.config/nvim/snippets/global.json"),
+		gen_loader.from_lang(),
+	},
 })
 
 local cmp = require("cmp")

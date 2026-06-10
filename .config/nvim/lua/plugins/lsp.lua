@@ -74,4 +74,4 @@ lspeek.setup({
 })
 
 vim.keymap.set("n", "gd", lspeek.peek_definition)
-vim.keymap.set("n", "gT", lspeek.peek_type_definition)
+vim.keymap.set("n", "gt", lspeek.peek_type_definition)
