@@ -1,4 +1,5 @@
 custom-shader = ./shaders/cursor_warp.glsl
+custom-shader-animation = always
 theme         = Mono Dark
 
 window-padding-x           = 15

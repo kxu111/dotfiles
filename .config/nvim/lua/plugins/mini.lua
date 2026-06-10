@@ -75,18 +75,6 @@ require("mini.files").setup({
 		preview = true,
 		width_preview = 50,
 	},
-	content = {
-		prefix = function(fs_entry)
-			if fs_entry.fs_type == "directory" then
-				return " ", "MiniFilesDirectory"
-			end
-			if fs_entry.fs_type == "file" then
-				return " ", "MiniFilesFile"
-			end
-
-			return MiniFiles.default_prefix(fs_entry)
-		end,
-	},
 })
 
 vim.keymap.set("n", "<C-e>", function()
@@ -111,10 +99,8 @@ require("mini.pick").setup()
 vim.keymap.set("n", "<C-p>", "<Cmd>Pick files<CR>")
 vim.keymap.set("n", "<Leader>sh", "<Cmd>Pick help<CR>")
 vim.keymap.set("n", "<Leader>sb", "<Cmd>Pick buffers<CR>")
-vim.keymap.set("n", "<C-g>", "<Cmd>Pick grep_live<CR>")
+vim.keymap.set("n", "<leader>sl", "<Cmd>Pick grep_live<CR>")
 vim.keymap.set("n", "<Leader>sp", "<Cmd>Pick hipatterns<CR>")
-vim.keymap.set("n", "<Leader>sm", "<Cmd>Pick manpages<CR>")
-vim.keymap.set("n", "z=", "<Cmd>Pick spellsuggest<CR>")
 vim.keymap.set("n", "<Leader>a", vim.lsp.buf.code_action)
 vim.keymap.set("n", "<Leader>d", "<Cmd>Pick diagnostic<CR>")
 vim.keymap.set("n", "<Leader>sc", "<Cmd>Pick resume<CR>")

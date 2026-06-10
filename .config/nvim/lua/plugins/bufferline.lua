@@ -7,12 +7,11 @@ vim.pack.add({
 require("bufferline").setup({
 	options = {
 		mode = "buffers",
-		separator_style = { "", "" },
-		modified_icon = "  *  ",
 		always_show_bufferline = true,
 		sort_by = "insert_after_current",
-		show_buffer_icons = false,
+		modified_icon = " * ",
 		show_buffer_close_icons = false,
+		show_buffer_icons = false,
 		show_close_icon = false,
 		tab_size = 0,
 		groups = { items = { require("bufferline.groups").builtin.pinned:with({ icon = "  " }) } },
