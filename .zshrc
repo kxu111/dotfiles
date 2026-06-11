@@ -24,7 +24,6 @@ alias dav='deactivate'
 
 bindkey -v
 KEYTIMEOUT=1
-eval "$(starship init zsh)"
 source <(fzf --zsh)
 export FZF_DEFAULT_OPTS_FILE="$HOME/.config/fzf/config"
 export FZF_CTRL_R_OPTS="--scheme=history"
@@ -70,3 +69,14 @@ export BAT_THEME="tokyonight_moon"
 export TEALDEER_CONFIG_DIR="$HOME/.config/tealdeer"
 export EDITOR=nvim
 export MANPAGER="nvim +Man!"
+
+precmd() {
+    local full="${(%):-%~}"
+    local parent="${full%/*}"
+    local current="${full##*/}"
+    if [[ "$parent" == "$current" ]]; then
+        PS1="%F{blue}%B$current%b%f %F{15}\$%f "
+    else
+        PS1="%F{8}$parent/%F{blue}%B$current%b%f %F{15}\$%f "
+    fi
+}
