@@ -4,7 +4,6 @@
 --layout=reverse
 --border=none
 --color=bg+:#2d3f76
---color=bg:#1A1B26
 --color=border:#589ed7
 --color=fg:#c8d3f5
 --color=gutter:#1e2030

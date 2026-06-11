@@ -65,3 +65,8 @@ _auto_venv() {
 }
 add-zsh-hook chpwd _auto_venv
 _auto_venv
+
+export BAT_THEME="tokyonight_moon"
+export TEALDEER_CONFIG_DIR="$HOME/.config/tealdeer"
+export EDITOR=nvim
+export MANPAGER="nvim +Man!"

@@ -1,10 +1,12 @@
 custom-shader = ./shaders/cursor_warp.glsl
 custom-shader-animation = always
-theme         = TokyoNight Night
+theme         = TokyoNight Moon
+background-opacity = 0.5
 
 window-padding-x           = 15
 window-padding-y           = 15
 confirm-close-surface      = false
+macos-titlebar-style = hidden
 window-decoration          = none
 cursor-style               = block
 cursor-style-blink         = false
