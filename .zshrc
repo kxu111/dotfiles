@@ -75,8 +75,8 @@ precmd() {
     local parent="${full%/*}"
     local current="${full##*/}"
     if [[ "$parent" == "$current" ]]; then
-        PS1="%F{blue}%B$current%b%f %F{15}\$%f "
+        PS1=" %F{blue}$current%f %F{15}\$%f "
     else
-        PS1="%F{8}$parent/%F{blue}%B$current%b%f %F{15}\$%f "
+        PS1=" %F{8}$parent/%F{blue}$current%f %F{15}\$%f "
     fi
 }
