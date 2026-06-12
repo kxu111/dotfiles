@@ -1,3 +1,14 @@
+precmd() {
+    local full="${(%):-%~}"
+    local parent="${full%/*}"
+    local current="${full##*/}"
+    if [[ "$parent" == "$current" ]]; then
+        PS1=" %F{3}%B$current%b%f %F{12}\$%f "
+    else
+        PS1=" %F{8}$parent/%F{3}%B$current%b%f %F{12}\$%f "
+    fi
+}
+
 alias neofetch='fastfetch -c examples/10.jsonc'
 alias nrs='sudo darwin-rebuild switch --flake ~/nix#air'
 alias nfu='sudo nix flake update --flake ~/nix'
@@ -69,14 +80,3 @@ export BAT_THEME="tokyonight_moon"
 export TEALDEER_CONFIG_DIR="$HOME/.config/tealdeer"
 export EDITOR=nvim
 export MANPAGER="nvim +Man!"
-
-precmd() {
-    local full="${(%):-%~}"
-    local parent="${full%/*}"
-    local current="${full##*/}"
-    if [[ "$parent" == "$current" ]]; then
-        PS1=" %F{blue}$current%f %F{15}\$%f "
-    else
-        PS1=" %F{8}$parent/%F{blue}$current%f %F{15}\$%f "
-    fi
-}

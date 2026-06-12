@@ -6,7 +6,7 @@ update() {
         if application "Spotify" is running then
             tell application "Spotify"
                 if player state is playing then
-                    set t to artist of current track & " - " & name of current track
+                    set t to name of current track
                     return t
                 end if
             end tell
