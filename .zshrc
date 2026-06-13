@@ -3,9 +3,9 @@ precmd() {
     local parent="${full%/*}"
     local current="${full##*/}"
     if [[ "$parent" == "$current" ]]; then
-        PS1=" %F{3}%B$current%b%f %F{12}\$%f "
+        PS1="%F{3}%B$current%b%f %F{15}\$%f "
     else
-        PS1=" %F{8}$parent/%F{3}%B$current%b%f %F{12}\$%f "
+        PS1="%F{8}$parent/%F{3}$current%f %F{15}\$%f "
     fi
 }
 

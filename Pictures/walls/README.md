@@ -1,8 +1,0 @@
-*Unsure if these are the originals, these are just the places I discovered them:*
-
-- **Sunflower:** https://wallhaven.cc/w/mllvv1  
-- **ULTRAKILL:** https://wallhaven.cc/w/8gkl8o  
-- **Mushroom:** https://www.wallpaperflare.com/mushroom-drawn-neon-pink-blue-crescent-moon-psychedelic-wallpaper-yfpxw  
-- **Diner:** https://github.com/orangci/walls-catppuccin-mocha
-- **Dune:** https://wallhaven.cc/w/p88g5j
-- **Dune2:** https://wallhaven.cc/w/dpgpy3

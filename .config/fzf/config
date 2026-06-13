@@ -4,10 +4,9 @@
 --layout=reverse
 --border=none
 --color=bg+:#272727
---color=bg:#101010
 --color=border:#ffffff
 --color=fg:#b0b0b0
---color=fg+:#ffffff
+--color=fg+:#b0b0b0
 --color=gutter:#101010
 --color=header:#ffffff
 --color=hl+:#d9ba73
@@ -20,3 +19,7 @@
 --color=scrollbar:#b0b0b0
 --color=separator:#ffffff
 --color=spinner:#50585d
+
+--gutter=" "
+--no-bold
+--pointer=" "

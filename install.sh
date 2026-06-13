@@ -4,7 +4,7 @@
 cd ~/dotfiles
 mkdir ~/.config
 stow . --adopt
-# osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$HOME/Pictures/walls/dune2.jpg\""
+# osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$HOME/Pictures/walls/sunflower.jpg\""
 bash <(curl -sSL https://spotx-official.github.io/run.sh)
 source ~/.zshenv
 source ~/.zshrc
@@ -14,8 +14,5 @@ bat cache --build
 open -a AeroSpace
 open -a Karabiner-Elements
 brew services start sketchybar
-git clone https://github.com/0xTadash1/bat-into-tokyonight
-./bat-into-tokyonight/bat-into-tokyonight
-rm -rf bat-into-tokyonight
 echo "REMINDER TO DISABLE SPOTLIGHT AND GAME OVERLAY BINDS"
 echo "REMINDER TO ENABLE INCREASE CONTRAST AND SET WALLPAPER TO BLACK"

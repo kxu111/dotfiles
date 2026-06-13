@@ -5,7 +5,7 @@
     fastfetch
     wget
     stow
-    bob-nvim
+    neovim
     ripgrep
     rustup
     tmux
