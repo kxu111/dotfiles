@@ -13,7 +13,7 @@ exec-on-workspace-change = ['/bin/bash', '-c',
 persistent-workspaces=["1","2","3","4","5"]
 
 [mode.main.binding]
-alt-a = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.mitchellh.ghostty 1'
+alt-a = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh net.kovidgoyal.kitty 1'
 alt-q = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh info.sioyek.sioyek 2'
 alt-b = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh org.mozilla.firefox 2'
 alt-d = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh dev.vencord.vesktop 3'
@@ -62,7 +62,7 @@ alt-shift-9 = 'move-node-to-workspace 9'
 alt-shift-0 = 'move-node-to-workspace 10'
 
 [gaps]
-outer.top = 4
+outer.top = 0
 outer.bottom = 0
 outer.left = 0
 outer.right = 0

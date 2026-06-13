@@ -42,7 +42,17 @@ export FZF_CTRL_T_OPTS="--scheme=path"
 eval "$(zoxide init --cmd cd zsh)"
 export _ZO_FZF_OPTS="--scheme=path"
 
-if [[ "$TERM" == "xterm-ghostty" ]] then
+cursor_mode() {
+    if [[ ${KEYMAP} == vicmd ]]; then
+        printf '\033[1 q'  # Blinking block
+    else
+        printf '\033[5 q'  # Blinking line
+    fi
+}
+
+zle -N zle-keymap-select cursor_mode
+zle -N zle-line-init cursor_mode
+if [[ "$TERM" == "xterm-kitty" ]] then
 	if ! command -v tmux &> /dev/null; then
    		exit 0
 	fi
@@ -76,7 +86,6 @@ _auto_venv() {
 add-zsh-hook chpwd _auto_venv
 _auto_venv
 
-export BAT_THEME="tokyonight_moon"
 export TEALDEER_CONFIG_DIR="$HOME/.config/tealdeer"
 export EDITOR=nvim
 export MANPAGER="nvim +Man!"

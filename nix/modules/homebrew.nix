@@ -19,7 +19,7 @@
       "vesktop"
       "sioyek"
       "obs"
-      "ghostty"
+      "kitty"
       "karabiner-elements"
       "aerospace"
       "anki"
