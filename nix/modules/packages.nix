@@ -34,6 +34,9 @@
     pastel
     cmake
     asciiquarium
+    fortune
+    cowsay
+    lolcat
   ];
 
   fonts.packages = with pkgs; [
