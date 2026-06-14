@@ -1,8 +1,4 @@
-{
-  self,
-  inputs,
-  ...
-}: {
+{self, ...}: {
   system.primaryUser = "kenny";
   system.defaults = {
     dock = {
@@ -13,7 +9,6 @@
       show-recents = false;
       minimize-to-application = true;
       persistent-apps = [
-        "/Applications/Ghostty.app"
         "/Applications/Firefox.app"
         "/Applications/Vesktop.app"
         "/Applications/WhatsApp.app"

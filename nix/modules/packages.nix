@@ -33,6 +33,7 @@
     imagemagick
     pastel
     cmake
+    asciiquarium
   ];
 
   fonts.packages = with pkgs; [
