@@ -27,6 +27,7 @@
       "adobe-creative-cloud"
       "raycast"
       "firefox"
+      "obsidian"
     ];
     masApps = {
       "Davinci Resolve" = 571213070;

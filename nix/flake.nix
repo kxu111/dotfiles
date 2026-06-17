@@ -58,6 +58,13 @@
             };
 
             mutableTaps = false;
+
+            trust = {
+              taps = [
+                "felixkratz/formulae"
+                "nikitabobko/tap"
+              ];
+            };
           };
         }
         ({config, ...}: {

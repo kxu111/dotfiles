@@ -10,12 +10,12 @@ precmd() {
 }
 
 alias neofetch='fastfetch -c examples/10.jsonc'
-alias cowsay='fortune | cowsay -r | lolcat'
+alias random='fortune | cowsay -r | lolcat'
 alias nrs='sudo darwin-rebuild switch --flake ~/nix#air'
 alias nfu='sudo nix flake update --flake ~/nix'
 alias reload='source ~/.zshenv; source ~/.zshrc'
 alias cron-sync="crontab ~/.config/crontab"
-alias vi='nvim'
+alias v='nvim'
 alias y='yazi'
 alias lg='lazygit'
 alias news='~/.config/scripts/add-news.sh'
