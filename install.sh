@@ -12,7 +12,6 @@ rustup default stable
 crontab ~/.config/cron/crontab
 bat cache --build
 open -a AeroSpace
-open -a Karabiner-Elements
 brew services start sketchybar
 echo "REMINDER TO DISABLE SPOTLIGHT AND GAME OVERLAY BINDS"
 echo "REMINDER TO ENABLE INCREASE CONTRAST AND SET WALLPAPER TO BLACK"

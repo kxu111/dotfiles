@@ -20,7 +20,6 @@
       "sioyek"
       "obs"
       "kitty"
-      "karabiner-elements"
       "aerospace"
       "anki"
       "figma"
