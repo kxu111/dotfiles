@@ -12,7 +12,8 @@
         "/Applications/Firefox.app"
         "/Applications/Vesktop.app"
         "/Applications/WhatsApp.app"
-        "/Applications/Spotify.app/"
+        "/Applications/Spotify.app"
+        "/Applications/Obsidian.app"
       ];
       mru-spaces = false;
     };

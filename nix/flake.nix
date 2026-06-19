@@ -41,9 +41,9 @@
         inherit self;
       };
       modules = [
-        ./modules/packages.nix
-        ./modules/homebrew.nix
-        ./modules/settings.nix
+        ./packages.nix
+        ./homebrew.nix
+        ./settings.nix
         nix-homebrew.darwinModules.nix-homebrew
         {
           nix-homebrew = {
