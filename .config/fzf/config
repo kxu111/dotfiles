@@ -1,8 +1,13 @@
+--no-bold
+--no-scrollbar
 --highlight-line
 --info=inline-right
 --ansi
 --layout=reverse
---border=none
+--border='top'
+--border-label=' FZF '
+--border-label-pos=2
+--color=label:#ffffff:bold
 --color=bg+:#272727
 --color=border:#ffffff
 --color=fg:#b0b0b0
@@ -11,15 +16,15 @@
 --color=header:#ffffff
 --color=hl+:#d9ba73
 --color=hl:#d9ba73
---color=info:#50585d
+--color=info:#474747
 --color=marker:#ff7676
 --color=pointer:#ffffff
---color=prompt:#ffffff
+--color=prompt:#b0b0b0
 --color=query:#b0b0b0:regular
 --color=scrollbar:#b0b0b0
 --color=separator:#ffffff
 --color=spinner:#50585d
 
 --gutter=" "
---no-bold
 --pointer=" "
+--prompt=' '
