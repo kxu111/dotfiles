@@ -19,10 +19,6 @@
       url = "github:nikitabobko/homebrew-tap";
       flake = false;
     };
-    sketchybar = {
-      url = "github:FelixKratz/homebrew-formulae";
-      flake = false;
-    };
   };
 
   outputs = inputs @ {
@@ -33,7 +29,6 @@
     homebrew-core,
     homebrew-cask,
     aerospace,
-    sketchybar,
     ...
   }: {
     darwinConfigurations."air" = nix-darwin.lib.darwinSystem {
@@ -54,14 +49,12 @@
               "homebrew/homebrew-core" = homebrew-core;
               "homebrew/homebrew-cask" = homebrew-cask;
               "nikitabobko/homebrew-tap" = aerospace;
-              "FelixKratz/homebrew-formulae" = sketchybar;
             };
 
             mutableTaps = false;
 
             trust = {
               taps = [
-                "felixkratz/formulae"
                 "nikitabobko/tap"
               ];
             };

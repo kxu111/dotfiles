@@ -29,7 +29,6 @@
     screencapture.location = "~/Pictures/Screenshots";
     NSGlobalDomain = {
       AppleInterfaceStyle = "Dark";
-      _HIHideMenuBar = true;
       KeyRepeat = 2;
       InitialKeyRepeat = 15;
       "com.apple.mouse.tapBehavior" = 1;

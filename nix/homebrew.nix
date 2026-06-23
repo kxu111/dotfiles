@@ -9,7 +9,6 @@
     };
     brews = [
       "mas"
-      "sketchybar"
       "mole"
       "pkgconfig"
       "cairo"

@@ -1,30 +1,16 @@
---no-bold
---no-scrollbar
---highlight-line
---info=inline-right
---ansi
 --layout=reverse
---border='top'
---border-label=' FZF '
---border-label-pos=2
---color=label:#ffffff:bold
---color=bg+:#272727
---color=border:#ffffff
---color=fg:#b0b0b0
---color=fg+:#b0b0b0
---color=gutter:#101010
---color=header:#ffffff
---color=hl+:#d9ba73
---color=hl:#d9ba73
---color=info:#474747
---color=marker:#ff7676
---color=pointer:#ffffff
---color=prompt:#b0b0b0
---color=query:#b0b0b0:regular
---color=scrollbar:#b0b0b0
---color=separator:#ffffff
---color=spinner:#50585d
-
---gutter=" "
---pointer=" "
---prompt=' '
+--color=bg+:#313244
+--color=bg:#1E1E2E
+--color=spinner:#F5E0DC
+--color=hl:#F38BA8
+--color=fg:#CDD6F4
+--color=header:#F38BA8
+--color=info:#CBA6F7
+--color=pointer:#F5E0DC
+--color=marker:#B4BEFE
+--color=fg+:#CDD6F4
+--color=prompt:#CBA6F7
+--color=hl+:#F38BA8
+--color=selected-bg:#45475A
+--color=border:#6C7086
+--color=label:#CDD6F4
