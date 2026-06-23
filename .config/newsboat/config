@@ -11,4 +11,4 @@ color hint-description    white   black
 color article             white   black
 
 cleanup-on-quit yes
-browser "$HOME/.config/scripts/open-browser.sh"
+browser "$HOME/.config/scripts/default-browser.sh"

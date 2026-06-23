@@ -2,7 +2,7 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "$SCRIPT_DIR/fzf-flags.sh"
+source "$SCRIPT_DIR/skim-themes.sh"
 MODES_FILE="$HOME/.config/modes.conf"
 
 mode_names=()
@@ -15,7 +15,7 @@ while IFS='|' read -r name action; do
 done < "$MODES_FILE"
 
 selected=$(printf "%s\n" "${mode_names[@]}" \
-		| fzf $(fzf_flags base) )
+        | sk "${SKIM_THEME_BASE[@]}" )
 
 [[ -z "$selected" ]] && exit 0
 

@@ -10,7 +10,6 @@
     rustup
     tmux
     tealdeer
-    fzf
     fd
     zoxide
     yazi
@@ -37,6 +36,7 @@
     fortune
     cowsay
     lolcat
+    skim
   ];
 
   fonts.packages = with pkgs; [
