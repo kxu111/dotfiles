@@ -37,7 +37,10 @@ alias dav='deactivate'
 bindkey -v
 KEYTIMEOUT=1
 
-eval "$(zoxide init --cmd cd zsh)"
+source <(fzf --zsh)
+
+eval "$(zoxide init zsh)"
+alias cd=''
 
 cursor_mode() {
 	if [[ ${KEYMAP} == vicmd ]]; then
@@ -49,6 +52,7 @@ cursor_mode() {
 
 zle -N zle-keymap-select cursor_mode
 zle -N zle-line-init cursor_mode
+
 if [[ "$TERM" == "xterm-kitty" ]] then
 	if ! command -v tmux &> /dev/null; then
 		exit 0

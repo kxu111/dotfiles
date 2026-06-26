@@ -6,7 +6,6 @@ DIRS=(
 )
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/skim-themes.sh"
 
 if [[ $# -eq 1 ]]; then
     selected=$1
@@ -14,7 +13,7 @@ else
     selected=$(fd . "${DIRS[@]}" --type=dir --max-depth=1 --full-path --base-directory $HOME \
         | sed "s|^$HOME/||" \
         | sed 's|/$||' \
-        | sk "${SKIM_THEME_SESSION[@]}" )
+        | fzf --scheme=path )
 
     [[ $selected ]] && selected="$HOME/$selected"
 fi

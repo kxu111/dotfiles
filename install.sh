@@ -4,7 +4,7 @@
 cd ~/dotfiles
 mkdir ~/.config
 stow . --adopt
-# osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$HOME/Pictures/walls/sunflower.jpg\""
+osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$HOME/Pictures/walls/painting.png\""
 bash <(curl -sSL https://spotx-official.github.io/run.sh)
 source ~/.zshenv
 source ~/.zshrc

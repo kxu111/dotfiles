@@ -36,7 +36,7 @@
     fortune
     cowsay
     lolcat
-    skim
+    fzf
   ];
 
   fonts.packages = with pkgs; [

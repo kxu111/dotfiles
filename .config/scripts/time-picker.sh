@@ -2,7 +2,6 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-source "$SCRIPT_DIR/skim-themes.sh"
 MODES_FILE="$HOME/.config/modes.conf"
 
 mode_names=()
@@ -15,7 +14,7 @@ while IFS='|' read -r name action; do
 done < "$MODES_FILE"
 
 selected=$(printf "%s\n" "${mode_names[@]}" \
-        | sk "${SKIM_THEME_BASE[@]}" )
+        | fzf )
 
 [[ -z "$selected" ]] && exit 0
 

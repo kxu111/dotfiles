@@ -6,7 +6,6 @@ DIRS=(
 )
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/skim-themes.sh"
 
 shell_join() {
     local arg
@@ -79,10 +78,10 @@ if [[ $# -eq 1 ]]; then
 else
     selected_row="$(
         list_documents \
-            | sk "${SKIM_THEME_PDF[@]}" \
-                --delimiter=$'\t' \
-                --with-nth 1 \
-                --nth 1
+            | fzf \
+            --delimiter=$'\t' \
+           	--with-nth 1 \
+           	--nth 1
     )"
 
     [[ -n "$selected_row" ]] || exit 0
