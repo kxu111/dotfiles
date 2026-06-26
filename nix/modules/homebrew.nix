@@ -18,7 +18,7 @@
       "vesktop"
       "sioyek"
       "obs"
-      "kitty"
+      "ghostty"
       "aerospace"
       "anki"
       "figma"

@@ -55,7 +55,7 @@
 
             trust = {
               taps = [
-                "nikitabobko/tap"
+                "nikitabobko/homebrew-tap"
               ];
             };
           };

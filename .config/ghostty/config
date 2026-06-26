@@ -1,0 +1,53 @@
+theme = Black Metal (Gorgoroth)
+background-opacity = 0.85
+
+font-family       = Iosevka Term
+font-size         = 20
+adjust-cell-width = -5%
+
+window-decoration       = none
+mouse-hide-while-typing = true
+confirm-close-surface   = false
+copy-on-select          = clipboard
+
+
+keybind = super+t=text:\x02t
+
+keybind = super+digit_1=text:\x02\x31
+keybind = super+digit_2=text:\x02\x32
+keybind = super+digit_3=text:\x02\x33
+keybind = super+digit_4=text:\x02\x34
+keybind = super+digit_5=text:\x02\x35
+keybind = super+digit_6=text:\x02\x36
+keybind = super+digit_7=text:\x02\x37
+keybind = super+digit_8=text:\x02\x38
+keybind = super+digit_9=text:\x02\x39
+
+keybind = super+c=text:\x02c
+keybind = super+d=text:\x02x
+keybind = super+s=text:\x02s
+keybind = super+i=text:\x02i
+keybind = super+o=text:\x02o
+keybind = super+h=text:\x02h
+keybind = super+l=text:\x02l
+keybind = super+j=text:\x02j
+
+keybind = super+f=text:\x02f
+keybind = super+shift+h=text:\x02H
+keybind = super+shift+d=text:\x02D
+keybind = super+shift+c=text:\x02C
+keybind = super+shift+n=text:\x02N
+keybind = super+shift+p=text:\x02P
+keybind = super+shift+m=text:\x02M
+keybind = super+shift+s=text:\x02S
+keybind = super+shift+l=text:\x02L
+keybind = super+shift+o=text:\x02O
+
+keybind = super+p=text:\x02p
+keybind = super+shift+w=text:\x02W
+keybind = super+shift+g=text:\x02G
+keybind = super+g=text:\x02g
+keybind = super+y=text:\x02y
+keybind = super+n=text:\x02n
+keybind = super+shift+v=text:\x02V
+keybind = super+r=text:\x02r

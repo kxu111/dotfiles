@@ -13,7 +13,7 @@ exec-on-workspace-change = ['/bin/bash', '-c',
 persistent-workspaces=["1","2","3","4","5","6"]
 
 [mode.main.binding]
-alt-a = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh net.kovidgoyal.kitty 1'
+alt-a = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh com.mitchellh.ghostty 1'
 alt-b = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh org.mozilla.firefox 2'
 alt-d = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh dev.vencord.vesktop 3'
 alt-e = 'exec-and-forget $HOME/.config/scripts/aerospace-fixer.sh net.whatsapp.WhatsApp 3'

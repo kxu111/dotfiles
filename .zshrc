@@ -53,7 +53,7 @@ cursor_mode() {
 zle -N zle-keymap-select cursor_mode
 zle -N zle-line-init cursor_mode
 
-if [[ "$TERM" == "xterm-kitty" ]] then
+if [[ "$TERM" == "xterm-ghostty" ]] then
 	if ! command -v tmux &> /dev/null; then
 		exit 0
 	fi
