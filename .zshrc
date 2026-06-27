@@ -1,24 +1,16 @@
-precmd() {
-	local full="${(%):-%~}"
-	local parent="${full%/*}"
-	local current="${full##*/}"
-	if [[ "$parent" == "$current" ]]; then
-		PS1="%F{4}%B$current%b%f %F{15}\$%f "
-	else
-		PS1="%F{8}$parent/%F{4}$current%f %F{15}\$%f "
-	fi
-}
-
 alias neofetch='fastfetch -c examples/10.jsonc'
-alias random='fortune | cowsay -r | lolcat'
+
 alias nrs='sudo darwin-rebuild switch --flake ~/nix#air'
 alias nfu='sudo nix flake update --flake ~/nix'
+
 alias reload='source ~/.zshenv; source ~/.zshrc'
 alias cron-sync="crontab ~/.config/crontab"
+
 alias v='nvim'
 alias y='yazi'
 alias lg='lazygit'
 alias news='~/.config/scripts/add-news.sh'
+
 alias m='mkdir -p'
 alias cat='bat'
 alias eza='eza --icons --group-directories-first'
@@ -29,7 +21,6 @@ alias lla='eza -la'
 alias llh='eza -lh'
 alias llah='eza -lah'
 alias lt='eza --tree'
-alias cdr='source cd $(tmux run "echo #{pane_start_path}")'
 
 alias av='source .venv/bin/activate'
 alias dav='deactivate'
@@ -41,17 +32,6 @@ source <(fzf --zsh)
 
 eval "$(zoxide init zsh)"
 alias cd=''
-
-cursor_mode() {
-	if [[ ${KEYMAP} == vicmd ]]; then
-		printf '\033[1 q'  # Blinking block
-	else
-		printf '\033[5 q'  # Blinking line
-	fi
-}
-
-zle -N zle-keymap-select cursor_mode
-zle -N zle-line-init cursor_mode
 
 if [[ "$TERM" == "xterm-ghostty" ]] then
 	if ! command -v tmux &> /dev/null; then
@@ -90,3 +70,6 @@ _auto_venv
 export TEALDEER_CONFIG_DIR="$HOME/.config/tealdeer"
 export EDITOR=nvim
 export MANPAGER="nvim +Man!"
+
+export STARSHIP_CONFIG=~/.config/starship/starship.toml
+eval "$(starship init zsh)"

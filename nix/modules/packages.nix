@@ -17,7 +17,6 @@
     bat
     lazygit
     eza
-    starship
     timewarrior
     typst
     python3
@@ -26,17 +25,10 @@
     yt-dlp
     nodejs
     mpv
-    poppler
-    p7zip
-    resvg
     imagemagick
-    pastel
     cmake
-    asciiquarium
-    fortune
-    cowsay
-    lolcat
     fzf
+    starship
   ];
 
   fonts.packages = with pkgs; [

@@ -1,0 +1,36 @@
+add_newline = false
+
+format = """
+${custom.directory}\
+$fill\
+${custom.python}\
+${custom.git_branch}\
+$line_break\
+$character
+"""
+
+[custom.directory]
+command = "bash ~/.config/starship/custom/directory.sh"
+when = "true"
+format = "$output"
+unsafe_no_escape = true
+
+[custom.git_branch]
+command = "bash ~/.config/starship/custom/git_branch.sh"
+when = "true"
+format = "  $output"
+unsafe_no_escape = true
+
+[fill]
+symbol = " "
+
+[custom.python]
+command = "bash ~/.config/starship/custom/python.sh"
+when = "true"
+format = "  $output"
+unsafe_no_escape = true
+
+[character]
+success_symbol = '\$'
+error_symbol   = '\$'
+vicmd_symbol   = '[V](yellow bold)'
