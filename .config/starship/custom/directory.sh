@@ -1,6 +1,6 @@
 dark="$(tput setaf 8)"
-light="$(tput setaf 7)"
-reset="%{$(tput sgr0)%}"
+light="$(tput setaf 4)"
+reset="$(tput sgr0)"
 italic="$(tput sitm)"
 
 home="${HOME%/}"

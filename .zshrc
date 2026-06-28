@@ -73,3 +73,13 @@ export MANPAGER="nvim +Man!"
 
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
+
+cursor_mode() {
+	if [[ ${KEYMAP} == vicmd ]]; then
+		printf '\033[2 q'
+	else
+		printf '\033[6 q'
+	fi
+}
+zle -N zle-keymap-select cursor_mode
+zle -N zle-line-init cursor_mode

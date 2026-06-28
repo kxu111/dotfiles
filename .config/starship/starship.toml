@@ -27,10 +27,11 @@ symbol = " "
 [custom.python]
 command = "bash ~/.config/starship/custom/python.sh"
 when = "true"
-format = "  $output"
+format = "  $output "
 unsafe_no_escape = true
 
 [character]
-success_symbol = '\$'
-error_symbol   = '\$'
-vicmd_symbol   = '[V](yellow bold)'
+format = "$symbol "
+success_symbol   = '[λ](4)'
+error_symbol   = '[λ](4)'
+vicmd_symbol   = '[λ](4)'

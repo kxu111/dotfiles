@@ -25,7 +25,7 @@ if [ -z "$venv" ]; then
 fi
 
 if [ -n "$VIRTUAL_ENV" ] && [ "$VIRTUAL_ENV" = "$venv" ]; then
-    printf "%s%s %s" "$active" "$active" "$reset"
+    printf "%s%s%s" "$active" "$active" "$reset"
 else
-    printf "%s%s %s" "$inactive" "$inactive" "$reset"
+    printf "%s%s%s" "$inactive" "$inactive" "$reset"
 fi
