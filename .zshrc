@@ -13,14 +13,8 @@ alias news='~/.config/scripts/add-news.sh'
 
 alias m='mkdir -p'
 alias cat='bat'
-alias eza='eza --icons --group-directories-first'
-alias l='eza -l'
-alias ll='eza -l'
-alias la='eza -a'
-alias lla='eza -la'
-alias llh='eza -lh'
-alias llah='eza -lah'
-alias lt='eza --tree'
+alias ls='eza --icons --group-directories-first'
+alias tree='eza --tree'
 
 alias av='source .venv/bin/activate'
 alias dav='deactivate'
@@ -68,18 +62,6 @@ add-zsh-hook chpwd _auto_venv
 _auto_venv
 
 export TEALDEER_CONFIG_DIR="$HOME/.config/tealdeer"
-export EDITOR=nvim
 export MANPAGER="nvim +Man!"
 
-export STARSHIP_CONFIG=~/.config/starship/starship.toml
 eval "$(starship init zsh)"
-
-cursor_mode() {
-	if [[ ${KEYMAP} == vicmd ]]; then
-		printf '\033[2 q'
-	else
-		printf '\033[6 q'
-	fi
-}
-zle -N zle-keymap-select cursor_mode
-zle -N zle-line-init cursor_mode
