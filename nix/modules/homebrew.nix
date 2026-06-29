@@ -13,6 +13,7 @@
       "pkgconfig"
       "cairo"
       "raylib"
+      "pngpaste"
     ];
     casks = [
       "vesktop"
