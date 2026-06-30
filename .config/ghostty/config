@@ -1,22 +1,25 @@
-theme              = Black Metal (Gorgoroth)
+theme = Black Metal (Gorgoroth)
+
+# I keep transparency toggled off most of the time.
 background-opacity = 0.80
 background-blur    = 10
 keybind            = super+u=toggle_background_opacity
-# I keep transparency toggled off most of the time.
-
 
 font-family        = Iosevka Term
 font-size          = 20
 adjust-cell-width  = -5%
+font-shaping-break = 0
 
+cursor-style               = block
+cursor-style-blink         = false
+shell-integration-features = no-cursor
 
 window-decoration       = none
 mouse-hide-while-typing = true
 confirm-close-surface   = false
 copy-on-select          = clipboard
-font-shaping-break      = 0
 
-
+# tmux binds
 keybind = super+t=text:\x02t
 
 keybind = super+digit_1=text:\x02\x31
