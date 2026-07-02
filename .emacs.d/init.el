@@ -1,24 +1,31 @@
+;; annoyances
 (setq inhibit-startup-message t)
+(scroll-bar-mode 0)
+(tool-bar-mode 0)
+(tooltip-mode 0)
+(menu-bar-mode 0)
+(setq ring-bell-function 'ignore)
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file t))
 
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(tooltip-mode -1)
-(menu-bar-mode -1)
-(global-display-line-numbers-mode)
-
+;; mac fixes
+(setq mac-command-modifier 'meta
+      mac-option-modifier nil
+      mac-right-command-modifier 'super)
 (add-to-list 'default-frame-alist '(undecorated . t))
 (add-to-list 'default-frame-alist '(internal-border-width . 0))
 (add-to-list 'default-frame-alist '(left-fringe . 0))
 (add-to-list 'default-frame-alist '(right-fringe . 0))
-
 (setq frame-resize-pixelwise t)
 (add-hook 'window-setup-hook 'toggle-frame-maximized t)
 
-(setq ring-bell-function 'ignore)
-
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(when (file-exists-p custom-file)
-  (load custom-file t))
+;; builtin modes
+(column-number-mode 1)
+(global-display-line-numbers-mode 1)
+(setq display-line-numbers-type 'relative)
+(ido-mode 1)
+(ido-everywhere 1)
 
 (set-face-attribute 'default nil :font "Iosevka Term" :height 200)
 
@@ -35,59 +42,22 @@
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
                          ("org" . "https://orgmode.org/elpa/")
                          ("elpa" . "https://elpa.gnu.org/packages/")))
-
 (package-initialize)
 (unless package-archive-contents
- (package-refresh-contents))
-
-;; Initialize use-package on non-Linux platforms
+  (package-refresh-contents))
 (unless (package-installed-p 'use-package)
    (package-install 'use-package))
-
 (require 'use-package)
 (setq use-package-always-ensure t)
 
-(use-package diminish)
-
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done)	
-         ("C-l" . ivy-alt-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         :map ivy-switch-buffer-map
-         ("C-k" . ivy-previous-line)
-         ("C-l" . ivy-done)
-         ("C-d" . ivy-switch-buffer-kill)
-         :map ivy-reverse-i-search-map
-         ("C-k" . ivy-previous-line)
-         ("C-d" . ivy-reverse-i-search-kill))
-  :config
-  (ivy-mode 1))
-
-(global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
-
-(use-package counsel
-  :bind (("M-x" . counsel-M-x)
-	 ("C-x b" . counsel-ibuffer)
-	 ("C-x C-f" . counsel-find-file)
-	 :map minibuffer-local-map
-	 ("C-r" . 'counsel-minibuffer-history)))
-
-(use-package ivy-rich
-  :init (ivy-rich-mode))
-
-(use-package helpful
-  :custom
-  (counsel-describe-function-function #'helpful-callable)
-  (counsel-describe-variable-function #'helpful-variable)
-  :bind
-  ([remap describe-function] . counsel-describe-function)
-  ([remap describe-command] . helpful-command)
-  ([remap describe-variable] . counsel-describe-variable)
-  ([remap describe-key] . helpful-key))
-
 (use-package gruber-darker-theme)
-(load-theme 'gruber-darker t)
+(load-theme 'gruber-darker)
+
+;; (use-package zenburn-theme)
+;; (load-theme 'zenburn)
+
+;; ido mode for M-x
+(use-package smex
+:bind (("M-x" . smex)
+       ("M-X" . smex-major-mode-commands)
+       ("C-c C-c M-x" . execute-extended-command)))

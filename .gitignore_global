@@ -1,0 +1,11 @@
+# Emacs
+*~
+\#*\#
+.\#*
+#*#
+.#*
+*.elc
+custom.el
+
+# MacOS
+.DS_Store

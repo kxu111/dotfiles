@@ -10,7 +10,8 @@ bash <(curl -sSL https://spotx-official.github.io/run.sh)
 source ~/.zshenv
 source ~/.zshrc
 rustup default stable
-crontab ~/.config/cron/crontab
+crontab ~/.config/crontab
 bat cache --build
 open -a AeroSpace
+git config --global core.excludesfile ~/.gitignore_global
 echo "REMINDER TO DISABLE SPOTLIGHT AND GAME OVERLAY KEYBIND"
