@@ -27,6 +27,7 @@
       "raycast"
       "firefox"
       "obsidian"
+      "emacs-plus-app"
     ];
     masApps = {
       "Davinci Resolve" = 571213070;

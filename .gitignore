@@ -1,6 +1,8 @@
 .DS_STORE
 .config/cron/logs/*
 Pictures/Screenshots/*
+init.el~
+custom.el~
 
 
 !.gitkeep

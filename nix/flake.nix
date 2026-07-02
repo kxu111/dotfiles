@@ -19,6 +19,10 @@
       url = "github:nikitabobko/homebrew-tap";
       flake = false;
     };
+    emacs = {
+      url = "github:d12frosted/homebrew-emacs-plus";
+      flake = false;
+    };
   };
 
   outputs = inputs @ {
@@ -29,6 +33,7 @@
     homebrew-core,
     homebrew-cask,
     aerospace,
+    emacs,
     ...
   }: {
     darwinConfigurations."air" = nix-darwin.lib.darwinSystem {
@@ -49,6 +54,7 @@
               "homebrew/homebrew-core" = homebrew-core;
               "homebrew/homebrew-cask" = homebrew-cask;
               "nikitabobko/homebrew-tap" = aerospace;
+              "d12frosted/homebrew-emacs-plus" = emacs;
             };
 
             mutableTaps = false;
@@ -56,6 +62,7 @@
             trust = {
               taps = [
                 "nikitabobko/homebrew-tap"
+                "d12frosted/homebrew-emacs-plus"
               ];
             };
           };

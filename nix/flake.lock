@@ -33,6 +33,22 @@
         "type": "github"
       }
     },
+    "emacs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1782969044,
+        "narHash": "sha256-uPs06SoSTNY3lhlHRLp9ZLb2dC4A9IRGTJdqV9ixIK4=",
+        "owner": "d12frosted",
+        "repo": "homebrew-emacs-plus",
+        "rev": "fe06d0b5315a7fe0b103f11da741ee0e36130884",
+        "type": "github"
+      },
+      "original": {
+        "owner": "d12frosted",
+        "repo": "homebrew-emacs-plus",
+        "type": "github"
+      }
+    },
     "homebrew-cask": {
       "flake": false,
       "locked": {
@@ -123,6 +139,7 @@
     "root": {
       "inputs": {
         "aerospace": "aerospace",
+        "emacs": "emacs",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
         "nix-darwin": "nix-darwin",
