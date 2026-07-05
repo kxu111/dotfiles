@@ -9,7 +9,7 @@
 (set-face-attribute 'default nil :font "Iosevka Term" :height 200)
 (setq vc-follow-symlinks t)
 
-;;; mac windowing fixes
+;;; mac fixes
 (add-to-list 'default-frame-alist '(undecorated . t))
 (add-to-list 'default-frame-alist '(internal-border-width . 0))
 (add-to-list 'default-frame-alist '(left-fringe . 0))
@@ -17,11 +17,20 @@
 (setq frame-resize-pixelwise t)
 (add-hook 'window-setup-hook 'toggle-frame-maximized t)
 
-;;; enable builtin modes
+;;; builtin modes
 (column-number-mode)
 (global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
 (fido-mode)
+
+;;; term configs
+;; auto-kill term buffer on exits
+(add-hook 'term-exec-hook
+          (lambda ()
+            (set-process-sentinel (get-buffer-process (current-buffer))
+                                  (lambda (proc event)
+                                    (when (string-match "finished" event)
+                                      (kill-buffer (process-buffer proc)))))))
 
 ;;; keybinds
 (setq mac-command-modifier 'meta
@@ -34,6 +43,7 @@
                   (duplicate-line)
                   (next-line)))
 
+;;; packages
 ;; stolen from @TsodingDaily on yt. it autoinstalls pkgs
 (load (expand-file-name "rc.el" user-emacs-directory))
 
@@ -50,7 +60,7 @@
 (global-set-key (kbd "C-\"")        'mc/skip-to-next-like-this)
 (global-set-key (kbd "C-:")         'mc/skip-to-previous-like-this)
 
-;;; simple c mode
+;;; simple c mode - https://github.com/rexim/simpc-mode/
 (add-to-list 'load-path (expand-file-name "simpc-mode/" user-emacs-directory))
 (require 'simpc-mode)
 (add-to-list 'auto-mode-alist '("\\.[hc]\\(pp\\)?\\'" . simpc-mode))

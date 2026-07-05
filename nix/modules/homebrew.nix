@@ -11,9 +11,7 @@
       "mas"
       "mole"
       "pkgconfig"
-      "cairo"
       "raylib"
-      "pngpaste"
     ];
     casks = [
       "vesktop"
@@ -23,7 +21,6 @@
       "aerospace"
       "anki"
       "figma"
-      "adobe-creative-cloud"
       "raycast"
       "firefox"
       "emacs-plus-app"

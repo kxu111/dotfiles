@@ -9,26 +9,18 @@
     ripgrep
     rustup
     tmux
-    tealdeer
     fd
     zoxide
-    yazi
     newsboat
-    bat
-    lazygit
-    eza
     timewarrior
     typst
     python3
     uv
-    delta
     yt-dlp
     nodejs
     mpv
-    imagemagick
-    cmake
     fzf
-    starship
+    yazi
   ];
 
   fonts.packages = with pkgs; [

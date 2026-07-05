@@ -1,26 +1,13 @@
 alias neofetch='fastfetch -c examples/10.jsonc'
-
 alias nrs='sudo darwin-rebuild switch --flake ~/nix#air'
 alias nfu='sudo nix flake update --flake ~/nix'
-
 alias reload='source ~/.zshenv; source ~/.zshrc'
 alias cron-sync="crontab ~/.config/crontab"
-
 alias v='nvim'
-alias y='yazi'
-alias lg='lazygit'
 alias news='~/.config/scripts/add-news.sh'
-
 alias m='mkdir -p'
-alias cat='bat'
-alias ls='eza --icons --group-directories-first'
-alias tree='eza --tree'
-
+alias ls='ls --color=always'
 alias av='source .venv/bin/activate'
-alias dav='deactivate'
-
-bindkey -v
-KEYTIMEOUT=1
 
 source <(fzf --zsh)
 
@@ -34,34 +21,7 @@ if [[ "$TERM" == "xterm-ghostty" ]] then
 	tmux attach-session 2>/dev/null || tmux new-session -s "$(whoami)"
 fi
 
-autoload -U add-zsh-hook
-_auto_venv() {
-	local search="$PWD"
-	local found=""
-	while [[ "$search" != "/" ]]; do
-		if [[ -f "$search/.venv/bin/activate" ]]; then
-			found="$search/.venv"
-			break
-		fi
-		search="${search:h}"
-	done
-	if [[ -n "$found" ]]; then
-		if [[ "${VIRTUAL_ENV:-}" != "$found" ]]; then
-			if [[ -n "${VIRTUAL_ENV:-}" ]] && typeset -f deactivate >/dev/null 2>&1; then
-				deactivate >/dev/null 2>&1 || true
-			fi
-			source "$found/bin/activate"
-		fi
-	else
-		if [[ -n "${VIRTUAL_ENV:-}" ]] && typeset -f deactivate >/dev/null 2>&1; then
-			deactivate >/dev/null 2>&1 || true
-		fi
-	fi
-}
-add-zsh-hook chpwd _auto_venv
-_auto_venv
-
 export TEALDEER_CONFIG_DIR="$HOME/.config/tealdeer"
 export MANPAGER="nvim +Man!"
 
-eval "$(starship init zsh)"
+PROMPT="%~ $ "
