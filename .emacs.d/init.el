@@ -26,7 +26,7 @@
 
 (fido-vertical-mode)
 
-(setq compile-command "")
+y(setq compile-command "")
 
 ;; auto-kill term buffer on exits
 (add-hook 'term-exec-hook
@@ -75,7 +75,7 @@
 (rc/require 'company)
 (global-company-mode)
 
-;;; yasnippet
+;; ;;; yasnippet
 ;; (rc/require 'yasnippet)
 ;; (setq yas-snippet-dirs (expand-file-name "snippets/" user-emacs-directory))
 ;; (yas-global-mode)
