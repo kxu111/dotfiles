@@ -1,4 +1,3 @@
-;; annoyances
 (setq inhibit-startup-message t)
 (scroll-bar-mode 0)
 (tool-bar-mode 0)
@@ -6,13 +5,11 @@
 (menu-bar-mode 0)
 (setq ring-bell-function 'ignore)
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(when (file-exists-p custom-file)
-  (load custom-file t))
+(load custom-file)
+(set-face-attribute 'default nil :font "Iosevka Term" :height 200)
+(setq vc-follow-symlinks t)
 
-;; mac fixes
-(setq mac-command-modifier 'meta
-      mac-option-modifier nil
-      mac-right-command-modifier 'super)
+;;; mac windowing fixes
 (add-to-list 'default-frame-alist '(undecorated . t))
 (add-to-list 'default-frame-alist '(internal-border-width . 0))
 (add-to-list 'default-frame-alist '(left-fringe . 0))
@@ -20,44 +17,40 @@
 (setq frame-resize-pixelwise t)
 (add-hook 'window-setup-hook 'toggle-frame-maximized t)
 
-;; builtin modes
-(column-number-mode 1)
-(global-display-line-numbers-mode 1)
+;;; enable builtin modes
+(column-number-mode)
+(global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
-(ido-mode 1)
-(ido-everywhere 1)
+(fido-mode)
 
-(set-face-attribute 'default nil :font "Iosevka Term" :height 200)
+;;; keybinds
+(setq mac-command-modifier 'meta
+      mac-option-modifier nil
+      mac-right-command-modifier 'super)
 
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(global-set-key (kbd "C-,") 
+                (lambda ()
+                  (interactive)
+                  (duplicate-line)
+                  (next-line)))
 
-(defun duplicate-line-and-next ()
-  (interactive)
-  (duplicate-line 1)
-  (next-line 1))
-(global-set-key (kbd "C-,") 'duplicate-line-and-next)
+;; stolen from @TsodingDaily on yt. it autoinstalls pkgs
+(load (expand-file-name "rc.el" user-emacs-directory))
 
-;; initialize package sources
-(require 'package)
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("org" . "https://orgmode.org/elpa/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
-(package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
-(unless (package-installed-p 'use-package)
-   (package-install 'use-package))
-(require 'use-package)
-(setq use-package-always-ensure t)
+(rc/require-theme 'gruber-darker)
+(rc/require 'magit)
+(rc/require 'nix-mode)
 
-(use-package gruber-darker-theme)
-(load-theme 'gruber-darker)
+;;; multiple cursors
+(rc/require 'multiple-cursors)
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+(global-set-key (kbd "C->")         'mc/mark-next-like-this)
+(global-set-key (kbd "C-<")         'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this)
+(global-set-key (kbd "C-\"")        'mc/skip-to-next-like-this)
+(global-set-key (kbd "C-:")         'mc/skip-to-previous-like-this)
 
-;; (use-package zenburn-theme)
-;; (load-theme 'zenburn)
-
-;; ido mode for M-x
-(use-package smex
-:bind (("M-x" . smex)
-       ("M-X" . smex-major-mode-commands)
-       ("C-c C-c M-x" . execute-extended-command)))
+;;; simple c mode
+(add-to-list 'load-path (expand-file-name "simpc-mode/" user-emacs-directory))
+(require 'simpc-mode)
+(add-to-list 'auto-mode-alist '("\\.[hc]\\(pp\\)?\\'" . simpc-mode))

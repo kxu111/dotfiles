@@ -26,7 +26,6 @@
       "adobe-creative-cloud"
       "raycast"
       "firefox"
-      "obsidian"
       "emacs-plus-app"
     ];
     masApps = {
