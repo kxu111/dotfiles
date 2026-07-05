@@ -18,12 +18,16 @@
 (add-hook 'window-setup-hook 'toggle-frame-maximized t)
 
 ;;; builtin modes
-(column-number-mode)
 (global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
-(fido-mode)
+;; disable linenrs for certain modes
+(dolist (mode '(term-mode-hook))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-;;; term configs
+(fido-vertical-mode)
+
+(setq compile-command "")
+
 ;; auto-kill term buffer on exits
 (add-hook 'term-exec-hook
           (lambda ()
@@ -37,6 +41,8 @@
       mac-option-modifier nil
       mac-right-command-modifier 'super)
 
+(global-set-key (kbd "<escape>") 'ignore)
+
 (global-set-key (kbd "C-,") 
                 (lambda ()
                   (interactive)
@@ -45,7 +51,7 @@
 
 ;;; packages
 ;; stolen from @TsodingDaily on yt. it autoinstalls pkgs
-(load (expand-file-name "rc.el" user-emacs-directory))
+(load (expand-file-name "modules/rc.el" user-emacs-directory))
 
 (rc/require-theme 'gruber-darker)
 (rc/require 'magit)
@@ -61,6 +67,15 @@
 (global-set-key (kbd "C-:")         'mc/skip-to-previous-like-this)
 
 ;;; simple c mode - https://github.com/rexim/simpc-mode/
-(add-to-list 'load-path (expand-file-name "simpc-mode/" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "modules/" user-emacs-directory))
 (require 'simpc-mode)
 (add-to-list 'auto-mode-alist '("\\.[hc]\\(pp\\)?\\'" . simpc-mode))
+
+;;; company
+(rc/require 'company)
+(global-company-mode)
+
+;;; yasnippet
+;; (rc/require 'yasnippet)
+;; (setq yas-snippet-dirs (expand-file-name "snippets/" user-emacs-directory))
+;; (yas-global-mode)
