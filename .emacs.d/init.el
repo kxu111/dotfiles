@@ -24,7 +24,7 @@
 (dolist (mode '(term-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-(fido-vertical-mode)
+(fido-mode)
 
 (setq compile-command "")
 
