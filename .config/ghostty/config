@@ -1,10 +1,5 @@
 theme = Black Metal (Gorgoroth)
 
-# I keep transparency toggled off most of the time.
-background-opacity = 0.80
-background-blur    = 10
-keybind            = super+u=toggle_background_opacity
-
 font-family        = Iosevka Term
 font-size          = 20
 adjust-cell-width  = -5%

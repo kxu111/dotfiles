@@ -5,7 +5,7 @@
 (menu-bar-mode 0)
 (setq ring-bell-function 'ignore)
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
+(package-initialize)
 (set-face-attribute 'default nil :font "Iosevka Term" :height 200)
 (setq vc-follow-symlinks t)
 
@@ -20,21 +20,8 @@
 ;;; builtin modes
 (global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
-;; disable linenrs for certain modes
-(dolist (mode '(term-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
-
 (fido-mode)
-
 (setq compile-command "")
-
-;; auto-kill term buffer on exits
-(add-hook 'term-exec-hook
-          (lambda ()
-            (set-process-sentinel (get-buffer-process (current-buffer))
-                                  (lambda (proc event)
-                                    (when (string-match "finished" event)
-                                      (kill-buffer (process-buffer proc)))))))
 
 ;;; keybinds
 (setq mac-command-modifier 'meta
@@ -51,7 +38,8 @@
 
 ;;; packages
 ;; stolen from @TsodingDaily on yt. it autoinstalls pkgs
-(load (expand-file-name "modules/rc.el" user-emacs-directory))
+(add-to-list 'load-path (expand-file-name "modules/" user-emacs-directory))
+(require 'rc)
 
 (rc/require-theme 'gruber-darker)
 (rc/require 'magit)
@@ -67,7 +55,6 @@
 (global-set-key (kbd "C-:")         'mc/skip-to-previous-like-this)
 
 ;;; simple c mode - https://github.com/rexim/simpc-mode/
-(add-to-list 'load-path (expand-file-name "modules/" user-emacs-directory))
 (require 'simpc-mode)
 (add-to-list 'auto-mode-alist '("\\.[hc]\\(pp\\)?\\'" . simpc-mode))
 
@@ -79,3 +66,6 @@
 ;; (rc/require 'yasnippet)
 ;; (setq yas-snippet-dirs (expand-file-name "snippets/" user-emacs-directory))
 ;; (yas-global-mode)
+
+(when (file-exists-p custom-file)
+  (load custom-file))
