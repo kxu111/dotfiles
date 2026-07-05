@@ -22,6 +22,20 @@
 (setq display-line-numbers-type 'relative)
 (fido-mode)
 (setq compile-command "")
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+
+;;; Whitespace mode
+(setq whitespace-style
+      (quote
+       (face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark)))
+
+(defun rc/set-up-whitespace-handling ()
+  (interactive)
+  (whitespace-mode 1)
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace))
+
+(add-hook 'prog-mode-hook 'rc/set-up-whitespace-handling)
 
 ;;; keybinds
 (setq mac-command-modifier 'meta
@@ -30,7 +44,7 @@
 
 (global-set-key (kbd "<escape>") 'ignore)
 
-(global-set-key (kbd "C-,") 
+(global-set-key (kbd "C-,")
                 (lambda ()
                   (interactive)
                   (duplicate-line)
