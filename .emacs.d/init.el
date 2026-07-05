@@ -26,7 +26,7 @@
 
 (fido-vertical-mode)
 
-y(setq compile-command "")
+(setq compile-command "")
 
 ;; auto-kill term buffer on exits
 (add-hook 'term-exec-hook
