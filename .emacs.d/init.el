@@ -10,10 +10,8 @@
 (setq vc-follow-symlinks t)
 
 ;;; mac fixes
-(add-to-list 'default-frame-alist '(undecorated . t))
-;; (add-to-list 'default-frame-alist '(internal-border-width . 0))
-;; (add-to-list 'default-frame-alist '(left-fringe . 0))
-;; (add-to-list 'default-frame-alist '(right-fringe . 0))
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist '(ns-appearance . dark))
 (setq frame-resize-pixelwise t)
 (add-hook 'window-setup-hook 'toggle-frame-maximized t)
 
@@ -24,15 +22,8 @@
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 
-;;; Whitespace mode
-(setq whitespace-style
-      (quote
-       (face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark)))
-;; (global-whitespace-mode t)
-
 (add-hook 'prog-mode-hook (lambda ()
                             (interactive)
-                            ;; (display-line-numbers-mode t)
                             (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
 
 ;;; keybinds
@@ -75,10 +66,10 @@
 (rc/require 'company)
 (global-company-mode t)
 
-;; ;;; yasnippet
-;; (rc/require 'yasnippet)
-;; (setq yas-snippet-dirs (expand-file-name "snippets/" user-emacs-directory))
-;; (yas-global-mode)
+;;; move text
+(rc/require 'move-text)
+(global-set-key (kbd "M-p") 'move-text-up)
+(global-set-key (kbd "M-n") 'move-text-down)
 
 (when (file-exists-p custom-file)
   (load custom-file))
