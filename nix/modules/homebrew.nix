@@ -22,7 +22,7 @@
       "anki"
       "figma"
       "raycast"
-      "firefox"
+      "helium-browser"
       "emacs-plus-app"
     ];
     masApps = {

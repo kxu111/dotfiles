@@ -10,7 +10,7 @@
       minimize-to-application = true;
       persistent-apps = [
         "/Applications/Emacs.app"
-        "/Applications/Firefox.app"
+        "/Applications/Helium.app"
         "/Applications/Vesktop.app"
         "/Applications/WhatsApp.app"
         "/Applications/Spotify.app"
