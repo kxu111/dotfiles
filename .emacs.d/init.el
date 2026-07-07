@@ -1,8 +1,8 @@
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+(tooltip-mode -1)
+(menu-bar-mode -1)
 (setq inhibit-startup-message t)
-(scroll-bar-mode 0)
-(tool-bar-mode 0)
-(tooltip-mode 0)
-(menu-bar-mode 0)
 (setq ring-bell-function 'ignore)
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (package-initialize)
@@ -11,16 +11,15 @@
 
 ;;; mac fixes
 (add-to-list 'default-frame-alist '(undecorated . t))
-(add-to-list 'default-frame-alist '(internal-border-width . 0))
-(add-to-list 'default-frame-alist '(left-fringe . 0))
-(add-to-list 'default-frame-alist '(right-fringe . 0))
+;; (add-to-list 'default-frame-alist '(internal-border-width . 0))
+;; (add-to-list 'default-frame-alist '(left-fringe . 0))
+;; (add-to-list 'default-frame-alist '(right-fringe . 0))
 (setq frame-resize-pixelwise t)
 (add-hook 'window-setup-hook 'toggle-frame-maximized t)
 
 ;;; builtin modes
-(global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
-(fido-mode)
+(fido-mode t)
 (setq compile-command "")
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
@@ -29,13 +28,12 @@
 (setq whitespace-style
       (quote
        (face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark)))
+;; (global-whitespace-mode t)
 
-(defun rc/set-up-whitespace-handling ()
-  (interactive)
-  (whitespace-mode 1)
-  (add-to-list 'write-file-functions 'delete-trailing-whitespace))
-
-(add-hook 'prog-mode-hook 'rc/set-up-whitespace-handling)
+(add-hook 'prog-mode-hook (lambda ()
+                            (interactive)
+                            ;; (display-line-numbers-mode t)
+                            (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
 
 ;;; keybinds
 (setq mac-command-modifier 'meta
@@ -55,7 +53,8 @@
 (add-to-list 'load-path (expand-file-name "modules/" user-emacs-directory))
 (require 'rc)
 
-(rc/require-theme 'gruber-darker)
+(load-theme 'modus-operandi t)
+
 (rc/require 'magit)
 (rc/require 'nix-mode)
 
@@ -74,7 +73,7 @@
 
 ;;; company
 (rc/require 'company)
-(global-company-mode)
+(global-company-mode t)
 
 ;; ;;; yasnippet
 ;; (rc/require 'yasnippet)
