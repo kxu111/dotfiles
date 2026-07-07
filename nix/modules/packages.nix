@@ -25,5 +25,7 @@
 
   fonts.packages = with pkgs; [
     iosevka-bin
+    jetbrains-mono
+    roboto-mono
   ];
 }
