@@ -1,101 +1,114 @@
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(tooltip-mode -1)
-(menu-bar-mode -1)
-(blink-cursor-mode -1)
-(setq inhibit-startup-message t)
-(setq ring-bell-function 'ignore)
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+;;; setup use-package
+(require 'package)
+
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
+                         ;; ("org" . "https://orgmode.org/elpa/")
+                         ("elpa" . "https://elpa.gnu.org/packages/")))
+
 (package-initialize)
-(setq vc-follow-symlinks t)
-(set-face-font 'default "Iosevka 20")
+(unless package-archive-contents
+ (package-refresh-contents))
 
-;;; mac fixes
-(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-(setq frame-resize-pixelwise t)
-(add-hook 'window-setup-hook 'toggle-frame-maximized t)
+(unless (package-installed-p 'use-package)
+   (package-install 'use-package))
 
-;;; builtin modes
-(global-display-line-numbers-mode t)
-(setq display-line-numbers-type 'relative)
-(fido-mode t)
-(setq compile-command "")
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(delete-selection-mode t)
-(setq whitespace-style
-      (quote
-       (face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark)))
-(add-hook 'prog-mode-hook (lambda ()
-                            (interactive)
-                            (whitespace-mode t)
-                            (add-to-list 'write-file-functions 'delete-trailing-whitespace)))
-(global-hl-line-mode t)
-(fringe-mode '(0 . 0))
+(require 'use-package)
+(setq use-package-always-ensure t)
 
-;;; keybinds
-(setq mac-command-modifier 'meta
-      mac-option-modifier nil
-      mac-right-command-modifier 'super)
+;;; basic emacs config. remember to press C-h for help!!
+(use-package emacs
+  :init
+  (setq frame-resize-pixelwise t
+        use-short-answers t
+        ring-bell-function 'ignore
+        inhibit-startup-message t
+        custom-file (expand-file-name "custom.el" user-emacs-directory)
+        vc-follow-symlinks t
+        custom-safe-themes t
+        whitespace-style (quote (face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark))
+        compile-command ""
+        mac-command-modifier 'meta
+        mac-option-modifier nil
+        mac-right-command-modifier 'super)
 
-(global-set-key (kbd "<escape>") 'ignore)
+  :config
+  (set-face-font 'default "Iosevka 20")
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (setq-default display-line-numbers-width 3
+                indent-tabs-mode nil
+                tab-width 4)
 
-(global-set-key (kbd "C-,")
-                (lambda ()
-                  (interactive)
-                  (duplicate-line)
-                  (next-line)))
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (tooltip-mode -1)
+  (menu-bar-mode -1)
+  (blink-cursor-mode -1)
+  (column-number-mode t)
+  (fido-mode t)
+  (delete-selection-mode t)
+  (global-hl-line-mode t)
+  (fringe-mode '(0 . 0))
 
-;;; packages
-;; stolen from @TsodingDaily on yt. it autoinstalls pkgs
-(add-to-list 'load-path (expand-file-name "modules/" user-emacs-directory))
-(require 'rc)
+  ;;; credit @JakeBox0 on YT
+  (setq-default mode-line-format '(" %* "
+                                   (:eval (propertize (buffer-name)) 'face 'font-lock-constant-face)
+                                   "%6l:%c (%o) "
+                                   (:eval (unless (not vc-mode) (concat " | ⇅ " (substring-no-properties vc-mode 5))))
+                                   mode-line-format-right-align
+                                   (:eval (concat "  " (symbol-name major-mode)))
+                                   "  " mode-line-misc-info))
 
-(rc/require 'doom-themes)
-(load-theme 'doom-monokai-pro t)
+  :bind
+  (("C-," . (lambda ()
+              (interactive)
+              (duplicate-line)
+              (next-line))))
 
-(rc/require 'magit)
-(rc/require 'nix-mode
-            'rust-mode)
+  :hook
+  ((window-setup . toggle-frame-maximized)
+   (prog-mode . display-line-numbers-mode)
+   (prog-mode . (lambda ()
+                  (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))))
 
-;;; multiple cursors
-(rc/require 'multiple-cursors)
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-(global-set-key (kbd "C->")         'mc/mark-next-like-this)
-(global-set-key (kbd "C-<")         'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-<")     'mc/mark-all-like-this)
-(global-set-key (kbd "C-\"")        'mc/skip-to-next-like-this)
-(global-set-key (kbd "C-:")         'mc/skip-to-previous-like-this)
+(use-package doom-themes)
+(load-theme 'doom-dark+ t)
 
-;;; simple c mode - https://github.com/rexim/simpc-mode/
-(require 'simpc-mode)
-(add-to-list 'auto-mode-alist '("\\.[hc]\\(pp\\)?\\'" . simpc-mode))
+(use-package magit)
 
-;;; company
-(rc/require 'company)
-(global-company-mode t)
+(use-package nix-mode)
 
-;;; move text
-(rc/require 'move-text)
-(global-set-key (kbd "M-p") 'move-text-up)
-(global-set-key (kbd "M-n") 'move-text-down)
+(use-package multiple-cursors
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+         ("C->"         . mc/mark-next-like-this)
+         ("C-<"         . mc/mark-previous-like-this)
+         ("C-c C-<"     . mc/mark-all-like-this)
+         ("C-\""        . mc/skip-to-next-like-this)
+         ("C-:"         . mc/skip-to-previous-like-this))
+  :custom (mc/always-run-for-all t))
 
-;;; modeline
-(rc/require 'moody)
-(moody-replace-mode-line-front-space)
-(moody-replace-mode-line-buffer-identification)
-(moody-replace-vc-mode)
+(use-package company
+  :config (global-company-mode t))
 
-(rc/require 'minions)
-(setq minions-mode-line-lighter ""
-      minions-mode-line-delimiters '("" . ""))
-(minions-mode t)
+(use-package move-text
+  :bind (("M-p" . move-text-up)
+         ("M-n" . move-text-down)))
 
-;;; org-mode
-(rc/require 'org-bullets)
-(setq org-use-speed-commands t
-      org-startup-indented t)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode t)))
+(use-package centered-cursor-mode
+  :config (global-centered-cursor-mode t))
+
+(use-package simpc-mode
+  :vc (:url "https://github.com/rexim/simpc-mode")
+  :mode "\\.[hc]\\(pp\\)?\\'"
+  :config (simpc-mode))
+
+;;; orgmode
+(use-package org
+  :custom ((org-use-speed-commands t)
+           (org-startup-indented t))
+  :hook ((org-mode . visual-line-mode)))
+
+(use-package org-bullets
+  :hook ((org-mode . org-bullets-mode)))
 
 (when (file-exists-p custom-file)
   (load custom-file))
