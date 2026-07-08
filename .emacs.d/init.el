@@ -57,10 +57,9 @@
   (menu-bar-mode -1)
   (blink-cursor-mode -1)
   (column-number-mode t)
-  (fido-mode t)
   (delete-selection-mode t)
   (global-hl-line-mode t)
-  (fringe-mode '(0 . 0))
+  (fringe-mode '(4 . 4))
 
   ;; credit @JakeBox0 on YT
   (setq-default mode-line-format '(" -%*- "
@@ -72,7 +71,8 @@
                                    "  " mode-line-misc-info))
 
   :bind
-  (("C-," . (lambda ()
+  (("M-i" . find-file)
+   ("C-," . (lambda ()
               (interactive)
               (duplicate-line)
               (next-line))))
@@ -96,9 +96,6 @@
          ("C-\""        . mc/skip-to-next-like-this)
          ("C-:"         . mc/skip-to-previous-like-this))
   :custom (mc/always-run-for-all t))
-
-(use-package company
-  :config (global-company-mode t))
 
 (use-package move-text
   :bind (("M-p" . move-text-up)
@@ -128,3 +125,42 @@
 (use-package emacs
   :hook ((prog-mode-hook . display-line-numbers-mode)))
 ;;; --- end prog-mode ---
+
+;;; --- start completions ---
+(use-package vertico
+  :config
+  (vertico-mode)
+  (vertico-multiform-mode)
+  :custom
+  (vertico-multiform-commands ; Customize display per-command
+   '((execute-extended-command flat)
+     (describe-function flat)
+     (describe-variable flat)
+     (describe-symbol flat)))
+  (vertico-resize t)
+  (vertico-count 15))
+
+(use-package consult
+  :bind (("M-o" . consult-buffer)
+         ("C-s" . consult-line))
+  :config
+  ;; `consult-switch-buffer' customization
+  (delq 'consult--source-recent-file consult-buffer-sources) ; don't display recent files
+  (add-to-list 'consult-buffer-filter "\\`\\*.*\\*\\'")      ; hide everything with * *
+  (consult-customize consult-buffer :group nil))
+
+(use-package marginalia :config (marginalia-mode))
+
+(use-package orderless :config (setq completion-styles '(orderless basic)))
+
+(use-package corfu
+  :config
+  (global-corfu-mode)
+  (corfu-popupinfo-mode)
+  :custom
+  (corfu-auto t)
+  (corfu-count 8)
+  (corfu-auto-prefix 2))
+
+;; (use-package corfu-terminal :hook (corfu-mode . corfu-terminal-mode))
+;;; --- end completions ---
