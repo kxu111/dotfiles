@@ -1,28 +1,41 @@
-;;; setup use-package
-(require 'package)
+;; bootstrap straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ;; ("org" . "https://orgmode.org/elpa/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
+(straight-use-package 'use-package)
 
-(package-initialize)
-(unless package-archive-contents
- (package-refresh-contents))
-
-(unless (package-installed-p 'use-package)
-   (package-install 'use-package))
-
-(require 'use-package)
-(setq use-package-always-ensure t)
+(use-package straight
+  :custom
+  (straight-use-package-by-default t)
+  (straight-current-profile 'base)
+  (straight-vc-git-default-protocol 'ssh)
+  :config
+  (setq straight-profiles
+        `((base . "~/dotfiles/.emacs.d/straight.lockfile.base.el")
+          (programming . "~/dotfiles/.emacs.d/straight.lockfile.programming.el"))))
 
 ;;; basic emacs config. remember to press C-h for help!!
 (use-package emacs
   :init
+  (set-face-font 'default "Iosevka 20")
+
   (setq frame-resize-pixelwise t
         use-short-answers t
         ring-bell-function 'ignore
         inhibit-startup-message t
-        custom-file (expand-file-name "custom.el" user-emacs-directory)
         vc-follow-symlinks t
         custom-safe-themes t
         whitespace-style (quote (face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark))
@@ -32,8 +45,8 @@
         mac-right-command-modifier 'super)
 
   :config
-  (set-face-font 'default "Iosevka 20")
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+
   (setq-default display-line-numbers-width 3
                 indent-tabs-mode nil
                 tab-width 4)
@@ -49,8 +62,8 @@
   (global-hl-line-mode t)
   (fringe-mode '(0 . 0))
 
-  ;;; credit @JakeBox0 on YT
-  (setq-default mode-line-format '(" %* "
+  ;; credit @JakeBox0 on YT
+  (setq-default mode-line-format '(" -%*- "
                                    (:eval (propertize (buffer-name)) 'face 'font-lock-constant-face)
                                    "%6l:%c (%o) "
                                    (:eval (unless (not vc-mode) (concat " | ⇅ " (substring-no-properties vc-mode 5))))
@@ -66,16 +79,14 @@
 
   :hook
   ((window-setup . toggle-frame-maximized)
-   (prog-mode . display-line-numbers-mode)
-   (prog-mode . (lambda ()
-                  (add-hook 'before-save-hook 'delete-trailing-whitespace nil t)))))
+   (before-save . delete-trailing-whitespace)))
+
+;;; actual packages
 
 (use-package doom-themes)
 (load-theme 'doom-dark+ t)
 
 (use-package magit)
-
-(use-package nix-mode)
 
 (use-package multiple-cursors
   :bind (("C-S-c C-S-c" . mc/edit-lines)
@@ -93,22 +104,27 @@
   :bind (("M-p" . move-text-up)
          ("M-n" . move-text-down)))
 
-(use-package centered-cursor-mode
-  :config (global-centered-cursor-mode t))
-
-(use-package simpc-mode
-  :vc (:url "https://github.com/rexim/simpc-mode")
-  :mode "\\.[hc]\\(pp\\)?\\'"
-  :config (simpc-mode))
-
-;;; orgmode
+;;; --- start org-mode ---
 (use-package org
-  :custom ((org-use-speed-commands t)
-           (org-startup-indented t))
-  :hook ((org-mode . visual-line-mode)))
+  :straight (:host github :repo "bzg/org-mode"
+                   :branch "main")
+  :hook (org-mode . visual-line-mode)
+  :custom
+  (org-use-speed-commands t)
+  (org-ellipsis "…")
+  (org-startup-indented t)
+  (org-cycle-separator-lines 1)
+  (org-hide-emphasis-markers t))
 
 (use-package org-bullets
-  :hook ((org-mode . org-bullets-mode)))
+  :hook (org-mode . org-bullets-mode))
+;;; --- end org-mode ---
 
-(when (file-exists-p custom-file)
-  (load custom-file))
+;;; --- start prog-mode ---
+(let ((straight-current-profile 'programming)
+	  (f (expand-file-name "programming.el" user-emacs-directory)))
+  (when (file-exists-p f) (load f)))
+
+(use-package emacs
+  :hook ((prog-mode-hook . display-line-numbers-mode)))
+;;; --- end prog-mode ---

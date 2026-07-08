@@ -23,9 +23,5 @@
     yazi
   ];
 
-  fonts.packages = with pkgs; [
-    iosevka-bin
-    jetbrains-mono
-    roboto-mono
-  ];
+  fonts.packages = with pkgs; [ iosevka-bin ];
 }
