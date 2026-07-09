@@ -23,5 +23,7 @@
     yazi
   ];
 
-  fonts.packages = with pkgs; [ iosevka-bin ];
+  fonts.packages = with pkgs; [
+    iosevka-bin
+  ];
 }

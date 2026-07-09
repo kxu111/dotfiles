@@ -59,7 +59,6 @@
   (column-number-mode t)
   (delete-selection-mode t)
   (global-hl-line-mode t)
-  (fringe-mode '(4 . 4))
 
   ;; credit @JakeBox0 on YT
   (setq-default mode-line-format '(" -%*- "
@@ -82,9 +81,8 @@
    (before-save . delete-trailing-whitespace)))
 
 ;;; actual packages
-
-(use-package doom-themes)
-(load-theme 'doom-dark+ t)
+(use-package doom-themes
+  :config (load-theme 'doom-dark+ t))
 
 (use-package magit)
 
@@ -123,7 +121,7 @@
   (when (file-exists-p f) (load f)))
 
 (use-package emacs
-  :hook ((prog-mode-hook . display-line-numbers-mode)))
+  :hook ((prog-mode . display-line-numbers-mode)))
 ;;; --- end prog-mode ---
 
 ;;; --- start completions ---
@@ -132,26 +130,23 @@
   (vertico-mode)
   (vertico-multiform-mode)
   :custom
-  (vertico-multiform-commands ; Customize display per-command
-   '((execute-extended-command flat)
-     (describe-function flat)
-     (describe-variable flat)
-     (describe-symbol flat)))
   (vertico-resize t)
-  (vertico-count 15))
+  (vertico-count 8))
 
 (use-package consult
   :bind (("M-o" . consult-buffer)
+         ("C-x b" . consult-buffer)
          ("C-s" . consult-line))
   :config
-  ;; `consult-switch-buffer' customization
-  (delq 'consult--source-recent-file consult-buffer-sources) ; don't display recent files
-  (add-to-list 'consult-buffer-filter "\\`\\*.*\\*\\'")      ; hide everything with * *
-  (consult-customize consult-buffer :group nil))
+  (setq consult-buffer-sources
+        (delq 'consult--source-recent-file consult-buffer-sources))
+  (add-to-list 'consult-buffer-filter "\\`\\*.*\\*\\'"))
 
-(use-package marginalia :config (marginalia-mode))
+(use-package marginalia
+  :config (marginalia-mode))
 
-(use-package orderless :config (setq completion-styles '(orderless basic)))
+(use-package orderless
+  :config (setq completion-styles '(orderless basic)))
 
 (use-package corfu
   :config
