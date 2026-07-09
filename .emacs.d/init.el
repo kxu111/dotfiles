@@ -30,15 +30,12 @@
 ;; basic emacs config. remember to press C-h for help!!
 (use-package emacs
   :init
-  (set-face-font 'default "Iosevka 20")
-
   (setq frame-resize-pixelwise t
         use-short-answers t
         ring-bell-function 'ignore
         inhibit-startup-message t
         vc-follow-symlinks t
         custom-safe-themes t
-        whitespace-style (quote (face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark))
         scroll-conservatively 101 ; scroll only 1 line at a time when reaching bottom of window
         scroll-margin 9999        ; basically `scrolloff' from vim.
         compile-command ""
@@ -47,6 +44,7 @@
         mac-right-command-modifier 'super)
 
   :config
+  (set-face-font 'default "Aporetic Serif Mono 20")
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
   (setq-default display-line-numbers-width 3
@@ -60,6 +58,7 @@
   (blink-cursor-mode -1)
   (column-number-mode t)
   (delete-selection-mode t)
+  (fringe-mode '(0 . 0))
 
   ;; credit @JakeBox0 on YT
   (setq-default mode-line-format '(" -%*- "
@@ -81,8 +80,8 @@
    (before-save . delete-trailing-whitespace)))
 
 ;;; actual packages
-(use-package doom-themes
-  :config (load-theme 'doom-dark+ t))
+(use-package ef-themes)
+(load-theme 'ef-dream)
 
 (use-package magit)
 
@@ -110,9 +109,6 @@
   (org-startup-indented t)
   (org-cycle-separator-lines 1)
   (org-hide-emphasis-markers t))
-
-(use-package org-bullets
-  :hook (org-mode . org-bullets-mode))
 ;;; --- end org-mode ---
 
 ;;; --- start prog-mode ---
@@ -124,7 +120,7 @@
   :hook ((prog-mode . display-line-numbers-mode)))
 ;;; --- end prog-mode ---
 
-;;; --- start completions ---
+;;; --- start minibuffer ---
 (use-package vertico
   :config
   (vertico-mode)
@@ -134,19 +130,32 @@
   (vertico-count 8))
 
 (use-package consult
-  :bind (("M-i" . consult-buffer)
-         ("C-x b" . consult-buffer)
-         ("C-s" . consult-line))
+  :bind (
+         ("M-s M-g" . consult-grep)
+         ("M-s M-f" . find-file)
+         ("M-s M-d" . consult-fd) ;; mnemonic: search directory
+         ("M-s M-o" . consult-outline)
+         ("C-s" . consult-line)
+         ("M-s M-b" . consult-buffer))
+  :custom
+  (consult-fd-args "fd --color=never --hidden")
   :config
-  (setq consult-buffer-sources
-        (delq 'consult--source-recent-file consult-buffer-sources))
-  (add-to-list 'consult-buffer-filter "\\`\\*.*\\*\\'"))
+  (add-to-list 'consult-buffer-filter "\\`\\*.*\\*\\'")) ; hide * buffers (e.g *scratch*)
 
 (use-package marginalia
   :config (marginalia-mode))
 
 (use-package orderless
   :config (setq completion-styles '(orderless basic)))
+
+(use-package embark
+  :bind (("C-." . embark-act)
+         :map minibuffer-local-map
+         ("C-c C-c" . embark-collect)
+         ("C-c C-e" . embark-export)))
+
+(use-package embark-consult)
+;;; --- end minibuffer ---
 
 (use-package corfu
   :config
@@ -158,7 +167,6 @@
   (corfu-auto-prefix 2))
 
 ;; (use-package corfu-terminal :hook (corfu-mode . corfu-terminal-mode))
-;;; --- end completions ---
 
 (use-package golden-ratio
   :config
@@ -167,3 +175,16 @@
 
 (use-package ace-window
   :bind ("M-o" . ace-window))
+
+;; give emacs access to shell commands when launched from GUI
+(use-package exec-path-from-shell
+  :config
+  (when (memq window-system '(mac ns x pgtk))
+    (exec-path-from-shell-initialize)))
+
+;; edit grep-mode buffers
+(use-package wgrep
+  :bind ( :map grep-mode-map
+          ("e" . wgrep-change-to-wgrep-mode)
+          ("C-x C-q" . wgrep-change-to-wgrep-mode)
+          ("C-c C-c" . wgrep-finish-edit)))
