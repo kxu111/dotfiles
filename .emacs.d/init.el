@@ -27,7 +27,7 @@
         `((base . "~/dotfiles/.emacs.d/straight.lockfile.base.el")
           (programming . "~/dotfiles/.emacs.d/straight.lockfile.programming.el"))))
 
-;;; basic emacs config. remember to press C-h for help!!
+;; basic emacs config. remember to press C-h for help!!
 (use-package emacs
   :init
   (set-face-font 'default "Iosevka 20")
@@ -39,6 +39,8 @@
         vc-follow-symlinks t
         custom-safe-themes t
         whitespace-style (quote (face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark))
+        scroll-conservatively 101 ; scroll only 1 line at a time when reaching bottom of window
+        scroll-margin 9999        ; basically `scrolloff' from vim.
         compile-command ""
         mac-command-modifier 'meta
         mac-option-modifier nil
@@ -58,7 +60,6 @@
   (blink-cursor-mode -1)
   (column-number-mode t)
   (delete-selection-mode t)
-  (global-hl-line-mode t)
 
   ;; credit @JakeBox0 on YT
   (setq-default mode-line-format '(" -%*- "
@@ -70,8 +71,7 @@
                                    "  " mode-line-misc-info))
 
   :bind
-  (("M-i" . find-file)
-   ("C-," . (lambda ()
+  (("C-," . (lambda ()
               (interactive)
               (duplicate-line)
               (next-line))))
@@ -134,7 +134,7 @@
   (vertico-count 8))
 
 (use-package consult
-  :bind (("M-o" . consult-buffer)
+  :bind (("M-i" . consult-buffer)
          ("C-x b" . consult-buffer)
          ("C-s" . consult-line))
   :config
@@ -159,3 +159,11 @@
 
 ;; (use-package corfu-terminal :hook (corfu-mode . corfu-terminal-mode))
 ;;; --- end completions ---
+
+(use-package golden-ratio
+  :config
+  (golden-ratio-mode t)
+  (add-to-list 'golden-ratio-extra-commands 'ace-window))
+
+(use-package ace-window
+  :bind ("M-o" . ace-window))
