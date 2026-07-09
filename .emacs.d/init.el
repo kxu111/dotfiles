@@ -37,17 +37,18 @@
         vc-follow-symlinks t
         custom-safe-themes t
         scroll-conservatively 101 ; scroll only 1 line at a time when reaching bottom of window
-        scroll-margin 9999        ; basically `scrolloff' from vim.
+        scroll-margin 9999 ; basically `scrolloff' from vim.
         compile-command ""
         mac-command-modifier 'meta
         mac-option-modifier nil
         mac-right-command-modifier 'super)
 
   :config
-  (set-face-font 'default "Aporetic Serif Mono 20")
+  (set-face-font 'default "Aporetic Sans Mono 20")
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
-  (setq-default display-line-numbers-width 3
+  (setq-default truncate-lines t
+                display-line-numbers-width 3
                 indent-tabs-mode nil
                 tab-width 4)
 
@@ -60,13 +61,16 @@
   (delete-selection-mode t)
   (fringe-mode '(0 . 0))
 
-  ;; credit @JakeBox0 on YT
   (setq-default mode-line-format '(" -%*- "
                                    (:eval (propertize (buffer-name)) 'face 'font-lock-constant-face)
                                    "%6l:%c (%o) "
                                    (:eval (unless (not vc-mode) (concat " | ⇅ " (substring-no-properties vc-mode 5))))
                                    mode-line-format-right-align
+                                   (:eval
+                                    (when (bound-and-true-p multiple-cursors-mode)
+                                      mc/mode-line))
                                    (:eval (concat "  " (symbol-name major-mode)))
+                                   mode-line-process
                                    "  " mode-line-misc-info))
 
   :bind
@@ -80,19 +84,31 @@
    (before-save . delete-trailing-whitespace)))
 
 ;;; actual packages
+
 (use-package ef-themes)
-(load-theme 'ef-dream)
+(load-theme 'ef-autumn) ; i like
 
 (use-package magit)
 
 (use-package multiple-cursors
-  :bind (("C-S-c C-S-c" . mc/edit-lines)
-         ("C->"         . mc/mark-next-like-this)
-         ("C-<"         . mc/mark-previous-like-this)
-         ("C-c C-<"     . mc/mark-all-like-this)
-         ("C-\""        . mc/skip-to-next-like-this)
-         ("C-:"         . mc/skip-to-previous-like-this))
+  :bind (("C-M-j" . mc/mark-all-dwim)
+         ("C-M-/" . mc/mark-all-like-this)
+
+         ("C-M-," . mc/mark-previous-like-this)
+         ("C-M-." . mc/mark-next-like-this)
+
+         ("C-<" . mc/skip-to-previous-like-this)
+         ("C->" . mc/skip-to-next-like-this)
+
+         ("C-M-c" . mc/edit-lines)
+         ("C-M-n" . mc/insert-numbers)
+         ("C-M-k" . mc-hide-unmatched-lines-mode))
+
   :custom (mc/always-run-for-all t))
+
+(use-package expreg
+  :bind (("C-M-l" . expreg-expand)
+         ("C-M-h" . expreg-contract)))
 
 (use-package move-text
   :bind (("M-p" . move-text-up)
@@ -100,8 +116,8 @@
 
 ;;; --- start org-mode ---
 (use-package org
-  :straight (:host github :repo "bzg/org-mode"
-                   :branch "main")
+  ;; pull from remote to get latest version
+  :straight (:host github :repo "bzg/org-mode" :branch "main")
   :hook (org-mode . visual-line-mode)
   :custom
   (org-use-speed-commands t)
@@ -130,15 +146,14 @@
   (vertico-count 8))
 
 (use-package consult
-  :bind (
-         ("M-s M-g" . consult-grep)
+  :bind (("M-s M-g" . consult-grep)
          ("M-s M-f" . find-file)
          ("M-s M-d" . consult-fd) ;; mnemonic: search directory
          ("M-s M-o" . consult-outline)
          ("C-s" . consult-line)
          ("M-s M-b" . consult-buffer))
   :custom
-  (consult-fd-args "fd --color=never --hidden")
+  (consult-fd-args "fd --hidden")
   :config
   (add-to-list 'consult-buffer-filter "\\`\\*.*\\*\\'")) ; hide * buffers (e.g *scratch*)
 
