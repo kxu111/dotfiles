@@ -9,6 +9,13 @@ alias m='mkdir -p'
 alias ls='ls --color=always'
 alias av='source .venv/bin/activate'
 
+if [[ "$TERM" == "xterm-ghostty" ]] then
+	if ! command -v tmux &> /dev/null; then
+		exit 0
+	fi
+	tmux attach-session 2>/dev/null || tmux new-session -s "$(whoami)"
+fi
+
 source <(fzf --zsh)
 
 eval "$(zoxide init zsh)"

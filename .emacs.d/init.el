@@ -36,8 +36,6 @@
         inhibit-startup-message t
         vc-follow-symlinks t
         custom-safe-themes t
-        scroll-conservatively 101 ; scroll only 1 line at a time when reaching bottom of window
-        scroll-margin 9999 ; basically `scrolloff' from vim.
         compile-command ""
         mac-command-modifier 'meta
         mac-option-modifier nil
@@ -80,7 +78,15 @@
   (("C-," . (lambda ()
               (interactive)
               (duplicate-line)
-              (next-line))))
+              (next-line)))
+   ("C-v" . (lambda()
+              (interactive)
+              (scroll-up-command)
+              (move-to-window-line nil)))
+   ("M-v" . (lambda()
+              (interactive)
+              (scroll-down-command)
+              (move-to-window-line nil))))
 
   :hook
   ((window-setup . toggle-frame-maximized)
@@ -89,8 +95,8 @@
 
 ;;; actual packages
 
-(use-package ef-themes)
-(load-theme 'ef-autumn) ; i like
+(use-package doom-themes)
+(load-theme 'doom-dark+)
 
 (use-package magit)
 
@@ -106,7 +112,7 @@
 
          ("C-M-c" . mc/edit-lines)
          ("C-M-n" . mc/insert-numbers)
-         ("C-M-k" . mc-hide-unmatched-lines-mode))
+         ("C-M-'" . mc-hide-unmatched-lines-mode))
 
   :custom (mc/always-run-for-all t))
 
@@ -201,11 +207,11 @@
     (exec-path-from-shell-initialize)))
 
 (use-package wgrep
-  :bind (( :map grep-mode-map
-           ("e" . wgrep-change-to-wgrep-mode)
-           ("C-x C-q" . wgrep-change-to-wgrep-mode)
-           ("C-c C-c" . wgrep-finish-edit))
-         ( :map compilation-mode-map
-           ("e" . wgrep-change-to-wgrep-mode)
-           ("C-x C-q" . wgrep-change-to-wgrep-mode)
-           ("C-c C-c" . wgrep-finish-edit))))
+  :bind ((:map grep-mode-map
+               ("e" . wgrep-change-to-wgrep-mode)
+               ("C-x C-q" . wgrep-change-to-wgrep-mode)
+               ("C-C C-c" . wgrep-finish-edit))
+         (:map compilation-mode-map
+               ("e" . wgrep-change-to-wgrep-mode)
+               ("C-x C-q" . wgrep-change-to-wgrep-mode)
+               ("C-c C-c" . wgrep-finish-edit))))

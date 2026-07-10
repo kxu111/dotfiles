@@ -1,20 +1,21 @@
-theme = Black Metal (Gorgoroth)
+theme = Dark+
 
-font-family        = Iosevka Term
-font-size          = 20
-adjust-cell-width  = -5%
-font-shaping-break = 0
+font-family = Aporetic Sans Mono
+font-size   = 20
 
 cursor-style               = block
 cursor-style-blink         = false
 shell-integration-features = no-cursor
 
-window-decoration       = none
+macos-titlebar-style    = hidden
 mouse-hide-while-typing = true
 confirm-close-surface   = false
 copy-on-select          = clipboard
-
 macos-option-as-alt = true
+
+window-padding-x = 15
+window-padding-y = 15
+
 
 # tmux binds
 keybind = super+t=text:\x02t
