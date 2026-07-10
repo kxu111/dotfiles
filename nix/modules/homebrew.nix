@@ -7,12 +7,7 @@
       autoUpdate = true;
       upgrade = true;
     };
-    brews = [
-      "mas"
-      "mole"
-      "pkgconfig"
-      "raylib"
-    ];
+    brews = ["mas"];
     casks = [
       "vesktop"
       "sioyek"
@@ -24,6 +19,7 @@
       "raycast"
       "helium-browser"
       "emacs-plus-app"
+      "vlc"
     ];
     masApps = {
       "Davinci Resolve" = 571213070;

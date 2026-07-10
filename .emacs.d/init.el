@@ -60,6 +60,9 @@
   (column-number-mode t)
   (delete-selection-mode t)
   (fringe-mode '(0 . 0))
+  (recentf-mode t)
+  (savehist-mode t)
+  (global-auto-revert-mode t)
 
   (setq-default mode-line-format '(" -%*- "
                                    (:eval (propertize (buffer-name)) 'face 'font-lock-constant-face)
@@ -81,7 +84,8 @@
 
   :hook
   ((window-setup . toggle-frame-maximized)
-   (before-save . delete-trailing-whitespace)))
+   (before-save . delete-trailing-whitespace)
+   (prog-mode . display-line-numbers-mode)))
 
 ;;; actual packages
 
@@ -121,20 +125,19 @@
   :hook (org-mode . visual-line-mode)
   :custom
   (org-use-speed-commands t)
-  (org-ellipsis "…")
   (org-startup-indented t)
-  (org-cycle-separator-lines 1)
-  (org-hide-emphasis-markers t))
+  (org-cycle-separator-lines 1) ; keep a line between collapsed headings
+  (org-hide-emphasis-markers t) ; conceals formatting chars, e.g *bold*
+  )
+
+;; (use-package org-roam) ; TODO configure this
+
+;; (use-package org-roam-ui) ; TODO configure this
 ;;; --- end org-mode ---
 
-;;; --- start prog-mode ---
 (let ((straight-current-profile 'programming)
 	  (f (expand-file-name "programming.el" user-emacs-directory)))
   (when (file-exists-p f) (load f)))
-
-(use-package emacs
-  :hook ((prog-mode . display-line-numbers-mode)))
-;;; --- end prog-mode ---
 
 ;;; --- start minibuffer ---
 (use-package vertico
@@ -150,7 +153,7 @@
          ("M-s M-f" . find-file)
          ("M-s M-d" . consult-fd) ;; mnemonic: search directory
          ("M-s M-o" . consult-outline)
-         ("C-s" . consult-line)
+         ("M-s M-l" . consult-line)
          ("M-s M-b" . consult-buffer))
   :custom
   (consult-fd-args "fd --hidden")
@@ -197,9 +200,12 @@
   (when (memq window-system '(mac ns x pgtk))
     (exec-path-from-shell-initialize)))
 
-;; edit grep-mode buffers
 (use-package wgrep
-  :bind ( :map grep-mode-map
-          ("e" . wgrep-change-to-wgrep-mode)
-          ("C-x C-q" . wgrep-change-to-wgrep-mode)
-          ("C-c C-c" . wgrep-finish-edit)))
+  :bind (( :map grep-mode-map
+           ("e" . wgrep-change-to-wgrep-mode)
+           ("C-x C-q" . wgrep-change-to-wgrep-mode)
+           ("C-c C-c" . wgrep-finish-edit))
+         ( :map compilation-mode-map
+           ("e" . wgrep-change-to-wgrep-mode)
+           ("C-x C-q" . wgrep-change-to-wgrep-mode)
+           ("C-c C-c" . wgrep-finish-edit))))

@@ -18,7 +18,6 @@
     uv
     yt-dlp
     nodejs
-    mpv
     fzf
     yazi
   ];
