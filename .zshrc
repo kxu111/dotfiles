@@ -1,4 +1,4 @@
-alias neofetch='fastfetch -c examples/10.jsonc'
+alias neofetch='fastfetch -c examples/13'
 alias nrs='sudo darwin-rebuild switch --flake ~/nix#air'
 alias nfu='sudo nix flake update --flake ~/nix'
 alias reload='source ~/.zshenv; source ~/.zshrc'

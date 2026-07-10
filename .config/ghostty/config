@@ -1,7 +1,10 @@
-theme = Dark+
+theme = ef-cherie
 
-font-family = Aporetic Sans Mono
+font-family = Aporetic Serif Mono
 font-size   = 20
+
+window-padding-x = 15
+window-padding-y = 15
 
 cursor-style               = block
 cursor-style-blink         = false
@@ -11,11 +14,7 @@ macos-titlebar-style    = hidden
 mouse-hide-while-typing = true
 confirm-close-surface   = false
 copy-on-select          = clipboard
-macos-option-as-alt = true
-
-window-padding-x = 15
-window-padding-y = 15
-
+macos-option-as-alt     = true
 
 # tmux binds
 keybind = super+t=text:\x02t

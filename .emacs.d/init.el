@@ -42,11 +42,12 @@
         mac-right-command-modifier 'super)
 
   :config
-  (set-face-font 'default "Aporetic Sans Mono 20")
+  (set-face-font 'default "Aporetic Serif Mono 20")
+  (set-face-font 'variable-pitch "Aporetic Serif")
+
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 
-  (setq-default truncate-lines t
-                display-line-numbers-width 3
+  (setq-default display-line-numbers-width 3
                 indent-tabs-mode nil
                 tab-width 4)
 
@@ -61,6 +62,7 @@
   (recentf-mode t)
   (savehist-mode t)
   (global-auto-revert-mode t)
+  (global-hl-line-mode t)
 
   (setq-default mode-line-format '(" -%*- "
                                    (:eval (propertize (buffer-name)) 'face 'font-lock-constant-face)
@@ -79,11 +81,13 @@
               (interactive)
               (duplicate-line)
               (next-line)))
-   ("C-v" . (lambda()
+
+   ;; wrapper functions to center cursor after scrolling
+   ("C-v" . (lambda ()
               (interactive)
               (scroll-up-command)
               (move-to-window-line nil)))
-   ("M-v" . (lambda()
+   ("M-v" . (lambda ()
               (interactive)
               (scroll-down-command)
               (move-to-window-line nil))))
@@ -95,8 +99,10 @@
 
 ;;; actual packages
 
-(use-package doom-themes)
-(load-theme 'doom-dark+)
+(use-package ef-themes)
+
+;; note to future self: DO NOT CHANGE THEMES AGAIN MORON
+(load-theme 'ef-cherie)
 
 (use-package magit)
 
@@ -128,8 +134,9 @@
 (use-package org
   ;; pull from remote to get latest version
   :straight (:host github :repo "bzg/org-mode" :branch "main")
-  :hook (org-mode . visual-line-mode)
+  :hook ((org-mode . visual-line-mode))
   :custom
+  (org-ellipsis "…")
   (org-use-speed-commands t)
   (org-startup-indented t)
   (org-cycle-separator-lines 1) ; keep a line between collapsed headings
@@ -155,16 +162,18 @@
   (vertico-count 8))
 
 (use-package consult
-  :bind (("M-s M-g" . consult-grep)
+  :bind (("M-s M-g" . consult-ripgrep)
          ("M-s M-f" . find-file)
          ("M-s M-d" . consult-fd) ;; mnemonic: search directory
          ("M-s M-o" . consult-outline)
          ("M-s M-l" . consult-line)
          ("M-s M-b" . consult-buffer))
   :custom
-  (consult-fd-args "fd --hidden")
+  ((consult-ripgrep-args "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --with-filename --line-number --search-zip --hidden")
+   (consult-fd-args "fd --full-path --color=never --hidden"))
   :config
   (add-to-list 'consult-buffer-filter "\\`\\*.*\\*\\'")) ; hide * buffers (e.g *scratch*)
+
 
 (use-package marginalia
   :config (marginalia-mode))
