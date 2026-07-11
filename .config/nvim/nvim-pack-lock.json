@@ -1,14 +1,14 @@
 {
   "plugins": {
-    "ef-themes.nvim": {
-      "rev": "22cce438143359df90d12d4bf5fc8d76049910ec",
-      "src": "https://github.com/oonamo/ef-themes.nvim",
-      "version": ">=0.0.0"
-    },
     "mini.nvim": {
       "rev": "1345d191bb3da9c7b0e977f4387c5761f9bff68d",
       "src": "https://github.com/echasnovski/mini.nvim",
       "version": ">=0.0.0"
+    },
+    "vscode.nvim": {
+      "rev": "aa1102a7e15195c9cca22730b09224a7f7745ba8",
+      "src": "https://github.com/Mofiqul/vscode.nvim",
+      "version": "'main'"
     }
   }
 }

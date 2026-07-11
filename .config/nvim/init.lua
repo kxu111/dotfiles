@@ -22,6 +22,7 @@ vim.o.termguicolors = true
 vim.o.swapfile = false
 vim.o.cursorline = true
 vim.o.ruler = false
+vim.o.signcolumn = "yes"
 
 map("n", "<C-u>", "<C-u>zz")
 map("n", "<C-d>", "<C-d>zz")
@@ -55,8 +56,8 @@ Config.add = function(opts)
   vim.pack.add { spec }
 end
 
-Config.add "oonamo/ef-themes.nvim"
-vim.cmd.colorscheme "ef-cherie"
+Config.add {src="Mofiqul/vscode.nvim", version="main"}
+vim.cmd.colorscheme "vscode"
 
 Config.add "echasnovski/mini.nvim"
 require "mini.icons".setup()

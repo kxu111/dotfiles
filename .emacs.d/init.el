@@ -30,8 +30,7 @@
 ;; basic emacs config. remember to press C-h for help!!
 (use-package emacs
   :init
-  (setq frame-resize-pixelwise t
-        use-short-answers t
+  (setq use-short-answers t
         ring-bell-function 'ignore
         inhibit-startup-message t
         vc-follow-symlinks t
@@ -42,10 +41,8 @@
         mac-right-command-modifier 'super)
 
   :config
-  (set-face-font 'default "Aporetic Serif Mono 20")
-  (set-face-font 'variable-pitch "Aporetic Serif")
-
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (set-face-font 'default "Aporetic Sans Mono 20")
+  (set-face-font 'variable-pitch "Aporetic Sans")
 
   (setq-default display-line-numbers-width 3
                 indent-tabs-mode nil
@@ -58,11 +55,10 @@
   (blink-cursor-mode -1)
   (column-number-mode t)
   (delete-selection-mode t)
-  (fringe-mode '(0 . 0))
   (recentf-mode t)
   (savehist-mode t)
   (global-auto-revert-mode t)
-  (global-hl-line-mode t)
+  (auto-save-visited-mode t)
 
   (setq-default mode-line-format '(" -%*- "
                                    (:eval (propertize (buffer-name)) 'face 'font-lock-constant-face)
@@ -93,16 +89,12 @@
               (move-to-window-line nil))))
 
   :hook
-  ((window-setup . toggle-frame-maximized)
-   (before-save . delete-trailing-whitespace)
+  ((before-save . delete-trailing-whitespace)
    (prog-mode . display-line-numbers-mode)))
 
 ;;; actual packages
-
-(use-package ef-themes)
-
-;; note to future self: DO NOT CHANGE THEMES AGAIN MORON
-(load-theme 'ef-cherie)
+(use-package doom-themes)
+(load-theme 'doom-dark+)
 
 (use-package magit)
 
@@ -158,8 +150,10 @@
   (vertico-mode)
   (vertico-multiform-mode)
   :custom
+  (vertico-multiform-commands ; customize display per-command
+   '((execute-extended-command flat)))
   (vertico-resize t)
-  (vertico-count 8))
+  (vertico-count 12))
 
 (use-package consult
   :bind (("M-s M-g" . consult-ripgrep)
@@ -168,12 +162,14 @@
          ("M-s M-o" . consult-outline)
          ("M-s M-l" . consult-line)
          ("M-s M-b" . consult-buffer))
-  :custom
-  ((consult-ripgrep-args "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --with-filename --line-number --search-zip --hidden")
-   (consult-fd-args "fd --full-path --color=never --hidden"))
-  :config
-  (add-to-list 'consult-buffer-filter "\\`\\*.*\\*\\'")) ; hide * buffers (e.g *scratch*)
 
+  :config
+  (setq (consult-ripgrep-args "rg --null --line-buffered --color=never --max-columns=1000
+--path-separator / --smart-case --no-heading --with-filename
+--line-number --search-zip --hidden")
+        (consult-fd-args "fd --full-path --color=never --hidden"))
+  (add-to-list 'consult-buffer-filter "\\`\\*.*\\*\\'") ; hide * buffers (e.g *scratch*)
+  )
 
 (use-package marginalia
   :config (marginalia-mode))

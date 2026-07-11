@@ -25,5 +25,6 @@
   fonts.packages = with pkgs; [
     iosevka-bin
     aporetic-bin
+    jetbrains-mono
   ];
 }
