@@ -2,6 +2,7 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
+    htop
     fastfetch
     wget
     stow
@@ -24,7 +25,5 @@
 
   fonts.packages = with pkgs; [
     iosevka-bin
-    aporetic-bin
-    jetbrains-mono
   ];
 }

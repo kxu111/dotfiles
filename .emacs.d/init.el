@@ -30,8 +30,7 @@
 ;; basic emacs config. remember to press C-h for help!!
 (use-package emacs
   :init
-  (set-face-font 'default "Aporetic Sans Mono 20")
-  (set-face-font 'variable-pitch "Aporetic Sans 20")
+  (set-face-font 'default "Iosevka 20")
 
   (setq use-short-answers t
         ring-bell-function 'ignore
@@ -60,7 +59,7 @@
   (savehist-mode t)
   (global-auto-revert-mode t)
   (auto-save-visited-mode t)
-  (global-hl-line-mode t)
+  (which-key-mode t)
 
   ;; credit: @JakeBox0 on yt
   (setq-default mode-line-format '(" - "
@@ -92,8 +91,8 @@
          (prog-mode . display-line-numbers-mode)))
 
 ;;; actual packages
-(use-package standard-themes)
-(load-theme 'standard-dark)
+(use-package doom-themes)
+(load-theme 'doom-dark+)
 
 (use-package magit)
 
@@ -130,11 +129,15 @@
   (org-use-speed-commands t)
   (org-startup-indented t)
   (org-cycle-separator-lines 1) ; keep a line between collapsed headings
-  (org-hide-emphasis-markers t)) ; conceals formatting chars, e.g *bold*
+  (org-hide-emphasis-markers t))
 
-;; (use-package org-roam) ; TODO configure this
+(use-package org-roam
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n i" . org-roam-node-insert))
+  :config (org-roam-db-autosync-mode t))
 
-;; (use-package org-roam-ui) ; TODO configure this
+(use-package org-roam-ui :commands org-roam-ui-mode) ; command implies defer until this is run
 ;;; --- end org-mode ---
 
 (let ((straight-current-profile 'programming)
@@ -179,14 +182,14 @@
 ;;; --- end minibuffer ---
 
 (use-package corfu
-  :config
-  (global-corfu-mode)
-  (corfu-popupinfo-mode)
   :custom
   (corfu-auto t)
-  (corfu-count 8)
+  (corfu-count 6)
   (corfu-auto-prefix 2)
-  :bind (:map corfu-map ("C-SPC" . corfu-insert-separator)))
+  :init
+  (global-corfu-mode)
+  (corfu-popupinfo-mode)
+  :bind (:map corfu-map ("M-SPC" . corfu-insert-separator)))
 
 (use-package golden-ratio
   :config
@@ -204,7 +207,7 @@
   :bind ((:map grep-mode-map
                ("e" . wgrep-change-to-wgrep-mode)
                ("C-x C-q" . wgrep-change-to-wgrep-mode)
-               ("C-C C-c" . wgrep-finish-edit))
+               ("C-c C-c" . wgrep-finish-edit))
          (:map compilation-mode-map
                ("e" . wgrep-change-to-wgrep-mode)
                ("C-x C-q" . wgrep-change-to-wgrep-mode)

@@ -14,7 +14,6 @@
       "obs"
       "ghostty"
       "aerospace"
-      "anki"
       "figma"
       "raycast"
       "helium-browser"
