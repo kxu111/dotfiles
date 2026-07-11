@@ -6,7 +6,6 @@ local map = vim.keymap.set
 local del = vim.keymap.del
 
 vim.g.mapleader = " "
-vim.o.guicursor = "a:block"
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 vim.o.expandtab = true
@@ -16,13 +15,12 @@ vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.number = true
 vim.o.relativenumber = true
-vim.o.winborder = "solid"
+vim.o.winborder = "rounded"
 vim.o.showmode = false
 vim.o.termguicolors = true
 vim.o.swapfile = false
 vim.o.cursorline = true
 vim.o.ruler = false
-vim.o.signcolumn = "yes"
 
 map("n", "<C-u>", "<C-u>zz")
 map("n", "<C-d>", "<C-d>zz")
@@ -32,19 +30,22 @@ map("n", "<C-j>", "<C-w>j")
 map("n", "<C-k>", "<C-w>k")
 map("n", "<C-l>", "<C-w>l")
 
-map("n", "<C-t>", "<C-w>T") -- C-t is used for ctags, which nobody uses anyway
+map("n", "<C-t>", "<C-w>T") -- C-t is used in ctags, which nobody uses anyway
 
 for i = 1, 9 do
     map("n", "<leader>"..i, i.."gt")
 end
 
+map({"n","v"}, "<leader>y", '"+y')
+map({"n","v"}, "<leader>Y", '"+y$')
+
 vim.cmd.packadd "nvim.undotree"
-map("n", "<leader>u", "<cmd>Undotree<cr>") -- C-t is used for ctags, which nobody uses anyway
+map("n", "<leader>u", "<cmd>Undotree<cr>") 
 
 vim.cmd.packadd "cfilter"
 
 vim.cmd.packadd "nohlsearch"
-map("n", "<esc>", "<cmd>nohlsearch<cr>") -- C-t is used for ctags, which nobody uses anyway
+map("n", "<esc>", "<cmd>nohlsearch<cr>") 
 
 local Config = {}
 

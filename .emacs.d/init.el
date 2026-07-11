@@ -30,6 +30,9 @@
 ;; basic emacs config. remember to press C-h for help!!
 (use-package emacs
   :init
+  (set-face-font 'default "Aporetic Sans Mono 20")
+  (set-face-font 'variable-pitch "Aporetic Sans 20")
+
   (setq use-short-answers t
         ring-bell-function 'ignore
         inhibit-startup-message t
@@ -41,11 +44,9 @@
         mac-right-command-modifier 'super)
 
   :config
-  (set-face-font 'default "Aporetic Sans Mono 20")
-  (set-face-font 'variable-pitch "Aporetic Sans")
-
   (setq-default display-line-numbers-width 3
                 indent-tabs-mode nil
+                truncate-lines t ; disable line wrap
                 tab-width 4)
 
   (scroll-bar-mode -1)
@@ -59,42 +60,40 @@
   (savehist-mode t)
   (global-auto-revert-mode t)
   (auto-save-visited-mode t)
+  (global-hl-line-mode t)
 
-  (setq-default mode-line-format '(" -%*- "
+  ;; credit: @JakeBox0 on yt
+  (setq-default mode-line-format '(" - "
                                    (:eval (propertize (buffer-name)) 'face 'font-lock-constant-face)
                                    "%6l:%c (%o) "
                                    (:eval (unless (not vc-mode) (concat " | ⇅ " (substring-no-properties vc-mode 5))))
                                    mode-line-format-right-align
-                                   (:eval
-                                    (when (bound-and-true-p multiple-cursors-mode)
-                                      mc/mode-line))
+                                   (:eval (when (bound-and-true-p multiple-cursors-mode) mc/mode-line))
                                    (:eval (concat "  " (symbol-name major-mode)))
                                    mode-line-process
                                    "  " mode-line-misc-info))
 
-  :bind
-  (("C-," . (lambda ()
-              (interactive)
-              (duplicate-line)
-              (next-line)))
+  :bind (("C-," . (lambda ()
+                    (interactive)
+                    (duplicate-line)
+                    (next-line)))
 
-   ;; wrapper functions to center cursor after scrolling
-   ("C-v" . (lambda ()
-              (interactive)
-              (scroll-up-command)
-              (move-to-window-line nil)))
-   ("M-v" . (lambda ()
-              (interactive)
-              (scroll-down-command)
-              (move-to-window-line nil))))
+         ;; wrapper functions to center cursor after scrolling
+         ("C-v" . (lambda ()
+                    (interactive)
+                    (scroll-up-command)
+                    (move-to-window-line nil)))
+         ("M-v" . (lambda ()
+                    (interactive)
+                    (scroll-down-command)
+                    (move-to-window-line nil))))
 
-  :hook
-  ((before-save . delete-trailing-whitespace)
-   (prog-mode . display-line-numbers-mode)))
+  :hook ((before-save . delete-trailing-whitespace)
+         (prog-mode . display-line-numbers-mode)))
 
 ;;; actual packages
-(use-package doom-themes)
-(load-theme 'doom-dark+)
+(use-package standard-themes)
+(load-theme 'standard-dark)
 
 (use-package magit)
 
@@ -124,16 +123,14 @@
 
 ;;; --- start org-mode ---
 (use-package org
-  ;; pull from remote to get latest version
   :straight (:host github :repo "bzg/org-mode" :branch "main")
-  :hook ((org-mode . visual-line-mode))
+  :hook (org-mode . visual-line-mode)
   :custom
   (org-ellipsis "…")
   (org-use-speed-commands t)
   (org-startup-indented t)
   (org-cycle-separator-lines 1) ; keep a line between collapsed headings
-  (org-hide-emphasis-markers t) ; conceals formatting chars, e.g *bold*
-  )
+  (org-hide-emphasis-markers t)) ; conceals formatting chars, e.g *bold*
 
 ;; (use-package org-roam) ; TODO configure this
 
@@ -158,24 +155,19 @@
 (use-package consult
   :bind (("M-s M-g" . consult-ripgrep)
          ("M-s M-f" . find-file)
-         ("M-s M-d" . consult-fd) ;; mnemonic: search directory
+         ("M-s M-d" . consult-fd) ; mnemonic: search directory
          ("M-s M-o" . consult-outline)
          ("M-s M-l" . consult-line)
          ("M-s M-b" . consult-buffer))
 
   :config
-  (setq (consult-ripgrep-args "rg --null --line-buffered --color=never --max-columns=1000
---path-separator / --smart-case --no-heading --with-filename
---line-number --search-zip --hidden")
-        (consult-fd-args "fd --full-path --color=never --hidden"))
-  (add-to-list 'consult-buffer-filter "\\`\\*.*\\*\\'") ; hide * buffers (e.g *scratch*)
-  )
+  (setq consult-ripgrep-args "rg --null --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --no-heading --with-filename --line-number --search-zip --hidden"
+        consult-fd-args "fd --full-path --color=never --hidden")
+  (add-to-list 'consult-buffer-filter "\\`\\*.*\\*\\'")) ; hide * buffers (e.g *scratch*)
 
-(use-package marginalia
-  :config (marginalia-mode))
+(use-package marginalia :config (marginalia-mode))
 
-(use-package orderless
-  :config (setq completion-styles '(orderless basic)))
+(use-package orderless :config (setq completion-styles '(orderless basic)))
 
 (use-package embark
   :bind (("C-." . embark-act)
@@ -193,19 +185,16 @@
   :custom
   (corfu-auto t)
   (corfu-count 8)
-  (corfu-auto-prefix 2))
-
-;; (use-package corfu-terminal :hook (corfu-mode . corfu-terminal-mode))
+  (corfu-auto-prefix 2)
+  :bind (:map corfu-map ("C-SPC" . corfu-insert-separator)))
 
 (use-package golden-ratio
   :config
   (golden-ratio-mode t)
   (add-to-list 'golden-ratio-extra-commands 'ace-window))
 
-(use-package ace-window
-  :bind ("M-o" . ace-window))
+(use-package ace-window :bind ("M-o" . ace-window))
 
-;; give emacs access to shell commands when launched from GUI
 (use-package exec-path-from-shell
   :config
   (when (memq window-system '(mac ns x pgtk))
