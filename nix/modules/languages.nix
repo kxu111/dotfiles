@@ -7,5 +7,6 @@
     basedpyright
     nil
     clang
+    lua-language-server
   ];
 }

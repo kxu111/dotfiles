@@ -17,6 +17,7 @@
     nodejs
     fzf
     yazi
+    tree
   ];
 
   fonts.packages = with pkgs; [

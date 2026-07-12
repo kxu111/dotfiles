@@ -43,6 +43,13 @@
         mac-right-command-modifier 'super)
 
   :config
+  ;; mac windowing fixes
+  (when (and (eq system-type 'darwin)
+             (display-graphic-p))
+    (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+    (setq frame-resize-pixelwise t)
+    (add-hook 'window-setup-hook 'toggle-frame-maximized t))
+
   (setq-default display-line-numbers-width 3
                 indent-tabs-mode nil
                 truncate-lines t ; disable line wrap
@@ -60,7 +67,6 @@
   (global-auto-revert-mode t)
   (auto-save-visited-mode t)
   (which-key-mode t)
-  (global-hl-line-mode t)
 
   ;; credit: @JakeBox0 on yt
   (setq-default mode-line-format '(" - "
@@ -92,8 +98,8 @@
          (prog-mode . display-line-numbers-mode)))
 
 ;;; actual packages
-(use-package ef-themes)
-(load-theme 'ef-winter)
+(use-package doom-themes)
+(load-theme 'doom-dark+)
 
 (use-package magit)
 
@@ -168,7 +174,9 @@
   :config
   (setq consult-ripgrep-args "rg --null --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --no-heading --with-filename --line-number --search-zip --hidden"
         consult-fd-args "fd --full-path --color=never --hidden")
-  (add-to-list 'consult-buffer-filter "\\`\\*.*\\*\\'")) ; hide * buffers (e.g *scratch*)
+  ;; `consult-buffer' config
+  (let ((buffers '("*Async-native-compile-log*" "*straight-process*" "*direnv*" "*Messages*"))) ; hide these
+    (dolist (buf buffers) (add-to-list 'consult-buffer-filter (regexp-quote buf)))))
 
 (use-package marginalia :config (marginalia-mode))
 

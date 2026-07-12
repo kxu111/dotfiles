@@ -15,4 +15,5 @@ bat cache --build
 open -a AeroSpace
 git config --global core.excludesfile ~/.gitignore_global
 defaults write org.gnu.Emacs AppleFontSmoothing -int 0 # stop big tech from tampering with my beautiful fonts
+rustup install
 echo "REMINDER TO DISABLE SPOTLIGHT AND GAME OVERLAY KEYBIND"
