@@ -1,6 +1,11 @@
-(use-package nix-mode :defer t)
+(use-package eglot
+  :bind (:map eglot-mode-map
+              ("C-c l a" . eglot-code-actions)
+              ("C-c l r" . eglot-rename)
+              ("C-c l f" . eglot-format))
 
-(use-package simpc-mode
-  :straight (simpc-mode :host github :repo "rexim/simpc-mode")
-  :mode "\\.[hc]\\(pp\\)?\\'"
-  :config (simpc-mode))
+  :hook ((c++-mode . eglot-ensure)
+         (nix-mode . eglot-ensure)
+         (python-mode . eglot-ensure)))
+
+(use-package nix-mode :defer t)

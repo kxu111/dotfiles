@@ -60,6 +60,7 @@
   (global-auto-revert-mode t)
   (auto-save-visited-mode t)
   (which-key-mode t)
+  (global-hl-line-mode t)
 
   ;; credit: @JakeBox0 on yt
   (setq-default mode-line-format '(" - "
@@ -91,8 +92,8 @@
          (prog-mode . display-line-numbers-mode)))
 
 ;;; actual packages
-(use-package doom-themes)
-(load-theme 'doom-dark+)
+(use-package ef-themes)
+(load-theme 'ef-winter)
 
 (use-package magit)
 
@@ -161,7 +162,8 @@
          ("M-s M-d" . consult-fd) ; mnemonic: search directory
          ("M-s M-o" . consult-outline)
          ("M-s M-l" . consult-line)
-         ("M-s M-b" . consult-buffer))
+         ("M-s M-b" . consult-buffer)
+         ("M-s M-k" . kill-buffer))
 
   :config
   (setq consult-ripgrep-args "rg --null --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --no-heading --with-filename --line-number --search-zip --hidden"
@@ -183,12 +185,12 @@
 
 (use-package corfu
   :custom
-  (corfu-auto t)
   (corfu-count 6)
   (corfu-auto-prefix 2)
   :init
   (global-corfu-mode)
   (corfu-popupinfo-mode)
+  :hook (prog-mode . (lambda () (setq-local corfu-auto t)))
   :bind (:map corfu-map ("M-SPC" . corfu-insert-separator)))
 
 (use-package golden-ratio

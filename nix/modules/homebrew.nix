@@ -1,4 +1,4 @@
-{...}: {
+{ ... }: {
   homebrew = {
     enable = true;
     global.autoUpdate = true;
@@ -7,7 +7,7 @@
       autoUpdate = true;
       upgrade = true;
     };
-    brews = ["mas"];
+    brews = [ "mas" ];
     casks = [
       "vesktop"
       "sioyek"

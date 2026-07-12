@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
@@ -8,15 +8,11 @@
     stow
     neovim
     ripgrep
-    rustup
     tmux
     fd
     zoxide
     newsboat
     timewarrior
-    typst
-    python3
-    uv
     yt-dlp
     nodejs
     fzf

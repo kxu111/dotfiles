@@ -1,4 +1,4 @@
-{self, ...}: {
+{ self, ... }: {
   system.primaryUser = "kenny";
   system.defaults = {
     dock = {
