@@ -27,7 +27,7 @@
         `((base . "~/dotfiles/.emacs.d/straight.lockfile.base.el")
           (programming . "~/dotfiles/.emacs.d/straight.lockfile.programming.el"))))
 
-;; basic emacs config. remember to press C-h for help!!
+;; basic emacs config. remember to press `C-h' for help!!
 (use-package emacs
   :init
   (set-face-font 'default "Iosevka 20")
@@ -82,17 +82,7 @@
   :bind (("C-," . (lambda ()
                     (interactive)
                     (duplicate-line)
-                    (next-line)))
-
-         ;; wrapper functions to center cursor after scrolling
-         ("C-v" . (lambda ()
-                    (interactive)
-                    (scroll-up-command)
-                    (move-to-window-line nil)))
-         ("M-v" . (lambda ()
-                    (interactive)
-                    (scroll-down-command)
-                    (move-to-window-line nil))))
+                    (next-line))))
 
   :hook ((before-save . delete-trailing-whitespace)
          (prog-mode . display-line-numbers-mode)))
@@ -175,7 +165,7 @@
   (setq consult-ripgrep-args "rg --null --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --no-heading --with-filename --line-number --search-zip --hidden"
         consult-fd-args "fd --full-path --color=never --hidden")
   ;; `consult-buffer' config
-  (let ((buffers '("*Async-native-compile-log*" "*straight-process*" "*direnv*" "*Messages*"))) ; hide these
+  (let ((buffers '("*Async-native-compile-log*" "*straight-process*" "*straight-byte-compilation*" "*direnv*" "*Messages*"))) ; hide these
     (dolist (buf buffers) (add-to-list 'consult-buffer-filter (regexp-quote buf)))))
 
 (use-package marginalia :config (marginalia-mode))
@@ -222,3 +212,15 @@
                ("e" . wgrep-change-to-wgrep-mode)
                ("C-x C-q" . wgrep-change-to-wgrep-mode)
                ("C-c C-c" . wgrep-finish-edit))))
+
+(use-package centered-cursor-mode
+  :config
+  ;; custom global mode allows for disabling in certain modes
+  (define-global-minor-mode my-global-centered-cursor-mode centered-cursor-mode
+    (lambda ()
+      (when (not (memq major-mode
+                       (list 'Info-mode 'term-mode 'eshell-mode 'shell-mode 'erc-mode)))
+        (centered-cursor-mode))))
+  (my-global-centered-cursor-mode t)
+
+  (advice-add 'text-scale-adjust :after (lambda (interactive) (ccm-vpos-recenter))))

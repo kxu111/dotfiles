@@ -4,6 +4,6 @@
  ("flymake" . "e3939571a864bff84ed543bc267dff2619f331aa")
  ("jsonrpc" . "d8143c52679eaeebcca26dd41e015dc73d167b49")
  ("nix-mode" . "719feb7868fb567ecfe5578f6119892c771ac5e5")
- ("project" . "3d71e2caace5891cba08ae38bb60432f8efa8267")
+ ("project" . "ffb38d7798d86c7fa6623db0f64b461abb6572c2")
  ("xref" . "bd31f9ac86a105c01631b29e6f442049500e9928"))
 :epsilon
