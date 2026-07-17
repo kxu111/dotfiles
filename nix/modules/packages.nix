@@ -22,6 +22,5 @@
 
   fonts.packages = with pkgs; [
     iosevka-bin
-    inter
   ];
 }

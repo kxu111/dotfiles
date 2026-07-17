@@ -1,0 +1,41 @@
+;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8-emacs; mode: lisp-data -*-
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("flake.nix"
+ (filename . "~/dotfiles/nix/flake.nix")
+ (front-context-string . "{\n  description ")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 27226 4518 979231 0))
+("settings.nix"
+ (filename . "~/dotfiles/nix/modules/settings.nix")
+ (front-context-string . "{ self, ... }: {")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 27226 4508 790616 0))
+("homebrew.nix"
+ (filename . "~/dotfiles/nix/modules/homebrew.nix")
+ (front-context-string . "{ ... }: {\n  hom")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 27226 4494 313578 0))
+("languages.nix"
+ (filename . "~/dotfiles/nix/modules/languages.nix")
+ (front-context-string . "{ pkgs, ... }: {")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 27226 4476 342387 0))
+("packages.nix"
+ (filename . "~/dotfiles/nix/modules/packages.nix")
+ (front-context-string . "  environment.sy")
+ (rear-context-string . "Unfree = true;\n\n")
+ (position . 56)
+ (last-modified 27226 4487 869651 0))
+("init.el"
+ (filename . "~/dotfiles/.emacs.d/init.el")
+ (front-context-string . ";; bootstrap str")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 27226 18367 244232 0))
+)

@@ -24,4 +24,4 @@ alias cd=''
 export TEALDEER_CONFIG_DIR="$HOME/.config/tealdeer"
 export MANPAGER="nvim +Man!"
 
-PROMPT="%~ $ "
+PROMPT="%B%F{5}%n%f %F{6}%~ #%f%b "

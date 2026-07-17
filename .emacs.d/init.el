@@ -31,14 +31,12 @@
 (use-package emacs
   :init
   (set-face-font 'default "Iosevka 20")
-  (set-face-font 'variable-pitch "Inter 20")
 
   (setq use-short-answers t
         ring-bell-function 'ignore
         inhibit-startup-message t
         vc-follow-symlinks t
         custom-safe-themes t
-        compile-command ""
         mac-command-modifier 'meta
         mac-option-modifier nil
         mac-right-command-modifier 'super)
@@ -85,10 +83,14 @@
                     (duplicate-line)
                     (next-line))))
 
-  :hook ((before-save . delete-trailing-whitespace)
+  :hook ((prog-mode . (lambda () (add-hook 'before-save-hook #'delete-trailing-whitespace nil t)))
          (prog-mode . display-line-numbers-mode)))
 
 ;;; actual packages
+(let ((straight-current-profile 'programming) ; load this first so it doesn't override my other binds
+	  (f (expand-file-name "programming.el" user-emacs-directory)))
+  (when (file-exists-p f) (load f)))
+
 (use-package doom-themes)
 (load-theme 'doom-dark+)
 
@@ -133,14 +135,11 @@
   :bind (("C-c n c" . org-roam-capture)
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert))
+  :custom (org-capture-bookmark nil)
   :config (org-roam-db-autosync-mode t))
 
 (use-package org-roam-ui :commands org-roam-ui-mode) ; command implies defer until this is run
 ;;; --- end org-mode ---
-
-(let ((straight-current-profile 'programming)
-	  (f (expand-file-name "programming.el" user-emacs-directory)))
-  (when (file-exists-p f) (load f)))
 
 ;;; --- start minibuffer ---
 (use-package vertico
@@ -167,7 +166,7 @@
         consult-fd-args "fd --full-path --color=never --hidden")
 
   ;; don't display these buffers
-  (let ((buffers '("*Async-native-compile-log*" "*straight-process*" "*straight-byte-compilation*" "*direnv*" "*Messages*" "*Help*")))
+  (let ((buffers '("*Async-native-compile-log*" "*straight-process*" "*straight-byte-compilation*" "*direnv*" "*Messages*" "*Help*" "*Backtrace*")))
     (dolist (buf buffers) (add-to-list 'consult-buffer-filter (regexp-quote buf))))
   (add-to-list 'consult-buffer-filter "\\*EGLOT.*\\*")
   (add-to-list 'consult-buffer-filter "magit.*:"))
