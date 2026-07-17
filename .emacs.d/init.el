@@ -31,6 +31,7 @@
 (use-package emacs
   :init
   (set-face-font 'default "Iosevka 20")
+  (set-face-font 'variable-pitch "Inter 20")
 
   (setq use-short-answers t
         ring-bell-function 'ignore
@@ -62,11 +63,11 @@
   (blink-cursor-mode -1)
   (column-number-mode t)
   (delete-selection-mode t)
-  (recentf-mode t)
   (savehist-mode t)
   (global-auto-revert-mode t)
   (auto-save-visited-mode t)
   (which-key-mode t)
+  (global-hl-line-mode t)
 
   ;; credit: @JakeBox0 on yt
   (setq-default mode-line-format '(" - "
@@ -129,7 +130,7 @@
   (org-hide-emphasis-markers t))
 
 (use-package org-roam
-  :bind (("C-c n l" . org-roam-buffer-toggle)
+  :bind (("C-c n c" . org-roam-capture)
          ("C-c n f" . org-roam-node-find)
          ("C-c n i" . org-roam-node-insert))
   :config (org-roam-db-autosync-mode t))
@@ -164,9 +165,12 @@
   :config
   (setq consult-ripgrep-args "rg --null --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --no-heading --with-filename --line-number --search-zip --hidden"
         consult-fd-args "fd --full-path --color=never --hidden")
-  ;; `consult-buffer' config
-  (let ((buffers '("*Async-native-compile-log*" "*straight-process*" "*straight-byte-compilation*" "*direnv*" "*Messages*"))) ; hide these
-    (dolist (buf buffers) (add-to-list 'consult-buffer-filter (regexp-quote buf)))))
+
+  ;; don't display these buffers
+  (let ((buffers '("*Async-native-compile-log*" "*straight-process*" "*straight-byte-compilation*" "*direnv*" "*Messages*" "*Help*")))
+    (dolist (buf buffers) (add-to-list 'consult-buffer-filter (regexp-quote buf))))
+  (add-to-list 'consult-buffer-filter "\\*EGLOT.*\\*")
+  (add-to-list 'consult-buffer-filter "magit.*:"))
 
 (use-package marginalia :config (marginalia-mode))
 
@@ -219,8 +223,15 @@
   (define-global-minor-mode my-global-centered-cursor-mode centered-cursor-mode
     (lambda ()
       (when (not (memq major-mode
-                       (list 'Info-mode 'term-mode 'eshell-mode 'shell-mode 'erc-mode)))
+                       (list 'Info-mode 'term-mode 'eshell-mode 'shell-mode 'erc-mode 'elfeed-search-mode)))
         (centered-cursor-mode))))
   (my-global-centered-cursor-mode t)
 
   (advice-add 'text-scale-adjust :after (lambda (interactive) (ccm-vpos-recenter))))
+
+(use-package elfeed
+  :custom (elfeed-feeds (quote
+                         (("https://vimothee.substack.com/feed")
+                          ("https://blog.andymatuschak.org/rss")
+                          ("https://usefulfictions.substack.com/feed")
+                          ("https://kamilkazani.substack.com/feed")))))
