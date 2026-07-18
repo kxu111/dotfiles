@@ -1,6 +1,2 @@
-.DS_STORE
-.config/cron/logs/*
-Pictures/Screenshots/*
-
-
-!.gitkeep
+.config/homebrew/trust.json.lock
+.config/mpv/scripts/sponsorblock_shared/sponsorblock.txt

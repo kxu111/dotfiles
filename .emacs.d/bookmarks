@@ -2,7 +2,19 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("flake.nix"
+(("elforg"
+ (filename . "~/dotfiles/.emacs.d/elfeed.org")
+ (front-context-string . "* Feeds         ")
+ (rear-context-string . "side /\"href\"/.\n\n")
+ (position . 648)
+ (last-modified 27227 44704 696693 0))
+(".zshrc"
+ (filename . "~/dotfiles/.zshrc")
+ (front-context-string . "alias neofetch='")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 27227 34071 830564 0))
+("flake.nix"
  (filename . "~/dotfiles/nix/flake.nix")
  (front-context-string . "{\n  description ")
  (rear-context-string)

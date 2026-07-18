@@ -18,9 +18,11 @@
     fzf
     yazi
     tree
+    curl
   ];
 
   fonts.packages = with pkgs; [
     iosevka-bin
+    aporetic-bin
   ];
 }

@@ -1,4 +1,4 @@
-alias neofetch='fastfetch -c examples/13'
+alias neofetch='fastfetch'
 alias nrs='sudo darwin-rebuild switch --flake ~/nix#air'
 alias nfu='sudo nix flake update --flake ~/nix'
 alias reload='source ~/.zshenv; source ~/.zshrc'
@@ -24,4 +24,4 @@ alias cd=''
 export TEALDEER_CONFIG_DIR="$HOME/.config/tealdeer"
 export MANPAGER="nvim +Man!"
 
-PROMPT="%B%F{5}%n%f %F{6}%~ #%f%b "
+PROMPT="[%B%F{2}%n%f%b:%B%F{6}%~%f%b] %F{5}λ%f "
