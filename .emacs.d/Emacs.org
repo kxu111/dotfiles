@@ -1,0 +1,591 @@
+#+Title: Kenny's Emacs Config
+#+STARTUP: overview
+#+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
+
+This is my literate Emacs config. My config is not that large, and therefore I do not have the most practical of use-cases for a literate config. However, it was still a good learning experience and helped me organise my config files.
+
+* Pre-Config
+
+** ~early-init.el~
+
+*** Avoid Initial Flash of Light
+
+Avoid being flashbanged upon opening Emacs.
+
+#+begin_src emacs-lisp :tangle ./early-init.el
+  (defun prot-emacs-re-enable-frame-theme (_frame)
+    (when-let* ((theme (car custom-enabled-themes)))
+      (enable-theme theme)))
+
+  (defun prot-emacs-avoid-initial-flash-of-light ()
+    (setq mode-line-format nil)
+    (set-face-attribute 'default nil :background "#000000" :foreground "#ffffff")
+    (set-face-attribute 'mode-line nil :background "#000000" :foreground "#ffffff" :box 'unspecified)
+    (add-hook 'after-make-frame-functions #'prot-emacs-re-enable-frame-theme))
+
+  (prot-emacs-avoid-initial-flash-of-light)
+#+end_src
+
+*** Increase Garbage Collection Threshold
+
+#+begin_src emacs-lisp :tangle ./early-init.el
+(setq gc-cons-threshold 100000000)
+#+end_src
+
+** Setup ~straight.el~
+
+I use =straight.el= thanks to its ability to create lockfiles.
+
+*** Disable ~package~ in Favour of ~straight~
+
+#+begin_src emacs-lisp :tangle ./early-init.el
+(setq package-enable-at-startup nil)
+#+end_src
+
+*** Bootstrap ~straight.el~
+
+#+begin_src emacs-lisp
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name
+          "straight/repos/straight.el/bootstrap.el"
+          (or (bound-and-true-p straight-base-dir)
+              user-emacs-directory)))
+        (bootstrap-version 7))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+
+  (straight-use-package 'use-package)
+
+  (use-package straight
+    :custom
+    (straight-use-package-by-default t)
+    (straight-current-profile 'base)
+    (straight-vc-git-default-protocol 'ssh)
+    :config
+    (setq straight-profiles
+          `((base . "~/dotfiles/.emacs.d/straight.lockfile.base.el")
+            (programming . "~/dotfiles/.emacs.d/straight.lockfile.programming.el"))))
+#+end_src
+
+* Basic Config
+
+** MacOS Specific Settings
+
+I use [[https://github.com/d12frosted/homebrew-emacs-plus][Emacs Plus]]. I'm unsure if these settings are provided in vanilla Emacs.
+
+#+begin_src emacs-lisp
+  (when (eq system-type 'darwin)
+    (setq mac-command-modifier 'meta
+          mac-option-modifier nil
+          mac-right-command-modifier 'super)
+    (when (display-graphic-p) (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t)))
+    (setq frame-resize-pixelwise t)
+    (add-hook 'window-setup-hook 'toggle-frame-maximized t))
+#+end_src
+
+** Font Config
+
+#+begin_src emacs-lisp
+  (set-face-font 'default "Aporetic Sans Mono 20")
+  (set-face-font 'fixed-pitch "Aporetic Sans Mono 20")
+  (set-face-font 'variable-pitch "Aporetic Sans 20")
+#+end_src
+
+** Annoyances
+
+Reminder: Press =C-h v= while hovering a variable to see its description.
+
+#+begin_src emacs-lisp
+  (setq
+   use-short-answers t
+   ring-bell-function 'ignore
+   inhibit-startup-message t
+   vc-follow-symlinks t
+   custom-safe-themes t)
+
+  (setq-default
+   indent-tabs-mode nil
+   tab-width 4)
+
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (tooltip-mode -1)
+  (menu-bar-mode -1)
+  (blink-cursor-mode -1)
+#+end_src
+
+** Enable Useful Modes
+
+#+begin_src emacs-lisp
+  (delete-selection-mode t) ; Typing while a selection is active automatically replaces it with what you typed.
+  (global-auto-revert-mode t) ; Emacs refreshes a file once it changes on disk.
+  (which-key-mode t)
+#+end_src
+
+** Keybind Overrides
+
+Inspired by the following video: [[https://youtu.be/D99GB591Vgo][Emacs: Global Keybinding Overrides - Protesilaos]]
+
+#+begin_src emacs-lisp
+  (defvar my-overrides-mode-map (make-sparse-keymap)
+    "Keymap for `my-overrides-mode'.")
+
+  (define-minor-mode my-overrides-mode
+    "Activate `my-overrides-mode-map'."
+    :global t
+    :init-value nil
+    :keymap my-overrides-mode-map)
+
+  (define-key my-overrides-mode-map
+              (kbd "C-,")
+              (lambda ()
+                (interactive)
+                (duplicate-line)
+                (next-line)))
+
+  (my-overrides-mode t) ; I just re-enable this every time I define a keybind
+#+end_src
+
+** Global Hooks
+
+#+begin_src emacs-lisp
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+end_src
+
+** Modeline
+
+*** Mode Icons
+
+These functions are mostly taken from Protesilaos' config.
+
+#+begin_src emacs-lisp
+  (defvar my-mode-icons
+    '((dired-mode   "")
+      (archive-mode "🮯")
+      (diff-mode    "⇄")
+      (prog-mode    "λ")
+      (conf-mode    "")
+      (text-mode    "¶")
+      (comint-mode  "⨠")
+      (t            "·")))
+
+  (defun my-mode-line-icon ()
+    (or
+     (cadr (assq major-mode my-mode-icons))
+     (catch 'icon
+       (dolist (entry my-mode-icons)
+         (when (and (not (eq (car entry) t)) (derived-mode-p (car entry)))
+           (throw 'icon (cadr entry)))))
+     (cadr (assq t my-mode-icons))))
+
+  ;; These blocks check if Emacs can display a sufficient amount of colors, and then checks if the theme is light or dark
+  (defface my-icons-red
+    '((((class color) (min-colors 88) (background light)) :foreground "#aa3232")
+      (((class color) (min-colors 88) (background dark)) :foreground "#f06464")
+      (t :foreground "red"))
+    "use for red-colored icons")
+
+  ;; (defface my-icons-gray
+  ;;   '((((class color) (min-colors 88) (background light)) :foreground "gray30")
+  ;;     (((class color) (min-colors 88) (background dark)) :foreground "gray70")
+  ;;     (t :foreground "gray"))
+  ;;   "use for gray-colored icons.")
+
+  (defface my-icons-gray
+    '((t :inherit (bold shadow)))
+    "use for gray-colored icons.")
+#+end_src
+
+*** Modeline Components
+
+- ~my-mode-line-buffer-name~: If the current buffer is unsaved, the buffer name goes italic.
+- ~my-mode-line-vc-mode~: Displays version control icon and branch. If the current file is under version control and is modified, the branch name becomes italic.
+
+#+begin_src emacs-lisp
+  (defvar my-modeline-read-only
+    '(:eval
+      (when buffer-read-only
+        (propertize
+         " "
+         'face (if (mode-line-window-selected-p)
+                   'my-icons-red
+                 'my-icons-gray)))))
+
+  (defvar my-modeline-buffer-name
+    '(:eval
+      (propertize (buffer-name) 'face
+                  (if (buffer-modified-p)
+                      '(:weight bold :slant italic) 'bold))))
+
+  (defvar my-modeline-major-mode
+    '(:eval
+      (format "%s %s"
+              (propertize (my-mode-line-icon) 'face 'my-icons-gray)
+              (capitalize (string-replace "-mode" "" (symbol-name major-mode))))))
+
+  (defvar my-modeline-vc
+    '(:eval
+      (unless (not vc-mode)
+        (let ((s (substring-no-properties vc-mode 5)))
+          (concat
+           (propertize "⇅ " 'face 'my-icons-gray)
+           (if (eq (vc-state buffer-file-name) 'up-to-date)
+               s (propertize s 'face 'italic)))))))
+
+  (defvar my-modeline-multiple-cursors
+    '(:eval
+      (when (and (mode-line-window-selected-p)
+                 (bound-and-true-p multiple-cursors-mode))
+        mc/mode-line)))
+
+  (defvar my-modeline-position
+    '(:eval
+      (when (mode-line-window-selected-p)
+        (format-mode-line "%6l:%c (%o)"))))
+
+  (setq display-time-string-forms '((format-time-string "%a %d %b, %H:%M")))
+  (display-time-mode t)
+  (defvar my-modeline-misc-info
+    '(:eval
+      (when (mode-line-window-selected-p)
+        (format-mode-line mode-line-misc-info))))
+#+end_src
+
+*** Modeline Format
+
+#+begin_src emacs-lisp
+  (setq-default mode-line-format
+                (list
+                  "  %e"
+                  my-modeline-read-only
+                  my-modeline-buffer-name
+                  "  "
+                  my-modeline-major-mode
+                  'mode-line-process
+                  "  "
+                  my-modeline-vc
+                  'mode-line-format-right-align
+                  my-modeline-multiple-cursors
+                  my-modeline-position
+                  "  "
+                  my-modeline-misc-info
+                  "  "))
+#+end_src
+
+* Packages
+
+** Priority Packages
+
+*** Give Emacs Access to Shell Commands
+
+When Emacs is launched from a GUI, sometimes it can't find user-installed programs. This package combats that.
+
+#+begin_src emacs-lisp
+(use-package exec-path-from-shell
+  :config
+  (when (memq window-system '(mac ns x pgtk))
+    (exec-path-from-shell-initialize)))
+#+end_src
+
+** Base Packages
+
+*** Theme
+
+*Some Favourites*:
+- ~doric-dark~: A great theme. I love the frequent use of bold and italics combined with the near-monochrome palette.
+- ~doom-dark+~: Extremely neutral, it's nice.
+
+#+begin_src emacs-lisp
+  (use-package doric-themes)
+  (load-theme 'doric-dark t)
+#+end_src
+
+*** Magit
+
+#+begin_src emacs-lisp
+  (use-package magit)
+#+end_src
+
+*** Text Manipulation
+
+#+begin_src emacs-lisp
+  (use-package multiple-cursors
+    :custom
+    (mc/always-run-for-all t)
+    :config
+    (define-key my-overrides-mode-map (kbd "C-M-j") #'mc/mark-all-dwim)
+    (define-key my-overrides-mode-map (kbd "C-M-/") #'mc/mark-all-like-this)
+
+    (define-key my-overrides-mode-map (kbd "C-M-,") #'mc/mark-previous-like-this)
+    (define-key my-overrides-mode-map (kbd "C-M-.") #'mc/mark-next-like-this)
+
+    (define-key my-overrides-mode-map (kbd "C-<") #'mc/skip-to-previous-like-this)
+    (define-key my-overrides-mode-map (kbd "C->") #'mc/skip-to-next-like-this)
+
+    (define-key my-overrides-mode-map (kbd "C-M-c") #'mc/edit-lines)
+    (define-key my-overrides-mode-map (kbd "C-M-n") #'mc/insert-numbers)
+    (define-key my-overrides-mode-map (kbd "C-M-'") #'mc-hide-unmatched-lines-mode))
+
+  (use-package expreg
+    :config
+    (define-key my-overrides-mode-map (kbd "C-M-l") #'expreg-expand)
+    (define-key my-overrides-mode-map (kbd "C-M-h") #'expreg-contract))
+
+  (use-package move-text
+    :config
+    (define-key my-overrides-mode-map (kbd "M-p") #'move-text-up)
+    (define-key my-overrides-mode-map (kbd "M-n") #'move-text-down))
+
+  (my-overrides-mode t)
+#+end_src
+
+*** Org-Mode
+
+#+begin_src emacs-lisp
+  (use-package org
+    :straight (:host github :repo "bzg/org-mode" :branch "main")
+    :hook (org-mode . visual-line-mode)
+    :custom
+    (org-ellipsis "…")
+    (org-use-speed-commands t)
+    (org-startup-indented t)
+    (org-hide-emphasis-markers t)
+    (org-cycle-separator-lines 1) ; Keep a line between folded headings
+    :config
+    (require 'org-tempo)
+    (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+    (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+    )
+
+  (use-package org-appear
+    :straight (:type git :host github :repo "awth13/org-appear")
+    :custom (org-appear-autolinks t)
+    :hook (org-mode . org-appear-mode))
+
+  (use-package org-roam
+    :bind
+    ("C-c n c" . org-roam-capture)
+    ("C-c n f" . org-roam-node-find)
+    ("C-c n i" . org-roam-node-insert)
+    :custom (org-capture-bookmark nil)
+    :config (org-roam-db-autosync-mode t))
+
+  (use-package org-roam-ui :commands org-roam-ui-mode)
+#+end_src
+
+*** Completions
+
+#+begin_src emacs-lisp
+  (use-package vertico
+    :config
+    (vertico-mode)
+    (vertico-multiform-mode)
+    :custom
+    (vertico-multiform-commands ; Customize display per-command
+     '((execute-extended-command flat)))
+    (vertico-resize t)
+    (vertico-count 12))
+
+  (use-package consult
+    :bind
+    ("M-s M-g" . consult-ripgrep)
+    ("M-s M-f" . find-file)
+    ("M-s M-d" . consult-fd) ; Mnemonic: Search Directory
+    ("M-s M-o" . consult-outline)
+    ("M-s M-l" . consult-line)
+    ("M-s M-b" . consult-buffer)
+    ("M-s M-k" . kill-buffer)
+
+    :config
+    (setq consult-ripgrep-args "rg --null --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --no-heading --with-filename --line-number --search-zip --hidden"
+          consult-fd-args "fd --full-path --color=never --hidden")
+
+    ;; Don't display these buffers
+    (let ((buffers '("*Async-native-compile-log*" "*straight-process*" "*straight-byte-compilation*" "*direnv*" "*Messages*" "*Help*" "*Backtrace*" "*Warnings*" "*Native-compile-Log" "*elfeed-tube-log*")))
+      (dolist (buf buffers) (add-to-list 'consult-buffer-filter (regexp-quote buf))))
+    (add-to-list 'consult-buffer-filter "\\*EGLOT.*\\*")
+    (add-to-list 'consult-buffer-filter "magit.*:"))
+
+  (use-package marginalia :config (marginalia-mode))
+
+  (use-package orderless :config (setq completion-styles '(orderless basic)))
+
+  (use-package embark
+    :bind
+    ("C-." . embark-act)
+    (:map minibuffer-local-map
+          ("C-c C-c" . embark-collect)
+          ("C-c C-e" . embark-export)))
+
+  (use-package embark-consult)
+
+  (use-package corfu
+    :custom
+    (corfu-count 6)
+    (corfu-auto-prefix 2)
+    :init
+    (global-corfu-mode)
+    (corfu-popupinfo-mode)
+    :hook (prog-mode . (lambda () (setq-local corfu-auto t)))
+    :bind (:map corfu-map ("M-SPC" . corfu-insert-separator)))
+#+end_src
+
+*** wgrep
+#+begin_src emacs-lisp
+  (use-package wgrep
+    :bind
+    (:map grep-mode-map
+          ("e" . wgrep-change-to-wgrep-mode)
+          ("C-x C-q" . wgrep-change-to-wgrep-mode)
+          ("C-c C-c" . wgrep-finish-edit))
+    (:map compilation-mode-map
+          ("e" . wgrep-change-to-wgrep-mode)
+          ("C-x C-q" . wgrep-change-to-wgrep-mode)
+          ("C-c C-c" . wgrep-finish-edit)))
+#+end_src
+
+*** Split Navigation
+
+#+begin_src emacs-lisp
+  (use-package golden-ratio
+    :config
+    (golden-ratio-mode t)
+    (add-to-list 'golden-ratio-extra-commands 'ace-window))
+
+  (use-package ace-window :config (define-key my-overrides-mode-map (kbd "M-o") #'ace-window))
+
+  (my-overrides-mode t)
+#+end_src
+
+*** Elfeed
+
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :bind ("C-x f" . elfeed)
+    :hook (elfeed-show-mode . visual-line-mode)
+    :custom (elfeed-search-filter "@6months +unread -junk"))
+
+  (use-package elfeed-org
+    :after elfeed
+    :config (elfeed-org)
+    :custom (rmh-elfeed-org-files (list "~/.emacs.d/Emacs.org")))
+
+  (use-package elfeed-tube
+    :after elfeed
+    :bind
+    (:map elfeed-show-mode-map
+          ("F" . elfeed-tube-fetch)
+          ([remap save-buffer] . elfeed-tube-save))
+    (:map elfeed-search-mode-map
+          ("F" . elfeed-tube-fetch)
+          ([remap save-buffer] . elfeed-tube-save))
+    :config
+    (elfeed-tube-setup)
+    (add-hook 'elfeed-new-entry-hook
+              (elfeed-make-tagger :entry-link "https://www\\.youtube\\.com/shorts/.*"
+                                  :add 'junk
+                                  :remove 'unread)))
+
+  (use-package mpv)
+
+  (use-package elfeed-tube-mpv
+    :after elfeed
+    :bind
+    (:map elfeed-show-mode-map
+          ("<return>" . elfeed-tube-mpv)
+          ("C-c C-f" . elfeed-tube-mpv-follow-mode)
+          ("C-c C-w" . elfeed-tube-mpv-where)))
+#+end_src
+
+** Programming Packages
+
+*** Eglot
+
+#+begin_src emacs-lisp :tangle ./programming.el
+(use-package eglot
+  :bind
+  (:map eglot-mode-map
+        ("C-c l a" . eglot-code-actions)
+        ("C-c l r" . eglot-rename)
+        ("C-c l f" . eglot-format))
+  :hook
+  (c++-mode . eglot-ensure)
+  (nix-mode . eglot-ensure)
+  (python-mode . eglot-ensure))
+#+end_src
+
+*** Language Modes
+
+Use ~:defer t~ to avoid them loading preemptively.
+
+#+begin_src emacs-lisp :tangle ./programming.el
+  (use-package nix-mode :defer t)
+#+end_src
+
+*** Load ~programming.el~
+
+#+begin_src emacs-lisp
+  (let ((straight-current-profile 'programming)
+      (f (expand-file-name "programming.el" user-emacs-directory)))
+  (when (file-exists-p f) (load f)))
+#+end_src
+
+* RSS Feeds
+
+** Info
+
+*** Tagging Rules
+
+- Two main sections, one for blogs, and the other for videos.
+  - =Videos= is not exclusive to YouTube content.
+- If a feed contains neither blog nor video, it is placed under the heading =Misc=.
+  - The reason we do not tag the feed with both ~:blog:~ and ~:video:~ is because if I am searching for blogs, under no circumstances do I  want to see any video content, and vice versa.
+- Mark important feeds with ~:mustread:~.
+- Mark discontinued feeds with ~:archived:~.
+
+*** How to find YouTube feeds
+
+1. Go to a channel.
+2. Right click -> /"View Page Source"/.
+3. Search for /"videos.xml"/ and copy the link inside /"href"/.
+
+** Feeds                                                             :elfeed:
+
+*** Blogs                                                             :blog:
+**** [[https://blog.andymatuschak.org/rss][Andy Matuschak: Square Signals]]                              :archived:
+**** [[https://usefulfictions.substack.com/feed][Useful Fictions]]                                             :mustread:
+**** [[https://kamilkazani.substack.com/feed][kamilkanazi]]                                                 :mustread:
+
+*** Video                                                            :video:
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC04nROIJrY22Gl2aFqKcdqQ][Vimothee]]                                                    :mustread:
+**** [[https://vimothee.substack.com/feed][Vimothee RSS]]                                                :mustread:
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCkfuek_fQ18a9W1Hk9ntwug][Vimothee's Vestibule]]                                        :mustread:
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCsO-2AVa4SJXS30gnqMjv-A][No-Am]]                                                       :mustread:
+
+**** Education                                                        :edu:
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCq8ZAAsI89IoJ-fn1gYpO3g][Nightshift – Kurzgesagt After Dark]]
+This channel doesn't spam shorts like their main one does ^
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC2C_jShtL725hvbm1arSV9w][CGP Grey]]                                                  :mustread:
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCTpmmkp1E4nmZqWPS-dl5bg][Quanta Magazine]]
+
+**** Emacs                                                     :emacs:code:
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCA5krj-yK4efs1d477A1ZLQ][Bardman]]
+
+**** Programming                                                     :code:
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCgUxdfi_5-m67UDbrgcAFBg][Coding Jesus]]
+
+***** Live                                                          :live:
+Not exactly live streaming, just unscripted videos in general.
+****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCOt3Ssxx03pxLdH3qzyTAsQ][Daniel Hirsch]]
+****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCEbYhDd6c6vngsF5PQpFVWg][Tsoding]]
+****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCrqM0Ym_NbK1fqeQG2VIohg][Tsoding Daily]]
+
+
+*** Misc                                                              :misc:

@@ -2,12 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("elforg"
- (filename . "~/dotfiles/.emacs.d/elfeed.org")
- (front-context-string . "* Feeds         ")
- (rear-context-string . "side /\"href\"/.\n\n")
- (position . 648)
- (last-modified 27227 44704 696693 0))
+(("Emacs.org"
+ (filename . "~/dotfiles/.emacs.d/Emacs.org")
+ (front-context-string . "#+Title: Kenny's")
+ (rear-context-string)
+ (position . 1)
+ (last-modified 27228 24161 209342 0))
 (".zshrc"
  (filename . "~/dotfiles/.zshrc")
  (front-context-string . "alias neofetch='")
@@ -44,10 +44,4 @@
  (rear-context-string . "Unfree = true;\n\n")
  (position . 56)
  (last-modified 27226 4487 869651 0))
-("init.el"
- (filename . "~/dotfiles/.emacs.d/init.el")
- (front-context-string . ";; bootstrap str")
- (rear-context-string)
- (position . 1)
- (last-modified 27226 18367 244232 0))
 )
