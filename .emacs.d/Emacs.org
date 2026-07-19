@@ -1,6 +1,7 @@
-#+Title: Kenny's Emacs Config
-#+STARTUP: overview
-#+PROPERTY: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
+#+title: GNU Emacs Configuration
+#+author: kenny
+#+startup: content indent
+#+property: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
 This is my literate Emacs config. My config is not that large, and therefore I do not have the most practical of use-cases for a literate config. However, it was still a good learning experience and helped me organise my config files.
 
@@ -34,7 +35,7 @@ Avoid being flashbanged upon opening Emacs.
 
 ** Setup ~straight.el~
 
-I use =straight.el= thanks to its ability to create lockfiles.
+I use ~straight.el~ thanks to its ability to create lockfiles.
 
 *** Disable ~package~ in Favour of ~straight~
 
@@ -126,6 +127,7 @@ Reminder: Press =C-h v= while hovering a variable to see its description.
 #+begin_src emacs-lisp
   (delete-selection-mode t) ; Typing while a selection is active automatically replaces it with what you typed.
   (global-auto-revert-mode t) ; Emacs refreshes a file once it changes on disk.
+  (savehist-mode t) ; Save minibuffer history.
   (which-key-mode t)
 #+end_src
 
@@ -190,17 +192,11 @@ These functions are mostly taken from Protesilaos' config.
     '((((class color) (min-colors 88) (background light)) :foreground "#aa3232")
       (((class color) (min-colors 88) (background dark)) :foreground "#f06464")
       (t :foreground "red"))
-    "use for red-colored icons")
-
-  ;; (defface my-icons-gray
-  ;;   '((((class color) (min-colors 88) (background light)) :foreground "gray30")
-  ;;     (((class color) (min-colors 88) (background dark)) :foreground "gray70")
-  ;;     (t :foreground "gray"))
-  ;;   "use for gray-colored icons.")
+    "Use for red-colored icons")
 
   (defface my-icons-gray
     '((t :inherit (bold shadow)))
-    "use for gray-colored icons.")
+    "Use for gray-colored icons.")
 #+end_src
 
 *** Modeline Components
@@ -248,7 +244,7 @@ These functions are mostly taken from Protesilaos' config.
   (defvar my-modeline-position
     '(:eval
       (when (mode-line-window-selected-p)
-        (format-mode-line "%6l:%c (%o)"))))
+        (format-mode-line "%6l:%c (%%p)"))))
 
   (setq display-time-string-forms '((format-time-string "%a %d %b, %H:%M")))
   (display-time-mode t)
@@ -263,27 +259,25 @@ These functions are mostly taken from Protesilaos' config.
 #+begin_src emacs-lisp
   (setq-default mode-line-format
                 (list
-                  "  %e"
-                  my-modeline-read-only
-                  my-modeline-buffer-name
-                  "  "
-                  my-modeline-major-mode
-                  'mode-line-process
-                  "  "
-                  my-modeline-vc
-                  'mode-line-format-right-align
-                  my-modeline-multiple-cursors
-                  my-modeline-position
-                  "  "
-                  my-modeline-misc-info
-                  "  "))
+                 "  %e"
+                 my-modeline-read-only
+                 my-modeline-buffer-name
+                 "  "
+                 my-modeline-major-mode
+                 'mode-line-process
+                 "  "
+                 my-modeline-vc
+                 'mode-line-format-right-align
+                 my-modeline-multiple-cursors
+                 my-modeline-position
+                 "  "
+                 my-modeline-misc-info
+                 "  "))
 #+end_src
 
-* Packages
+* Priority Packages
 
-** Priority Packages
-
-*** Give Emacs Access to Shell Commands
+** Give Emacs Access to Shell Commands
 
 When Emacs is launched from a GUI, sometimes it can't find user-installed programs. This package combats that.
 
@@ -294,26 +288,26 @@ When Emacs is launched from a GUI, sometimes it can't find user-installed progra
     (exec-path-from-shell-initialize)))
 #+end_src
 
-** Base Packages
+* Base Packages
 
-*** Theme
+** Themes
 
 *Some Favourites*:
 - ~doric-dark~: A great theme. I love the frequent use of bold and italics combined with the near-monochrome palette.
-- ~doom-dark+~: Extremely neutral, it's nice.
+- ~doom-dark+~: Extremely neutral, it's nice. I can't use it though because it breaks my modeline.
 
 #+begin_src emacs-lisp
   (use-package doric-themes)
   (load-theme 'doric-dark t)
 #+end_src
 
-*** Magit
+** Magit
 
 #+begin_src emacs-lisp
   (use-package magit)
 #+end_src
 
-*** Text Manipulation
+** Text Manipulation
 
 #+begin_src emacs-lisp
   (use-package multiple-cursors
@@ -346,14 +340,13 @@ When Emacs is launched from a GUI, sometimes it can't find user-installed progra
   (my-overrides-mode t)
 #+end_src
 
-*** Org-Mode
+** Org-Mode
 
 #+begin_src emacs-lisp
   (use-package org
     :straight (:host github :repo "bzg/org-mode" :branch "main")
     :hook (org-mode . visual-line-mode)
     :custom
-    (org-ellipsis "…")
     (org-use-speed-commands t)
     (org-startup-indented t)
     (org-hide-emphasis-markers t)
@@ -362,25 +355,29 @@ When Emacs is launched from a GUI, sometimes it can't find user-installed progra
     (require 'org-tempo)
     (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
     (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-    )
 
-  (use-package org-appear
-    :straight (:type git :host github :repo "awth13/org-appear")
-    :custom (org-appear-autolinks t)
-    :hook (org-mode . org-appear-mode))
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((emacs-lisp . t)
+       (shell . t))))
 
-  (use-package org-roam
-    :bind
-    ("C-c n c" . org-roam-capture)
-    ("C-c n f" . org-roam-node-find)
-    ("C-c n i" . org-roam-node-insert)
-    :custom (org-capture-bookmark nil)
-    :config (org-roam-db-autosync-mode t))
+   (use-package org-appear
+     :straight (:type git :host github :repo "awth13/org-appear")
+     :custom (org-appear-autolinks t)
+     :hook (org-mode . org-appear-mode))
 
-  (use-package org-roam-ui :commands org-roam-ui-mode)
+   (use-package org-roam
+     :bind
+     ("C-c n c" . org-roam-capture)
+     ("C-c n f" . org-roam-node-find)
+     ("C-c n i" . org-roam-node-insert)
+     :custom (org-capture-bookmark nil)
+     :config (org-roam-db-autosync-mode t))
+
+   (use-package org-roam-ui :commands org-roam-ui-mode)
 #+end_src
 
-*** Completions
+** Completions
 
 #+begin_src emacs-lisp
   (use-package vertico
@@ -437,7 +434,7 @@ When Emacs is launched from a GUI, sometimes it can't find user-installed progra
     :bind (:map corfu-map ("M-SPC" . corfu-insert-separator)))
 #+end_src
 
-*** wgrep
+** wgrep
 #+begin_src emacs-lisp
   (use-package wgrep
     :bind
@@ -451,7 +448,7 @@ When Emacs is launched from a GUI, sometimes it can't find user-installed progra
           ("C-c C-c" . wgrep-finish-edit)))
 #+end_src
 
-*** Split Navigation
+** Split Navigation
 
 #+begin_src emacs-lisp
   (use-package golden-ratio
@@ -464,7 +461,7 @@ When Emacs is launched from a GUI, sometimes it can't find user-installed progra
   (my-overrides-mode t)
 #+end_src
 
-*** Elfeed
+** Elfeed
 
 #+begin_src emacs-lisp
   (use-package elfeed
@@ -504,9 +501,9 @@ When Emacs is launched from a GUI, sometimes it can't find user-installed progra
           ("C-c C-w" . elfeed-tube-mpv-where)))
 #+end_src
 
-** Programming Packages
+* Programming Packages
 
-*** Eglot
+** Eglot
 
 #+begin_src emacs-lisp :tangle ./programming.el
 (use-package eglot
@@ -521,7 +518,7 @@ When Emacs is launched from a GUI, sometimes it can't find user-installed progra
   (python-mode . eglot-ensure))
 #+end_src
 
-*** Language Modes
+** Language Modes
 
 Use ~:defer t~ to avoid them loading preemptively.
 
@@ -529,7 +526,7 @@ Use ~:defer t~ to avoid them loading preemptively.
   (use-package nix-mode :defer t)
 #+end_src
 
-*** Load ~programming.el~
+** Load ~programming.el~
 
 #+begin_src emacs-lisp
   (let ((straight-current-profile 'programming)
@@ -550,42 +547,84 @@ Use ~:defer t~ to avoid them loading preemptively.
 - Mark important feeds with ~:mustread:~.
 - Mark discontinued feeds with ~:archived:~.
 
-*** How to find YouTube feeds
+*** Script to find YouTube feeds (requires curl)
 
-1. Go to a channel.
-2. Right click -> /"View Page Source"/.
-3. Search for /"videos.xml"/ and copy the link inside /"href"/.
+*Link channels here (in a ~|table|~, with "quotation marks"):*
 
-** Feeds                                                             :elfeed:
+#+NAME: channels
+| "https://youtube.com/@protesilaos" |
 
-*** Blogs                                                             :blog:
-**** [[https://blog.andymatuschak.org/rss][Andy Matuschak: Square Signals]]                              :archived:
-**** [[https://usefulfictions.substack.com/feed][Useful Fictions]]                                             :mustread:
-**** [[https://kamilkazani.substack.com/feed][kamilkanazi]]                                                 :mustread:
+*Press =C-c C-c= on this:*
+#+begin_src shell :var channels=channels :results raw
+#!/usr/bin/env bash
 
-*** Video                                                            :video:
-**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC04nROIJrY22Gl2aFqKcdqQ][Vimothee]]                                                    :mustread:
-**** [[https://vimothee.substack.com/feed][Vimothee RSS]]                                                :mustread:
-**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCkfuek_fQ18a9W1Hk9ntwug][Vimothee's Vestibule]]                                        :mustread:
-**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCsO-2AVa4SJXS30gnqMjv-A][No-Am]]                                                       :mustread:
+extract_rss_info() {
+    local youtube_channel_url="$1"
 
-**** Education                                                        :edu:
+    local page
+    page=$(curl -Ls "$youtube_channel_url")
+
+    local channel_id
+    channel_id=$(echo "$page" |
+                     sed -n 's/.*"externalId":"\(UC[^"]*\)".*/\1/p' |
+                     head -n1)
+
+    local display_name
+    display_name=$(echo "$page" |
+                       sed -n 's/.*"channelMetadataRenderer":{"title":"\([^"]*\)".*/\1/p' |
+                       head -n1)
+
+    if [[ -n "$channel_id" && -n "$display_name" ]]; then
+        echo "[[https://www.youtube.com/feeds/videos.xml?channel_id=$channel_id][$display_name]]"
+    else
+        echo "Failed to extract data for $youtube_channel_url"
+    fi
+}
+
+while IFS= read -r url; do
+    extract_rss_info "$url"
+done <<< "$channels"
+#+end_src
+
+#+RESULTS:
+[[https://www.youtube.com/feeds/videos.xml?channel_id=UC0uTPqBCFIpZxlz_Lv1tk_g][Protesilaos]]
+
+** Feeds                                                            :elfeed:
+
+*** Blogs                                                            :blog:
+**** [[https://blog.andymatuschak.org/rss][Andy Matuschak: Square Signals]]                             :archived:
+**** [[https://usefulfictions.substack.com/feed][Useful Fictions]]                                            :mustread:
+**** [[https://kamilkazani.substack.com/feed][kamilkanazi]]                                                :mustread:
+
+*** Video                                                           :video:
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC04nROIJrY22Gl2aFqKcdqQ][Vimothee]]                                                   :mustread:
+**** [[https://vimothee.substack.com/feed][Vimothee RSS]]                                               :mustread:
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCkfuek_fQ18a9W1Hk9ntwug][Vimothee's Vestibule]]                                       :mustread:
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCsO-2AVa4SJXS30gnqMjv-A][No-Am]]                                                      :mustread:
+
+**** Education                                                       :edu:
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q][Kurzgesagt – In a Nutshell]]
 ***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCq8ZAAsI89IoJ-fn1gYpO3g][Nightshift – Kurzgesagt After Dark]]
-This channel doesn't spam shorts like their main one does ^
-***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC2C_jShtL725hvbm1arSV9w][CGP Grey]]                                                  :mustread:
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC2C_jShtL725hvbm1arSV9w][CGP Grey]]                                                 :mustread:
 ***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCTpmmkp1E4nmZqWPS-dl5bg][Quanta Magazine]]
 
-**** Emacs                                                     :emacs:code:
+**** Emacs                                                    :emacs:code:
 ***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCA5krj-yK4efs1d477A1ZLQ][Bardman]]
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC1tV5SjRyejRGeHAaMGYSsQ][Joshua Blais]]
 
-**** Programming                                                     :code:
+**** Tech                                                           :tech:
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCcaTUtGzOiS4cqrgtcsHYWg][jvscholz]]
+
+**** Programming                                                    :code:
 ***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCgUxdfi_5-m67UDbrgcAFBg][Coding Jesus]]
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCwHwDuNd9lCdA7chyyquDXw][Bread on Penguins]]
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCpwl7jNE9PJc-lBTShNs5TQ][Coding with Sphere]]
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA][Luke Smith]]
 
-***** Live                                                          :live:
+***** Live                                                         :live:
 Not exactly live streaming, just unscripted videos in general.
 ****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCOt3Ssxx03pxLdH3qzyTAsQ][Daniel Hirsch]]
 ****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCEbYhDd6c6vngsF5PQpFVWg][Tsoding]]
 ****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCrqM0Ym_NbK1fqeQG2VIohg][Tsoding Daily]]
 
-
-*** Misc                                                              :misc:
+*** Misc                                                             :misc:

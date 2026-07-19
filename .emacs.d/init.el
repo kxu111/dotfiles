@@ -57,6 +57,7 @@
 
 (delete-selection-mode t) ; Typing while a selection is active automatically replaces it with what you typed.
 (global-auto-revert-mode t) ; Emacs refreshes a file once it changes on disk.
+(savehist-mode t) ; Save minibuffer history.
 (which-key-mode t)
 
 (defvar my-overrides-mode-map (make-sparse-keymap)
@@ -103,17 +104,11 @@
   '((((class color) (min-colors 88) (background light)) :foreground "#aa3232")
     (((class color) (min-colors 88) (background dark)) :foreground "#f06464")
     (t :foreground "red"))
-  "use for red-colored icons")
-
-;; (defface my-icons-gray
-;;   '((((class color) (min-colors 88) (background light)) :foreground "gray30")
-;;     (((class color) (min-colors 88) (background dark)) :foreground "gray70")
-;;     (t :foreground "gray"))
-;;   "use for gray-colored icons.")
+  "Use for red-colored icons")
 
 (defface my-icons-gray
   '((t :inherit (bold shadow)))
-  "use for gray-colored icons.")
+  "Use for gray-colored icons.")
 
 (defvar my-modeline-read-only
   '(:eval
@@ -154,7 +149,7 @@
 (defvar my-modeline-position
   '(:eval
     (when (mode-line-window-selected-p)
-      (format-mode-line "%6l:%c (%o)"))))
+      (format-mode-line "%6l:%c (%%p)"))))
 
 (setq display-time-string-forms '((format-time-string "%a %d %b, %H:%M")))
 (display-time-mode t)
@@ -165,20 +160,20 @@
 
 (setq-default mode-line-format
               (list
-                "  %e"
-                my-modeline-read-only
-                my-modeline-buffer-name
-                "  "
-                my-modeline-major-mode
-                'mode-line-process
-                "  "
-                my-modeline-vc
-                'mode-line-format-right-align
-                my-modeline-multiple-cursors
-                my-modeline-position
-                "  "
-                my-modeline-misc-info
-                "  "))
+               "  %e"
+               my-modeline-read-only
+               my-modeline-buffer-name
+               "  "
+               my-modeline-major-mode
+               'mode-line-process
+               "  "
+               my-modeline-vc
+               'mode-line-format-right-align
+               my-modeline-multiple-cursors
+               my-modeline-position
+               "  "
+               my-modeline-misc-info
+               "  "))
 
 (use-package exec-path-from-shell
   :config
@@ -223,7 +218,6 @@
   :straight (:host github :repo "bzg/org-mode" :branch "main")
   :hook (org-mode . visual-line-mode)
   :custom
-  (org-ellipsis "…")
   (org-use-speed-commands t)
   (org-startup-indented t)
   (org-hide-emphasis-markers t)
@@ -232,22 +226,26 @@
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
   (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-  )
 
-(use-package org-appear
-  :straight (:type git :host github :repo "awth13/org-appear")
-  :custom (org-appear-autolinks t)
-  :hook (org-mode . org-appear-mode))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (shell . t))))
 
-(use-package org-roam
-  :bind
-  ("C-c n c" . org-roam-capture)
-  ("C-c n f" . org-roam-node-find)
-  ("C-c n i" . org-roam-node-insert)
-  :custom (org-capture-bookmark nil)
-  :config (org-roam-db-autosync-mode t))
+ (use-package org-appear
+   :straight (:type git :host github :repo "awth13/org-appear")
+   :custom (org-appear-autolinks t)
+   :hook (org-mode . org-appear-mode))
 
-(use-package org-roam-ui :commands org-roam-ui-mode)
+ (use-package org-roam
+   :bind
+   ("C-c n c" . org-roam-capture)
+   ("C-c n f" . org-roam-node-find)
+   ("C-c n i" . org-roam-node-insert)
+   :custom (org-capture-bookmark nil)
+   :config (org-roam-db-autosync-mode t))
+
+ (use-package org-roam-ui :commands org-roam-ui-mode)
 
 (use-package vertico
   :config
