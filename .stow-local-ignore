@@ -1,2 +1,15 @@
 install.sh
 misc
+
+# Emacs: backup, autosave, and lock files
+.*~$
+\#.*\#
+\.\#.*
+
+# MacOS
+\.DS_Store$
+
+# git
+\.git
+\.gitignore
+README\..*

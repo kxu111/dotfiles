@@ -58,10 +58,10 @@ Config.add = function(opts)
     vim.pack.add { spec }
 end
 
-Config.add { src = "Mofiqul/vscode.nvim", version = "main" }
-vim.cmd.colorscheme "vscode"
 
 Config.add "echasnovski/mini.nvim"
+vim.cmd.colorscheme "miniwinter"
+
 require "mini.deps".setup()
 local now, later = MiniDeps.now, MiniDeps.later
 

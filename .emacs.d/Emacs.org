@@ -1,126 +1,368 @@
 #+title: GNU Emacs Configuration
-#+author: kenny
+#+author: Kenneth Xu
+#+language: en-gb
+#+options: ':t toc:nil num:t author:t email:t
 #+startup: content indent
-#+property: header-args:emacs-lisp :tangle ./init.el :mkdirp yes
 
-This is my literate Emacs config. My config is not that large, and therefore I do not have the most practical of use-cases for a literate config. However, it was still a good learning experience and helped me organise my config files.
+This is my literate configuration for GNU Emacs. It uses ~org-babel~, a package which allows for the use of written text alongside blocks of code.
+My configuration is heavily inspired by Protesilaos, an Emacs package maintainer and content creator. It is likely you will see some parallels between my configuration and his.
+*You can check my [[https://github.com/kxu111/dotfiles][dotfiles]] to see what OS and build of Emacs I am using*.
 
-* Pre-Config
+Usually, people use their =init.el= to call the command ~org-babel-load-file~ in order to load their literate configuration. However, I believe this method is ineffective because using it forces us to load Org before starting Emacs. Instead, I will make use of this command:
 
-** ~early-init.el~
-
-*** Avoid Initial Flash of Light
-
-Avoid being flashbanged upon opening Emacs.
-
-#+begin_src emacs-lisp :tangle ./early-init.el
-  (defun prot-emacs-re-enable-frame-theme (_frame)
-    (when-let* ((theme (car custom-enabled-themes)))
-      (enable-theme theme)))
-
-  (defun prot-emacs-avoid-initial-flash-of-light ()
-    (setq mode-line-format nil)
-    (set-face-attribute 'default nil :background "#000000" :foreground "#ffffff")
-    (set-face-attribute 'mode-line nil :background "#000000" :foreground "#ffffff" :box 'unspecified)
-    (add-hook 'after-make-frame-functions #'prot-emacs-re-enable-frame-theme))
-
-  (prot-emacs-avoid-initial-flash-of-light)
+#+begin_src emacs-lisp :tangle no :results none
+(org-babel-tangle)
 #+end_src
 
-*** Increase Garbage Collection Threshold
+The command ~org-babel-tangle~ (bound to =C-c C-v C-t=), takes the blocks of code from inside your configuration and deploys them inside of standalone files. That way, you can write all of your configuration inside one literate configuration file, but you don't have to deal with the inefficiency that comes with being forced to start Emacs from an Org file.
 
-#+begin_src emacs-lisp :tangle ./early-init.el
-(setq gc-cons-threshold 100000000)
-#+end_src
+~org-babel~ allows you to have a modular configuration while also being able to manage everything from one place. This has many advantages. For example, you can continue treating a singular file as the "root" of your configuration, however if somebody wishes to see a know how you accomplished something, you need only send them the relevant files, as opposed to sending them your entire configuration.
+Additionally, if you weren't convinced already, you also gain access a whole host of the advantages that come with working with Org files, for example the ability to export your configuration as a PDF or website.
 
-** Setup ~straight.el~
+* The anatomy of an Emacs configuration
 
-I use ~straight.el~ thanks to its ability to create lockfiles.
+The current Org file is not loaded on Emacs' startup. Rather, it generates the files that Emacs will read. Here is a list of the files that this Org file will generate:
 
-*** Disable ~package~ in Favour of ~straight~
+- Standard file =early-init.el= :: Configures the Emacs frame and defines the behaviour of Emacs in its loading phase.
 
-#+begin_src emacs-lisp :tangle ./early-init.el
+- Standard file =init.el= :: This sets up some lisp macros, runs some fixes (e.g disabling the custom file) and loads the configuration modules.
+
+* The package manager (=straight.el=)
+
+I use =straight.el= thanks to its ability to create lockfiles.
+=straight.el='s Github: <https://github.com/radian-software/straight.el>
+
+** The =early-init.el= disables package in favour of =straight.el=
+
+#+begin_src emacs-lisp :tangle "early-init.el"
+;; Disable package in favour of "straight.el".
 (setq package-enable-at-startup nil)
 #+end_src
 
-*** Bootstrap ~straight.el~
+** The =init.el= bootstraps =straight.el=
 
-#+begin_src emacs-lisp
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-         (expand-file-name
-          "straight/repos/straight.el/bootstrap.el"
-          (or (bound-and-true-p straight-base-dir)
-              user-emacs-directory)))
-        (bootstrap-version 7))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
+#+begin_src emacs-lisp :tangle "init.el"
+;; Bootstrap "straight.el"
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-  (straight-use-package 'use-package)
-
-  (use-package straight
-    :custom
-    (straight-use-package-by-default t)
-    (straight-current-profile 'base)
-    (straight-vc-git-default-protocol 'ssh)
-    :config
-    (setq straight-profiles
-          `((base . "~/dotfiles/.emacs.d/straight.lockfile.base.el")
-            (programming . "~/dotfiles/.emacs.d/straight.lockfile.programming.el"))))
+(straight-use-package 'use-package)
 #+end_src
 
-* Basic Config
+** The =init.el= configures =straight.el=
 
-** MacOS Specific Settings
-
-I use [[https://github.com/d12frosted/homebrew-emacs-plus][Emacs Plus]]. I'm unsure if these settings are provided in vanilla Emacs.
-
-#+begin_src emacs-lisp
-  (when (eq system-type 'darwin)
-    (setq mac-command-modifier 'meta
-          mac-option-modifier nil
-          mac-right-command-modifier 'super)
-    (when (display-graphic-p) (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t)))
-    (setq frame-resize-pixelwise t)
-    (add-hook 'window-setup-hook 'toggle-frame-maximized t))
+#+begin_src emacs-lisp :tangle "init.el"
+(use-package straight
+  :custom
+  (straight-use-package-by-default t)
+  (straight-current-profile 'base)
+  (straight-vc-git-default-protocol 'ssh)
+  :config
+  (setq straight-profiles
+        `((base . "~/dotfiles/.emacs.d/straight.lockfile.base.el")
+          (programming . "~/dotfiles/.emacs.d/straight.lockfile.programming.el"))))
 #+end_src
 
-** Font Config
+* The early initialisation of Emacs (=early-init.el=)
 
-#+begin_src emacs-lisp
-  (set-face-font 'default "Aporetic Sans Mono 20")
-  (set-face-font 'fixed-pitch "Aporetic Sans Mono 20")
-  (set-face-font 'variable-pitch "Aporetic Sans 20")
+** The =early-init.el= basic frame settings
+
+Keep in mind ~frame-resize-pixelwise~ and ~frame-inhibit-implied-resize~ are important; without it, Emacs will use strange frame sizes and resize the frame if you adjust the font size.
+
+#+begin_src emacs-lisp :tangle "early-init.el"
+(setq frame-resize-pixelwise t
+      frame-inhibit-implied-resize 'force
+      frame-title-format '("%b")
+      ring-bell-function 'ignore
+      use-short-answers t
+      inhibit-startup-screen t
+      inhibit-startup-echo-area-message user-login-name ; Disable the message in the minibuffer on Emacs start.
+      )
+
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(tooltip-mode -1)
+(blink-cursor-mode -1)
 #+end_src
 
-** Annoyances
+** The =early-init.el= set frame parameters and variables based on platform
 
-Reminder: Press =C-h v= while hovering a variable to see its description.
+Here I set options based on what platform I am using, such as rebinding keys, or modifying the aesthetics of the frame.
 
-#+begin_src emacs-lisp
-  (setq
-   use-short-answers t
-   ring-bell-function 'ignore
-   inhibit-startup-message t
-   vc-follow-symlinks t
-   custom-safe-themes t)
+When I use MacOS, I am using [[https://github.com/d12frosted/homebrew-emacs-plus][Emacs Plus]].
 
-  (setq-default
-   indent-tabs-mode nil
-   tab-width 4)
+Keep in mind that ~initial-frame-alist~ only affects the first frame while ~default-frame-alist~ affects all future frames.
 
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (tooltip-mode -1)
-  (menu-bar-mode -1)
-  (blink-cursor-mode -1)
+#+begin_src emacs-lisp :tangle "early-init.el"
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+
+;; MacOS options
+(when (eq system-type 'darwin)
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (setq mac-left-command-modifier 'meta
+        mac-option-modifier nil))
 #+end_src
+
+** The =early-init.el= tweaks to startup time and garbage collection
+
+This is code copied from Protesilaos' configuration. In this snippet, he raises some variables to high values until Emacs loads, at which point he lowers them to a more practical amount.
+
+#+begin_src emacs-lisp :tangle "early-init.el"
+;; Temporarily increase the garbage collection threshold.  These
+;; changes help shave off about half a second of startup time.  The
+;; `most-positive-fixnum' is DANGEROUS AS A PERMANENT VALUE.  See the
+;; `emacs-startup-hook' a few lines below for what I actually use.
+(setq gc-cons-threshold most-positive-fixnum
+      gc-cons-percentage 0.5)
+
+;; Same idea as above for the `file-name-handler-alist' and the
+;; `vc-handled-backends' with regard to startup speed optimisation.
+;; Here I am storing the default value with the intent of restoring it
+;; via the `emacs-startup-hook'.
+(defvar prot-emacs--file-name-handler-alist file-name-handler-alist)
+(defvar prot-emacs--vc-handled-backends vc-handled-backends)
+
+(setq file-name-handler-alist nil
+      vc-handled-backends nil)
+
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setq gc-cons-threshold (* 100 100 8)
+                  gc-cons-percentage 0.1
+                  file-name-handler-alist prot-emacs--file-name-handler-alist
+                  vc-handled-backends prot-emacs--vc-handled-backends)))
+#+end_src
+
+** The =early-init.el= makes loading frame match theme
+
+Make the initial frame match your theme's background colors.
+
+#+begin_src emacs-lisp :tangle ./early-init.el
+(defun prot-emacs-re-enable-frame-theme (_frame)
+  (when-let* ((theme (car custom-enabled-themes)))
+    (enable-theme theme)))
+
+;; Make the initial frame match your theme's background colors.
+(defun prot-emacs-avoid-initial-flash-of-light ()
+  (setq mode-line-format nil)
+  (set-face-attribute 'default nil :background "#000000" :foreground "#ffffff")
+  (set-face-attribute 'mode-line nil :background "#000000" :foreground "#ffffff" :box 'unspecified)
+  (add-hook 'after-make-frame-functions #'prot-emacs-re-enable-frame-theme))
+
+(prot-emacs-avoid-initial-flash-of-light)
+#+end_src
+
+** The =early-init.el= sets the ~user-lisp-directory~
+
+The ~user-lisp-directory~ is a user option introduced in Emacs 31. It makes Emacs byte compile Emacs Lisp files therein and scan them for autoloads.
+
+#+begin_src emacs-lisp :tangle "early-init.el"
+(setq user-lisp-directory (locate-user-emacs-file "my-libs/"))
+#+end_src
+
+
+* The main initialisation of Emacs (=init.el=)
+
+** The =init.el= tweaks to make native compilation silent
+
+Native compilation helps speed up Emacs by translating Emacs Lisp down to machine code. However, it has an annoying habit of displaying verbose errors which usually don't mean anything *to the average user*.
+
+#+begin_src emacs-lisp :tangle "init.el"
+;; Make native compilation silent.
+(when (native-comp-available-p)
+  (setq native-comp-async-report-warnings-errors 'silent))
+#+end_src
+
+** The =init.el= obliviates the custom file
+
+The custom file is an absolutely useless feature of Emacs that contributes very little to my configuration, if at all. This is because I use =straight.el= to manage my installed packages (something the custom file usually does) and you can set =custom-safe-themes= to =t=, removing the need to track what themes are trusted. And finally, if you use =M-x customize=, you're probably a psychopath.
+
+This code works by sending the custom file to the =/tmp= directory, which is automatically cleared when you close your computer. Additionally, the file is never loaded, effectively removing it from existence.
+
+#+begin_src emacs-lisp :tangle "init.el"
+;; Disable the custom file by sending it to the temporary directory.
+(setq custom-file (make-temp-file "emacs-custom-"))
+#+end_src
+
+** The =init.el= option to declare all themes as safe
+
+Marks all themes as safe. I trust the devs :)
+As a precaution, don't try lesser-known packages before vetting the code.
+
+#+begin_src emacs-lisp :tangle "init.el"
+(setq custom-safe-themes t)
+#+end_src
+
+** The =init.el= macro to configure a package (~my-emacs-configure~)
+
+The ~my-emacs-configure~ is a simple wrapper around ~condition-case~. The idea is to add arbitrary code for the configuration of a given package and catch any errors so that Emacs can still load without that package's code.
+
+#+begin_src emacs-lisp :tangle "init.el"
+(defmacro my-emacs-configure (&rest body)
+  "Evaluate BODY and catch any errors."
+  (declare (indent 0))
+  `(condition-case err
+       (progn ,@body)
+     ((error user-error quit)
+      (message "Failed to configure package starting with `%S' because of `%S'" (car ',body) (cdr err)))))
+#+end_src
+
+
+** The =init.el= loading of my modules and libraries
+
+#+begin_src emacs-lisp :tangle "init.el"
+(mapc
+ (lambda (string)
+   (add-to-list 'load-path (locate-user-emacs-file string)))
+ '("my-libs" "my-modules"))
+#+end_src
+
+** The =init.el= final part to source the modules
+
+I'm going to use Protesilaos as a reference once again and split my configuration into multiple files.
+
+Splitting into multiple files allows me to review the individual source code files rather than searching through a large Org file.
+
+#+begin_src emacs-lisp :tangle "init.el"
+(require 'my-emacs-theme)
+(require 'my-emacs-prog-mode)
+(require 'my-emacs-git)
+#+end_src
+
+* The modules of my configuration (=my-modules/=)
+
+** The =my-emacs-theme.el= module
+
+*** TODO Implement theme picker
+
+- Make it so you can change fonts on theme switch
+- Add custom overrides for each theme
+
+*** The =my-emacs-theme.el= section to load themes
+
+*Some Favourite Themes*:
+- doric-dark
+- doom-dark+
+- doric-light
+
+#+begin_src emacs-lisp :tangle "my-modules/my-emacs-theme.el"
+(use-package doric-themes)
+(load-theme doric-light)
+#+end_src
+
+*** The =my-emacs-theme.el= section to load fonts
+
+*Favourite Fonts*:
+- =Iosevka=
+- =Aporetic Sans/Serif Mono=
+- =IBM Plex Mono=
+
+#+begin_src emacs-lisp :tangle "my-modules/my-emacs-theme.el"
+(set-face-font 'default "Aporetic Sans Mono 20")
+(set-face-font 'fixed-pitch "Aporetic Sans Mono 20")
+(set-face-font 'variable-pitch "Aporetic Sans 20")
+#+end_src
+
+*** The =my-emacs-theme.el= section to call to provide
+
+#+begin_src emacs-lisp :tangle "my-modules/my-emacs-theme.el"
+(provide 'my-emacs-theme)
+#+end_src
+
+** The =my-emacs-prog.el= module
+
+This module is to configure packages and parameters relevant to ~prog-mode~.
+
+*When installing programming modes, use ~:defer t~ to avoid them loading preemptively.* I don't know if this does anything, but it's good to be safe.
+
+*** The =my-emacs-prog-mode.el= section for ~eglot~
+
+~Eglot~ is a client for using LSP (Language Server Protocol) servers. I prefer it over ~lsp-mode~ because it is more lightweight and makes use of builtin Emacs features rather than implementing its own.
+
+#+begin_src emacs-lisp :tangle "my-modules/my-emacs-prog-mode.el"
+(use-package eglot
+  :bind
+  (:map eglot-mode-map
+        ("C-c l a" . eglot-code-actions)
+        ("C-c l r" . eglot-rename)
+        ("C-c l f" . eglot-format)))
+#+end_src
+
+To enable an ~eglot~ for a specific mode, add the following to your configuration. Of course, you must have a supported language server installed first, but that's out of scope for this.
+
+#+begin_example emacs-lisp
+(add-hook SAMPLE-mode-hook . eglot-ensure)
+#+end_example
+
+*** The =my-emacs-prog-mode.el= section for ~c++-mode~
+
+#+begin_src emacs-lisp :tangle "my-modules/my-emacs-prog-mode.el"
+;; c++ mode is built in
+(add-hook c++-mode-hook . eglot-ensure)
+#+end_src
+
+*** The =my-emacs-prog-mode.el= section for ~nix-mode~
+
+#+begin_src emacs-lisp :tangle "my-modules/my-emacs-prog-mode.el"
+(use-package nix-mode :defer t)
+(add-hook nix-mode-hook . eglot-ensure)
+#+end_src
+
+*** The =my-emacs-prog-mode.el= to call to provide
+
+#+begin_src emacs-lisp :tangle "my-modules/my-emacs-prog-mode.el"
+(provide my-emacs-prog-mode)
+#+end_src
+
+** The =my-emacs-git.el= module
+
+*** The =my-emacs-git.el= section to for =vc.el=
+
+VC refers to "version control", which is what allows you to track your files and visualise changes across different versions of your data.
+
+#+begin_src emacs-lisp :tangle "my-modules/my-emacs-git.el"
+(my-emacs-configure
+ (setq vc-follow-symlinks t)
+
+ (with-eval-after-load 'vc
+    ;; I only use Git.  If I ever need another, I will include it here.
+    ;; This may have an effect on performance, as Emacs will not try to
+    ;; check for a bunch of backends.
+    (setq vc-handled-backends '(Git))
+
+    (setq vc-dir-save-some-buffers-on-revert t))
+#+end_src
+
+*** The =prot-emacs-git.el= section to for ~magit~
+
+Magit is an amazing package. It can basically do everything the builtin =vc.el= can do, and that's with no setup.
+Start by pressing =C-x g= (~magit-status~) to bring up the state of the repository.
+
+#+begin_src emacs-lisp :tangle "my-modules/my-emacs-git.el"
+(use-package magit)
+#+end_src
+
+*** The =my-emacs-git.el= section call to provide
+
+#+begin_src emacs-lisp :tangle "my-modules/my-emacs-git.el"
+(provide 'my-emacs-git)
+#+end_src
+
+* TODO Transfer the legacy config
 
 ** Enable Useful Modes
 
@@ -228,17 +470,18 @@ These functions are mostly taken from Protesilaos' config.
 
   (defvar my-modeline-vc
     '(:eval
-      (unless (not vc-mode)
-        (let ((s (substring-no-properties vc-mode 5)))
-          (concat
-           (propertize "⇅ " 'face 'my-icons-gray)
-           (if (eq (vc-state buffer-file-name) 'up-to-date)
-               s (propertize s 'face 'italic)))))))
+      (when (mode-line-window-selected-p)
+        (unless (not vc-mode)
+          (let ((s (substring-no-properties vc-mode 5)))
+            (concat
+             (propertize "⇅ " 'face 'my-icons-gray)
+             (if (eq (vc-state buffer-file-name) 'up-to-date)
+                 s
+               (propertize s 'face 'italic))))))))
 
   (defvar my-modeline-multiple-cursors
     '(:eval
-      (when (and (mode-line-window-selected-p)
-                 (bound-and-true-p multiple-cursors-mode))
+      (when (and (mode-line-window-selected-p) (bound-and-true-p multiple-cursors-mode))
         mc/mode-line)))
 
   (defvar my-modeline-position
@@ -275,39 +518,9 @@ These functions are mostly taken from Protesilaos' config.
                  "  "))
 #+end_src
 
-* Priority Packages
+** Base Packages
 
-** Give Emacs Access to Shell Commands
-
-When Emacs is launched from a GUI, sometimes it can't find user-installed programs. This package combats that.
-
-#+begin_src emacs-lisp
-(use-package exec-path-from-shell
-  :config
-  (when (memq window-system '(mac ns x pgtk))
-    (exec-path-from-shell-initialize)))
-#+end_src
-
-* Base Packages
-
-** Themes
-
-*Some Favourites*:
-- ~doric-dark~: A great theme. I love the frequent use of bold and italics combined with the near-monochrome palette.
-- ~doom-dark+~: Extremely neutral, it's nice. I can't use it though because it breaks my modeline.
-
-#+begin_src emacs-lisp
-  (use-package doric-themes)
-  (load-theme 'doric-dark t)
-#+end_src
-
-** Magit
-
-#+begin_src emacs-lisp
-  (use-package magit)
-#+end_src
-
-** Text Manipulation
+*** Text Manipulation
 
 #+begin_src emacs-lisp
   (use-package multiple-cursors
@@ -340,7 +553,7 @@ When Emacs is launched from a GUI, sometimes it can't find user-installed progra
   (my-overrides-mode t)
 #+end_src
 
-** Org-Mode
+*** Org-Mode
 
 #+begin_src emacs-lisp
   (use-package org
@@ -351,6 +564,7 @@ When Emacs is launched from a GUI, sometimes it can't find user-installed progra
     (org-startup-indented t)
     (org-hide-emphasis-markers t)
     (org-cycle-separator-lines 1) ; Keep a line between folded headings
+    (org-src-content-indentation 0)
     :config
     (require 'org-tempo)
     (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
@@ -361,23 +575,18 @@ When Emacs is launched from a GUI, sometimes it can't find user-installed progra
      '((emacs-lisp . t)
        (shell . t))))
 
-   (use-package org-appear
-     :straight (:type git :host github :repo "awth13/org-appear")
-     :custom (org-appear-autolinks t)
-     :hook (org-mode . org-appear-mode))
+  (use-package org-roam
+    :bind
+    ("C-c n c" . org-roam-capture)
+    ("C-c n f" . org-roam-node-find)
+    ("C-c n i" . org-roam-node-insert)
+    :custom (org-capture-bookmark nil)
+    :config (org-roam-db-autosync-mode t))
 
-   (use-package org-roam
-     :bind
-     ("C-c n c" . org-roam-capture)
-     ("C-c n f" . org-roam-node-find)
-     ("C-c n i" . org-roam-node-insert)
-     :custom (org-capture-bookmark nil)
-     :config (org-roam-db-autosync-mode t))
-
-   (use-package org-roam-ui :commands org-roam-ui-mode)
+  (use-package org-roam-ui :commands org-roam-ui-mode)
 #+end_src
 
-** Completions
+*** Completions
 
 #+begin_src emacs-lisp
   (use-package vertico
@@ -434,7 +643,7 @@ When Emacs is launched from a GUI, sometimes it can't find user-installed progra
     :bind (:map corfu-map ("M-SPC" . corfu-insert-separator)))
 #+end_src
 
-** wgrep
+*** wgrep
 #+begin_src emacs-lisp
   (use-package wgrep
     :bind
@@ -448,7 +657,7 @@ When Emacs is launched from a GUI, sometimes it can't find user-installed progra
           ("C-c C-c" . wgrep-finish-edit)))
 #+end_src
 
-** Split Navigation
+*** Split Navigation
 
 #+begin_src emacs-lisp
   (use-package golden-ratio
@@ -461,7 +670,7 @@ When Emacs is launched from a GUI, sometimes it can't find user-installed progra
   (my-overrides-mode t)
 #+end_src
 
-** Elfeed
+*** Elfeed
 
 #+begin_src emacs-lisp
   (use-package elfeed
@@ -501,44 +710,13 @@ When Emacs is launched from a GUI, sometimes it can't find user-installed progra
           ("C-c C-w" . elfeed-tube-mpv-where)))
 #+end_src
 
-* Programming Packages
 
-** Eglot
 
-#+begin_src emacs-lisp :tangle ./programming.el
-(use-package eglot
-  :bind
-  (:map eglot-mode-map
-        ("C-c l a" . eglot-code-actions)
-        ("C-c l r" . eglot-rename)
-        ("C-c l f" . eglot-format))
-  :hook
-  (c++-mode . eglot-ensure)
-  (nix-mode . eglot-ensure)
-  (python-mode . eglot-ensure))
-#+end_src
+** RSS Feeds
 
-** Language Modes
+*** Info
 
-Use ~:defer t~ to avoid them loading preemptively.
-
-#+begin_src emacs-lisp :tangle ./programming.el
-  (use-package nix-mode :defer t)
-#+end_src
-
-** Load ~programming.el~
-
-#+begin_src emacs-lisp
-  (let ((straight-current-profile 'programming)
-      (f (expand-file-name "programming.el" user-emacs-directory)))
-  (when (file-exists-p f) (load f)))
-#+end_src
-
-* RSS Feeds
-
-** Info
-
-*** Tagging Rules
+**** Tagging Rules
 
 - Two main sections, one for blogs, and the other for videos.
   - =Videos= is not exclusive to YouTube content.
@@ -547,7 +725,7 @@ Use ~:defer t~ to avoid them loading preemptively.
 - Mark important feeds with ~:mustread:~.
 - Mark discontinued feeds with ~:archived:~.
 
-*** Script to find YouTube feeds (requires curl)
+**** Script to find YouTube feeds (requires curl)
 
 *Link channels here (in a ~|table|~, with "quotation marks"):*
 
@@ -589,42 +767,42 @@ done <<< "$channels"
 #+RESULTS:
 [[https://www.youtube.com/feeds/videos.xml?channel_id=UC0uTPqBCFIpZxlz_Lv1tk_g][Protesilaos]]
 
-** Feeds                                                            :elfeed:
+*** Feeds                                                            :elfeed:
 
-*** Blogs                                                            :blog:
-**** [[https://blog.andymatuschak.org/rss][Andy Matuschak: Square Signals]]                             :archived:
-**** [[https://usefulfictions.substack.com/feed][Useful Fictions]]                                            :mustread:
-**** [[https://kamilkazani.substack.com/feed][kamilkanazi]]                                                :mustread:
+**** Blogs                                                             :blog:
+***** [[https://blog.andymatuschak.org/rss][Andy Matuschak: Square Signals]] :archived:
+***** [[https://usefulfictions.substack.com/feed][Useful Fictions]] :mustread:
+***** [[https://kamilkazani.substack.com/feed][kamilkanazi]]       :mustread:
 
-*** Video                                                           :video:
-**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC04nROIJrY22Gl2aFqKcdqQ][Vimothee]]                                                   :mustread:
-**** [[https://vimothee.substack.com/feed][Vimothee RSS]]                                               :mustread:
-**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCkfuek_fQ18a9W1Hk9ntwug][Vimothee's Vestibule]]                                       :mustread:
-**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCsO-2AVa4SJXS30gnqMjv-A][No-Am]]                                                      :mustread:
+**** Video                                                            :video:
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC04nROIJrY22Gl2aFqKcdqQ][Vimothee]] :mustread:
+***** [[https://vimothee.substack.com/feed][Vimothee RSS]]         :mustread:
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCkfuek_fQ18a9W1Hk9ntwug][Vimothee's Vestibule]] :mustread:
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCsO-2AVa4SJXS30gnqMjv-A][No-Am]] :mustread:
 
-**** Education                                                       :edu:
-***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q][Kurzgesagt – In a Nutshell]]
-***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCq8ZAAsI89IoJ-fn1gYpO3g][Nightshift – Kurzgesagt After Dark]]
-***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC2C_jShtL725hvbm1arSV9w][CGP Grey]]                                                 :mustread:
-***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCTpmmkp1E4nmZqWPS-dl5bg][Quanta Magazine]]
+***** Education                                                         :edu:
+****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q][Kurzgesagt – In a Nutshell]]
+****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCq8ZAAsI89IoJ-fn1gYpO3g][Nightshift – Kurzgesagt After Dark]]
+****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC2C_jShtL725hvbm1arSV9w][CGP Grey]] :mustread:
+****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCTpmmkp1E4nmZqWPS-dl5bg][Quanta Magazine]]
 
-**** Emacs                                                    :emacs:code:
-***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCA5krj-yK4efs1d477A1ZLQ][Bardman]]
-***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC1tV5SjRyejRGeHAaMGYSsQ][Joshua Blais]]
+***** Emacs                                                      :emacs:code:
+****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCA5krj-yK4efs1d477A1ZLQ][Bardman]]
+****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC1tV5SjRyejRGeHAaMGYSsQ][Joshua Blais]]
 
-**** Tech                                                           :tech:
-***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCcaTUtGzOiS4cqrgtcsHYWg][jvscholz]]
+***** Tech                                                             :tech:
+****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCcaTUtGzOiS4cqrgtcsHYWg][jvscholz]]
 
-**** Programming                                                    :code:
-***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCgUxdfi_5-m67UDbrgcAFBg][Coding Jesus]]
-***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCwHwDuNd9lCdA7chyyquDXw][Bread on Penguins]]
-***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCpwl7jNE9PJc-lBTShNs5TQ][Coding with Sphere]]
-***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA][Luke Smith]]
+***** Programming                                                      :code:
+****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCgUxdfi_5-m67UDbrgcAFBg][Coding Jesus]]
+****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCwHwDuNd9lCdA7chyyquDXw][Bread on Penguins]]
+****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCpwl7jNE9PJc-lBTShNs5TQ][Coding with Sphere]]
+****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA][Luke Smith]]
 
-***** Live                                                         :live:
+****** Live                                                            :live:
 Not exactly live streaming, just unscripted videos in general.
-****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCOt3Ssxx03pxLdH3qzyTAsQ][Daniel Hirsch]]
-****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCEbYhDd6c6vngsF5PQpFVWg][Tsoding]]
-****** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCrqM0Ym_NbK1fqeQG2VIohg][Tsoding Daily]]
+******* [[https://www.youtube.com/feeds/videos.xml?channel_id=UCOt3Ssxx03pxLdH3qzyTAsQ][Daniel Hirsch]]
+******* [[https://www.youtube.com/feeds/videos.xml?channel_id=UCEbYhDd6c6vngsF5PQpFVWg][Tsoding]]
+******* [[https://www.youtube.com/feeds/videos.xml?channel_id=UCrqM0Ym_NbK1fqeQG2VIohg][Tsoding Daily]]
 
-*** Misc                                                             :misc:
+**** Misc                                                              :misc:

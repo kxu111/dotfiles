@@ -222,6 +222,7 @@
   (org-startup-indented t)
   (org-hide-emphasis-markers t)
   (org-cycle-separator-lines 1) ; Keep a line between folded headings
+  (org-src-content-indentation 0)
   :config
   (require 'org-tempo)
   (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))

@@ -17,4 +17,7 @@ open -a AeroSpace
 git config --global core.excludesfile ~/.gitignore-global
 defaults write org.gnu.Emacs AppleFontSmoothing -int 0 # stop big tech from tampering with my beautiful fonts
 rustup install
+brew services start d12frosted/emacs-plus/emacs-plus@31
+cp -r /opt/homebrew/opt/emacs-plus@31/Emacs.app /Applications/
+cp -r "/opt/homebrew/opt/emacs-plus@31/Emacs Client.app" /Applications/
 echo "REMINDER TO DISABLE SPOTLIGHT AND GAME OVERLAY KEYBIND"

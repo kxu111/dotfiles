@@ -1,5 +1,6 @@
 {
   "trustedtaps": [
+    "d12frosted/emacs-plus",
     "nikitabobko/tap"
   ]
 }
