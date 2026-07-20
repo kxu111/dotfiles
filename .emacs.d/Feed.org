@@ -1,0 +1,92 @@
+* Info
+
+** Tagging Rules
+
+- Two main sections, one for blogs, and the other for videos.
+  - =Videos= is not exclusive to YouTube content.
+- If a feed contains neither blog nor video, it is placed under the heading =Misc=.
+  - The reason we do not tag the feed with both ~:blog:~ and ~:video:~ is because if I am searching for blogs, under no circumstances do I  want to see any video content, and vice versa.
+- Mark important feeds with ~:mustread:~.
+- Mark discontinued feeds with ~:archived:~.
+
+** Script to find YouTube feeds (requires curl)
+
+*Link channels here (in a ~|table|~, with "quotation marks"):*
+
+#+NAME: channels
+| "https://youtube.com/@protesilaos" |
+
+*Press =C-c C-c= on this:*
+#+begin_src shell :var channels=channels :results raw
+#!/usr/bin/env bash
+
+extract_rss_info() {
+    local youtube_channel_url="$1"
+
+    local page
+    page=$(curl -Ls "$youtube_channel_url")
+
+    local channel_id
+    channel_id=$(echo "$page" |
+                     sed -n 's/.*"externalId":"\(UC[^"]*\)".*/\1/p' |
+                     head -n1)
+
+    local display_name
+    display_name=$(echo "$page" |
+                       sed -n 's/.*"channelMetadataRenderer":{"title":"\([^"]*\)".*/\1/p' |
+                       head -n1)
+
+    if [[ -n "$channel_id" && -n "$display_name" ]]; then
+        echo "[[https://www.youtube.com/feeds/videos.xml?channel_id=$channel_id][$display_name]]"
+    else
+        echo "Failed to extract data for $youtube_channel_url"
+    fi
+}
+
+while IFS= read -r url; do
+    extract_rss_info "$url"
+done <<< "$channels"
+#+end_src
+
+#+RESULTS:
+[[https://www.youtube.com/feeds/videos.xml?channel_id=UC0uTPqBCFIpZxlz_Lv1tk_g][Protesilaos]]
+
+* Feeds                                                             :elfeed:
+
+** Blogs                                                              :blog:
+*** [[https://blog.andymatuschak.org/rss][Andy Matuschak: Square Signals]] :archived:
+*** [[https://usefulfictions.substack.com/feed][Useful Fictions]] :mustread:
+*** [[https://kamilkazani.substack.com/feed][kamilkanazi]]        :mustread:
+
+** Video                                                             :video:
+*** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC04nROIJrY22Gl2aFqKcdqQ][Vimothee]] :mustread:
+*** [[https://vimothee.substack.com/feed][Vimothee RSS]]          :mustread:
+*** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCkfuek_fQ18a9W1Hk9ntwug][Vimothee's Vestibule]] :mustread:
+*** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCsO-2AVa4SJXS30gnqMjv-A][No-Am]] :mustread:
+
+*** Education                                                          :edu:
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q][Kurzgesagt – In a Nutshell]]
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCq8ZAAsI89IoJ-fn1gYpO3g][Nightshift – Kurzgesagt After Dark]]
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC2C_jShtL725hvbm1arSV9w][CGP Grey]] :mustread:
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCTpmmkp1E4nmZqWPS-dl5bg][Quanta Magazine]]
+
+*** Emacs                                                       :emacs:code:
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCA5krj-yK4efs1d477A1ZLQ][Bardman]]
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC1tV5SjRyejRGeHAaMGYSsQ][Joshua Blais]]
+
+*** Tech                                                              :tech:
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCcaTUtGzOiS4cqrgtcsHYWg][jvscholz]]
+
+*** Programming                                                       :code:
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCgUxdfi_5-m67UDbrgcAFBg][Coding Jesus]]
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCwHwDuNd9lCdA7chyyquDXw][Bread on Penguins]]
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCpwl7jNE9PJc-lBTShNs5TQ][Coding with Sphere]]
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA][Luke Smith]]
+
+**** Live                                                             :live:
+Not exactly live streaming, just unscripted videos in general.
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCOt3Ssxx03pxLdH3qzyTAsQ][Daniel Hirsch]]
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCEbYhDd6c6vngsF5PQpFVWg][Tsoding]]
+***** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCrqM0Ym_NbK1fqeQG2VIohg][Tsoding Daily]]
+
+** Misc                                                               :misc:
