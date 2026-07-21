@@ -14,16 +14,18 @@
 
    (define-key my-bind-overrides-mode-map (kbd "C-M-c") #'mc/edit-lines)
    (define-key my-bind-overrides-mode-map (kbd "C-M-n") #'mc/insert-numbers)
-   (define-key my-bind-overrides-mode-map (kbd "C-M-'") #'mc-hide-unmatched-lines-mode))
+   (define-key my-bind-overrides-mode-map (kbd "C-M-'") #'mc-hide-unmatched-lines-mode)))
 
- (use-package expreg
-   :config
-   (define-key my-bind-overrides-mode-map (kbd "C-M-l") #'expreg-expand)
-   (define-key my-bind-overrides-mode-map (kbd "C-M-h") #'expreg-contract))
+(my-emacs-configure
+  (use-package expreg
+    :config
+    (define-key my-bind-overrides-mode-map (kbd "C-M-l") #'expreg-expand)
+    (define-key my-bind-overrides-mode-map (kbd "C-M-h") #'expreg-contract)))
 
- (use-package move-text
-   :config
-   (define-key my-bind-overrides-mode-map (kbd "M-p") #'move-text-up)
-   (define-key my-bind-overrides-mode-map (kbd "M-n") #'move-text-down)))
+(my-emacs-configure
+  (use-package move-text
+    :config
+    (define-key my-bind-overrides-mode-map (kbd "M-p") #'move-text-up)
+    (define-key my-bind-overrides-mode-map (kbd "M-n") #'move-text-down)))
 
 (provide 'my-mod-text-editing)

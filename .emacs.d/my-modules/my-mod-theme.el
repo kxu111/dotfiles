@@ -1,10 +1,118 @@
 (my-emacs-configure
- (use-package doric-themes)
- (load-theme 'doric-obsidian))
+  (use-package ef-themes)
+
+  (ef-themes-take-over-modus-themes-mode t)
+
+  (setq modus-themes-variable-pitch-ui t
+        modus-themes-mixed-fonts t
+        modus-themes-bold-constructs t
+        modus-themes-italic-constructs t
+        modus-themes-to-rotate nil ; defaults to the return value of `modus-themes-get-themes'
+        modus-themes-headings ; read the manual's entry of the doc string
+        '((0 . (variable-pitch light 1.9))
+          (1 . (variable-pitch light 1.8))
+          (2 . (variable-pitch regular 1.7))
+          (3 . (variable-pitch regular 1.6))
+          (4 . (variable-pitch regular 1.5))
+          (5 . (variable-pitch 1.4)) ; absence of weight means `bold'
+          (6 . (variable-pitch 1.3))
+          (7 . (variable-pitch 1.2))
+          (agenda-date . (semilight 1.5))
+          (agenda-structure . (variable-pitch light 1.9))
+          (t . (variable-pitch 1.1))))
+
+  (provide 'my-mod-ef-themes))
+
+(require 'my-mod-ef-themes)
+(load-theme 'ef-dream)
 
 (my-emacs-configure
- (set-face-font 'default "Aporetic Sans Mono 20")
- (set-face-font 'fixed-pitch "Aporetic Sans Mono 20")
- (set-face-font 'variable-pitch "Aporetic Sans 20"))
+  (use-package fontaine)
+
+  (fontaine-mode t)
+
+  (define-key global-map (kbd "C-c f") #'fontaine-set-preset)
+  (define-key global-map (kbd "C-c F") #'fontaine-toggle-preset)
+
+  (setq-default text-scale-remap-header-line t)
+
+  (setq fontaine-presets
+        '((t :default-height 200
+	     :default-family "Aporetic Serif Mono"
+	     :fixed-pitch-family "Aporetic Serif Mono"
+	     :variable-pitch-family "Aporetic Serif")
+
+          (Aporetic-Sans-Regular
+	   :default-height 200
+	   :default-family "Aporetic Sans Mono"
+	   :fixed-pitch-family "Aporetic Sans Mono"
+	   :variable-pitch-family "Aporetic Sans")
+	  (Aporetic-Sans-Large
+	   :default-height 260
+	   :default-family "Aporetic Sans Mono"
+	   :fixed-pitch-family "Aporetic Sans Mono"
+	   :variable-pitch-family "Aporetic Sans")
+
+          (Aporetic-Serif-Regular
+	   :default-height 200
+	   :default-family "Aporetic Serif Mono"
+	   :fixed-pitch-family "Aporetic Serif Mono"
+	   :variable-pitch-family "Aporetic Serif")
+	  (Aporetic-Serif-Large
+	   :default-height 260
+	   :default-family "Aporetic Serif Mono"
+	   :fixed-pitch-family "Aporetic Serif Mono"
+	   :variable-pitch-family "Aporetic Serif")
+	  ))
+
+  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
+
+  (with-eval-after-load 'pulsar
+    (add-hook 'fontaine-set-preset-hook #'pulsar-pulse-line)))
+
+(when (display-graphic-p)
+  (my-emacs-configure
+    (use-package spacious-padding)
+
+    (define-key global-map (kbd "<f8>") #'spacious-padding-mode)
+
+    (setq spacious-padding-widths
+          `( :internal-border-width 20
+             :header-line-width 4
+             :mode-line-width 6
+             :tab-width 4
+             :right-divider-width 15
+             :left-fringe-width 8
+             :right-fringe-width 20))
+
+    (setq spacious-padding-subtle-frame-lines
+          '( :mode-line-active spacious-padding-line-active
+             :mode-line-inactive spacious-padding-line-inactive
+             :header-line-active spacious-padding-line-active
+             :header-line-inactive spacious-padding-line-inactive))
+
+    (when (< emacs-major-version 29)
+      (setq x-underline-at-descent-line (when spacious-padding-subtle-frame-lines t))))
+
+  (spacious-padding-mode t))
+
+(my-emacs-configure
+  (use-package pulsar)
+
+  (pulsar-global-mode t)
+
+  (my-emacs-hook
+    (next-error-hook minibuffer-setup-hook)
+    (pulsar-pulse-line-red pulsar-recenter-top pulsar-reveal-entry))
+
+  (setq pulsar-delay 0.055)
+  (setq pulsar-iterations 5)
+  (setq pulsar-face 'pulsar-blue)
+  (setq pulsar-region-face 'pulsar-yellow)
+  (setq pulsar-highlight-face 'pulsar-magenta)
+
+  (define-key global-map (kbd "C-x l") #'pulsar-pulse-line) ; override `count-lines-page'
+  (define-key global-map (kbd "C-x L") #'pulsar-highlight-permanently-dwim) ; or use `pulsar-highlight-temporarily-dwim'
+  )
 
 (provide 'my-mod-theme)

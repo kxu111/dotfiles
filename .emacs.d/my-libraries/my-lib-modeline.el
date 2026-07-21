@@ -1,4 +1,4 @@
-;;; prot-modeline.el --- Code for my custom mode line -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t; -*-
 
 (defvar my-modeline-icons
   '((dired-mode   "")
@@ -65,7 +65,7 @@
   '(:eval
     (when (mode-line-window-selected-p)
       (unless (not vc-mode)
-        (let ((s (substring-no-properties vc-mode 5)))
+        (let ((s (capitalize (substring-no-properties vc-mode 5))))
           (concat
            (propertize "⇅ " 'face 'my-faces-gray)
            (if (eq (vc-state buffer-file-name) 'up-to-date)
@@ -83,8 +83,8 @@
       (format-mode-line "%6l:%c (%%p)"))))
 
 (defvar my-modeline-misc-info
-  '(:eval
-    (when (mode-line-window-selected-p)
-      (format-mode-line mode-line-misc-info))))
+    '(:eval
+      (when (mode-line-window-selected-p)
+        mode-line-misc-info)))
 
 (provide 'my-lib-modeline)

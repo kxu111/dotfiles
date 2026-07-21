@@ -1,5 +1,5 @@
 (my-emacs-configure
- (delete-selection-mode t))
+   (delete-selection-mode t))
 
 (my-emacs-configure
   (global-auto-revert-mode 1)
@@ -16,17 +16,21 @@
 
  (which-key-mode 1))
 
-(add-hook 'before-save-hook #'delete-trailing-whitespace)
+(my-emacs-configure
+  (add-hook 'before-save-hook #'delete-trailing-whitespace))
 
-(define-key my-bind-overrides-mode-map
-            (kbd "C-,")
-            (lambda ()
-              (interactive)
-              (duplicate-line)
-              (next-line)))
+(my-emacs-configure
+  (define-key my-bind-overrides-mode-map
+              (kbd "C-,")
+              (lambda ()
+		(interactive)
+		(duplicate-line)
+		(next-line))))
 
 (my-emacs-configure
  (with-eval-after-load 'grep
    (define-key grep-mode-map (kbd "e") #'grep-change-to-wgrep-mode)))
+
+(define-key global-map (kbd "M-o") #'other-window)
 
 (provide 'my-mod-essentials)

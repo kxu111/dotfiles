@@ -42,6 +42,44 @@
      ((error user-error quit)
       (warn "Failed to configure package starting with `%S' because of `%S'" (car ',body) (cdr err)))))
 
+(defmacro my-emacs-hook (hooks functions &optional remove after)
+  "For each HOOKS `add-hook' the FUNCTIONS.
+With optional REMOVE as non-nil, then `remove-hook' the FUNCTIONS from
+HOOKS.
+
+With optional AFTER as the unquoted symbol of a feature, do so after the
+given feature is available."
+  (declare (indent 0))
+  (cond
+   ((symbolp hooks)
+    (setq hooks (list hooks)))
+   ((not (proper-list-p hooks))
+    (error "The hooks are not a list: `%S'" hooks)))
+  (cond
+   ((symbolp functions)
+    (setq functions (list functions)))
+   ((not (proper-list-p functions))
+    (error "The functions are not a list: `%S'" functions)))
+  (let* ((fn (if remove 'remove-hook 'add-hook))
+         (body (mapcar
+                (lambda (h)
+                  (mapcar
+                   (lambda (f) `(,fn ',h #',f))
+                   functions))
+                hooks))
+         (hooks nil))
+    (dolist (element body)
+      (dolist (hook element)
+        (push hook hooks)))
+    (setq hooks (nreverse hooks))
+    (cond
+     (after
+      `(with-eval-after-load ',after ,@hooks))
+     ((length> hooks 1)
+      `(progn ,@hooks))
+     (t
+      (car hooks)))))
+
 (defvar my-bind-overrides-mode-map (make-sparse-keymap)
   "Keymap for `my-bind-overrides-mode'.")
 
@@ -63,7 +101,6 @@
 (require 'my-mod-org)
 (require 'my-mod-prog)
 (require 'my-mod-text-editing)
-(require 'my-mod-split-windows)
 (require 'my-mod-completions)
 (require 'my-mod-elfeed)
 

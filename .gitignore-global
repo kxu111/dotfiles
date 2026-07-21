@@ -2,6 +2,7 @@
 *~
 \#*\#
 .\#*
+*.elc
 
 # MacOS
 .DS_Store

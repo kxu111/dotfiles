@@ -21,6 +21,7 @@
 ;; MacOS options
 (when (eq system-type 'darwin)
   (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(undecorated-round . t))
   (setq mac-command-modifier 'meta
 	mac-right-command-modifier 'super
         mac-option-modifier nil))
@@ -36,8 +37,8 @@
 ;; `vc-handled-backends' with regard to startup speed optimisation.
 ;; Here I am storing the default value with the intent of restoring it
 ;; via the `emacs-startup-hook'.
-(defvar prot-emacs--file-name-handler-alist file-name-handler-alist)
-(defvar prot-emacs--vc-handled-backends vc-handled-backends)
+(defvar my-emacs--file-name-handler-alist file-name-handler-alist)
+(defvar my-emacs--vc-handled-backends vc-handled-backends)
 
 (setq file-name-handler-alist nil
       vc-handled-backends nil)
@@ -46,8 +47,8 @@
           (lambda ()
             (setq gc-cons-threshold (* 100 100 8)
                   gc-cons-percentage 0.1
-                  file-name-handler-alist prot-emacs--file-name-handler-alist
-                  vc-handled-backends prot-emacs--vc-handled-backends)))
+                  file-name-handler-alist my-emacs--file-name-handler-alist
+                  vc-handled-backends my-emacs--vc-handled-backends)))
 
 (defun my-emacs-re-enable-theme (_frame)
   (when-let* ((theme (car custom-enabled-themes)))

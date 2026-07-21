@@ -1,14 +1,20 @@
 (my-emacs-configure
- (use-package org
-   :straight (:host github :repo "bzg/org-mode" :branch "main")
-   :hook (org-mode . visual-line-mode)
-   :custom
-   (org-use-speed-commands t) ; M-x org-speed-commands-help
-   (org-startup-indented t)
-   (org-hide-emphasis-markers t)
-   (org-cycle-separator-lines 1) ; Keep a line between folded headings
-   (org-src-content-indentation 0)
-   ))
+  (use-package org
+    :straight (:host github :repo "bzg/org-mode" :branch "main")
+    :hook (org-mode . visual-line-mode)
+    :custom
+    (org-use-speed-commands t) ; M-x org-speed-commands-help
+    (org-startup-indented t)
+    (org-hide-emphasis-markers t)
+    (org-cycle-separator-lines 1) ; Keep a line between folded headings
+    (org-src-content-indentation 0)
+    )
+
+  (my-emacs-hook
+   (org-agenda-after-show-hook org-follow-link-hook)
+   (pulsar-recenter-center pulsar-reveal-entry)
+   nil
+   pulsar))
 
 (my-emacs-configure
   (org-babel-do-load-languages

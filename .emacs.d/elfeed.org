@@ -1,3 +1,7 @@
+#+title: Emacs Elfeed Feeds
+#+author: Kenneth Xu
+#+startup: content indent
+
 * Info
 
 ** Tagging Rules
@@ -67,7 +71,7 @@ done <<< "$channels"
 *** Education                                                          :edu:
 **** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q][Kurzgesagt – In a Nutshell]]
 **** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCq8ZAAsI89IoJ-fn1gYpO3g][Nightshift – Kurzgesagt After Dark]]
-**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC2C_jShtL725hvbm1arSV9w][CGP Grey]] :mustread:
+**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC2C_jShtL725hvbm1arSV9w][CGP Grey  ]]                                                 :mustread:
 **** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCTpmmkp1E4nmZqWPS-dl5bg][Quanta Magazine]]
 
 *** Emacs                                                       :emacs:code:
