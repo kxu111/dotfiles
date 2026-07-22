@@ -27,10 +27,18 @@
 		(duplicate-line)
 		(next-line))))
 
-(my-emacs-configure
- (with-eval-after-load 'grep
-   (define-key grep-mode-map (kbd "e") #'grep-change-to-wgrep-mode)))
+(setq display-time-string-forms '((format-time-string "%a %d %b, %H:%M")))
+;; (display-time-mode t)
 
 (define-key global-map (kbd "M-o") #'other-window)
+
+(use-package exec-path-from-shell)
+(when (memq window-system '(mac ns x pgtk))
+  (exec-path-from-shell-initialize))
+
+(setq truncate-lines t)
+
+(my-emacs-configure
+  (add-hook 'text-mode #'variable-pitch-mode))
 
 (provide 'my-mod-essentials)

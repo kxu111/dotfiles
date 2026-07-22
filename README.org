@@ -1,0 +1,13 @@
+* Kenny's Dotfiles
+
+** MacOS with ~nix-darwin~
+
+I use ~nix-darwin~ to manage my packages, making it so I don't need to reinstall them if I lose my data. However, I don't use it for dotfile management.
+This is because I can easily deploy my dotfiles using ~GNU Stow~, and I have no need to configure everything in the Nix language.
+
+** Things to note
+
+Here are some important notes about some of the items in my dotfiles that are not particularly self-explanatory:
+
+- File =install.sh= :: Initialises everything except for ~nix-darwin~. To clarify, it does run a ~Nix rebuild~, but it does not install the ~nix-darwin~ package itself.
+- Folder =misc= :: Contains miscellaneous items, such as my wallpapers and my configurations for various apps that cannot be applied via command-line. It's worth taking the time to look inside and see if anything is helpful to you.

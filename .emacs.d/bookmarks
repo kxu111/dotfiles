@@ -3,11 +3,11 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("Emacs.org"
- (filename . "~/dotfiles/.emacs.d/Emacs.org")
- (front-context-string . "#+Title: Kenny's")
- (rear-context-string)
- (position . 1)
- (last-modified 27228 24161 209342 0))
+  (filename . "~/dotfiles/.emacs.d/Emacs.org")
+  (front-context-string . "#+title: GNU Ema")
+  (rear-context-string)
+  (position . 1)
+  (last-modified 27231 33469 4044 0))
 (".zshrc"
  (filename . "~/dotfiles/.zshrc")
  (front-context-string . "alias neofetch='")

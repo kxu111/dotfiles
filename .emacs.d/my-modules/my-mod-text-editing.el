@@ -14,9 +14,8 @@
 
    (define-key my-bind-overrides-mode-map (kbd "C-M-c") #'mc/edit-lines)
    (define-key my-bind-overrides-mode-map (kbd "C-M-n") #'mc/insert-numbers)
-   (define-key my-bind-overrides-mode-map (kbd "C-M-'") #'mc-hide-unmatched-lines-mode)))
+   (define-key my-bind-overrides-mode-map (kbd "C-M-'") #'mc-hide-unmatched-lines-mode))
 
-(my-emacs-configure
   (use-package expreg
     :config
     (define-key my-bind-overrides-mode-map (kbd "C-M-l") #'expreg-expand)
@@ -27,5 +26,15 @@
     :config
     (define-key my-bind-overrides-mode-map (kbd "M-p") #'move-text-up)
     (define-key my-bind-overrides-mode-map (kbd "M-n") #'move-text-down)))
+
+(use-package wgrep
+  :bind ((:map grep-mode-map
+               ("e" . wgrep-change-to-wgrep-mode)
+               ("C-x C-q" . wgrep-change-to-wgrep-mode)
+               ("C-c C-c" . wgrep-finish-edit))
+         (:map compilation-mode-map
+               ("e" . wgrep-change-to-wgrep-mode)
+               ("C-x C-q" . wgrep-change-to-wgrep-mode)
+               ("C-c C-c" . wgrep-finish-edit))))
 
 (provide 'my-mod-text-editing)

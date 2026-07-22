@@ -64,7 +64,6 @@
                 taps = [
                   "nikitabobko/homebrew-tap"
                   "d12frosted/homebrew-emacs-plus"
-                  "d12frosted/emacs-plus"
                 ];
               };
             };

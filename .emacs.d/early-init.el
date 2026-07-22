@@ -3,11 +3,9 @@
 
 (setq frame-resize-pixelwise t
       frame-inhibit-implied-resize 'force
-      frame-title-format '("%b")
       ring-bell-function 'ignore
       use-short-answers t
       inhibit-startup-screen t
-      inhibit-startup-echo-area-message user-login-name ; Disable the message in the minibuffer on Emacs start.
       )
 
 (menu-bar-mode -1)
@@ -16,7 +14,7 @@
 (tooltip-mode -1)
 (blink-cursor-mode -1)
 
-(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;; MacOS options
 (when (eq system-type 'darwin)
@@ -24,7 +22,7 @@
   (add-to-list 'default-frame-alist '(undecorated-round . t))
   (setq mac-command-modifier 'meta
 	mac-right-command-modifier 'super
-        mac-option-modifier nil))
+	mac-option-modifier nil))
 
 ;; Temporarily increase the garbage collection threshold.  These
 ;; changes help shave off about half a second of startup time.  The
@@ -62,5 +60,3 @@
   (add-hook 'after-make-frame-functions #'my-emacs-re-enable-theme))
 
 (my-emacs-fix-start-bg)
-
-(setq user-lisp-directory (locate-user-emacs-file "my-libraries/"))

@@ -89,6 +89,8 @@ given feature is available."
   :init-value nil
   :keymap my-bind-overrides-mode-map)
 
+(add-hook 'emacs-startup-hook #'my-bind-overrides-mode)
+
 (mapc
  (lambda (string)
    (add-to-list 'load-path (locate-user-emacs-file string)))
@@ -103,5 +105,3 @@ given feature is available."
 (require 'my-mod-text-editing)
 (require 'my-mod-completions)
 (require 'my-mod-elfeed)
-
-(my-bind-overrides-mode t)

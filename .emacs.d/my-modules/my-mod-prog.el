@@ -14,4 +14,8 @@
  (use-package nix-mode :defer t)
  (add-hook 'nix-mode-hook #'eglot-ensure))
 
+(my-emacs-configure
+  (use-package haskell-mode)
+  (add-hook 'haskell-mode-hook #'eglot-ensure))
+
 (provide 'my-mod-prog)

@@ -84,11 +84,9 @@ Keep in mind ~frame-resize-pixelwise~ and ~frame-inhibit-implied-resize~ are imp
 #+begin_src emacs-lisp :tangle "early-init.el"
 (setq frame-resize-pixelwise t
       frame-inhibit-implied-resize 'force
-      frame-title-format '("%b")
       ring-bell-function 'ignore
       use-short-answers t
       inhibit-startup-screen t
-      inhibit-startup-echo-area-message user-login-name ; Disable the message in the minibuffer on Emacs start.
       )
 
 (menu-bar-mode -1)
@@ -96,6 +94,8 @@ Keep in mind ~frame-resize-pixelwise~ and ~frame-inhibit-implied-resize~ are imp
 (scroll-bar-mode -1)
 (tooltip-mode -1)
 (blink-cursor-mode -1)
+
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 #+end_src
 
 ** The =early-init.el= set frame parameters and variables based on platform
@@ -107,15 +107,13 @@ When I use MacOS, I am using [[https://github.com/d12frosted/homebrew-emacs-plus
 Keep in mind that ~initial-frame-alist~ only affects the first frame while ~default-frame-alist~ affects all future frames.
 
 #+begin_src emacs-lisp :tangle "early-init.el"
-  (add-to-list 'initial-frame-alist '(fullscreen . maximized))
-
-  ;; MacOS options
-  (when (eq system-type 'darwin)
-    (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-    (add-to-list 'default-frame-alist '(undecorated-round . t))
-    (setq mac-command-modifier 'meta
-  	mac-right-command-modifier 'super
-          mac-option-modifier nil))
+;; MacOS options
+(when (eq system-type 'darwin)
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(undecorated-round . t))
+  (setq mac-command-modifier 'meta
+	mac-right-command-modifier 'super
+	mac-option-modifier nil))
 #+end_src
 
 ** The =early-init.el= tweaks to startup time and garbage collection
@@ -167,19 +165,11 @@ Make the initial frame match your theme's background colors.
 (my-emacs-fix-start-bg)
 #+end_src
 
-** The =early-init.el= sets the ~user-lisp-directory~
-
-The ~user-lisp-directory~ is a user option introduced in Emacs 31. It makes Emacs byte compile Emacs Lisp files therein and scan them for autoloads.
-
-#+begin_src emacs-lisp :tangle "early-init.el"
-(setq user-lisp-directory (locate-user-emacs-file "my-libraries/"))
-#+end_src
-
 * The main initialisation of Emacs (=init.el=)
 
 ** The =init.el= tweaks to make native compilation silent
 
-Native compilation helps speed up Emacs by translating Emacs Lisp down to machine code. However, it has an annoying habit of displaying verbose errors which usually don't mean anything *to the average user*.
+Native compilation helps speed up Emacs by translating Emacs Lisp down to machine code. However, it has an annoying habit of displaying verbose errors which usually don't mean anything to the *average user*.
 
 #+begin_src emacs-lisp :tangle "init.el"
 ;; Make native compilation silent.
@@ -331,6 +321,8 @@ given feature is available."
   :global t
   :init-value nil
   :keymap my-bind-overrides-mode-map)
+
+(add-hook 'emacs-startup-hook #'my-bind-overrides-mode)
 #+end_src
 
 ** The =init.el= loads my modules and libraries
@@ -342,7 +334,7 @@ given feature is available."
  '("my-libraries" "my-modules"))
 #+end_src
 
-** The =init.el= second-last part to source the modules
+** The =init.el= last part to source the modules
 
 I'm going to use Protesilaos as a reference once again and split my configuration into multiple files.
 
@@ -360,21 +352,48 @@ Splitting into multiple files allows me to review the individual source code fil
 (require 'my-mod-elfeed)
 #+end_src
 
-** The =init.el= final part to load keybind overrides (~my-bind-overrides-mode~)
-
-#+begin_src emacs-lisp :tangle "init.el"
-(my-bind-overrides-mode t)
-#+end_src
-
 * The modules in my configuration (=my-modules=)
+
 
 ** The =my-mod-theme.el= module
 
 *** The =my-mod-theme.el= section for themes
 
+**** The =my-mod-modus-themes.el= module
+
+#+begin_src emacs-lisp :tangle "my-modules/my-mod-modus-themes.el"
+(my-emacs-configure
+  (use-package modus-themes)
+
+  (modus-themes-include-derivatives-mode t)
+
+  (setq modus-themes-mixed-fonts t
+        modus-themes-variable-pitch-ui t
+        modus-themes-italic-constructs t
+        modus-themes-bold-constructs t
+        modus-themes-completions '((t . (bold)))
+        modus-themes-prompts '(bold)
+        modus-themes-headings
+        '((agenda-structure . (variable-pitch light 2.2))
+          (agenda-date . (variable-pitch regular 1.3))
+          (t . (regular 1.15)))
+	)
+
+  (setq modus-themes-common-palette-overrides nil)
+
+  (setq modus-vivendi-palette-overrides
+        `((fg-main "#d6d6d4")
+          (bg-main "#090909")
+	  (fg-mode-line-active "#ffffff")
+          (bg-mode-line-active bg-lavender)
+          (bg-region bg-lavender))))
+
+(provide 'my-mod-modus-themes)
+#+end_src
+
 **** The =my-mod-ef-themes.el= module
 
-#+begin_src emacs-lisp :tangle "my-modules/my-mod-theme.el"
+#+begin_src emacs-lisp :tangle "my-modules/my-mod-ef-themes.el"
 (my-emacs-configure
   (use-package ef-themes)
 
@@ -401,10 +420,50 @@ Splitting into multiple files allows me to review the individual source code fil
   (provide 'my-mod-ef-themes))
 #+end_src
 
+**** The =my-mod-doric-themes.el= module
+
+#+begin_src emacs-lisp :tangle "my-modules/my-mod-doric-themes.el"
+(my-emacs-configure
+  (use-package doric-themes))
+
+(provide 'my-mod-doric-themes)
+#+end_src
+
+**** The =my-mod-standard-themes.el= module
+
+#+begin_src emacs-lisp :tangle "my-modules/my-mod-standard-themes.el"
+(my-emacs-configure
+  (use-package standard-themes)
+
+  (standard-themes-take-over-modus-themes-mode t)
+
+  (setq modus-themes-variable-pitch-ui t
+        modus-themes-mixed-fonts t
+        modus-themes-to-rotate nil ; defaults to the return value of `modus-themes-get-themes'
+	modus-themes-headings ; read the manual's entry of the doc string
+        '((0 . (variable-pitch light 1.9))
+          (1 . (variable-pitch light 1.8))
+          (2 . (variable-pitch regular 1.7))
+          (3 . (variable-pitch regular 1.6))
+          (4 . (variable-pitch regular 1.5))
+          (5 . (variable-pitch 1.4)) ; absence of weight means `bold'
+          (6 . (variable-pitch 1.3))
+          (7 . (variable-pitch 1.2))
+          (agenda-date . (semilight 1.5))
+          (agenda-structure . (variable-pitch light 1.9))
+          (t . (variable-pitch 1.1)))))
+
+(provide 'my-mod-standard-themes)
+#+end_src
+
 **** The =my-mod-theme.el= section to load themes
+
 #+begin_src emacs-lisp :tangle "my-modules/my-mod-theme.el"
+(require 'my-mod-modus-themes)
 (require 'my-mod-ef-themes)
-(load-theme 'ef-dream)
+(require 'my-mod-doric-themes)
+(require 'my-mod-standard-themes)
+(load-theme 'ef-owl)
 #+end_src
 
 *** The =my-mod-theme.el= section for fonts (~fontaine~)
@@ -423,12 +482,7 @@ Read the ~fontaine~ manual: <https://protesilaos.com/emacs/fontaine>.
   (setq-default text-scale-remap-header-line t)
 
   (setq fontaine-presets
-        '((t :default-height 200
-	     :default-family "Aporetic Serif Mono"
-	     :fixed-pitch-family "Aporetic Serif Mono"
-	     :variable-pitch-family "Aporetic Serif")
-
-          (Aporetic-Sans-Regular
+	'((Aporetic-Sans-Regular
 	   :default-height 200
 	   :default-family "Aporetic Sans Mono"
 	   :fixed-pitch-family "Aporetic Sans Mono"
@@ -446,6 +500,12 @@ Read the ~fontaine~ manual: <https://protesilaos.com/emacs/fontaine>.
 	   :variable-pitch-family "Aporetic Serif")
 	  (Aporetic-Serif-Large
 	   :default-height 260
+	   :default-family "Aporetic Serif Mono"
+	   :fixed-pitch-family "Aporetic Serif Mono"
+	   :variable-pitch-family "Aporetic Serif")
+
+	  (t
+	   :default-height 200
 	   :default-family "Aporetic Serif Mono"
 	   :fixed-pitch-family "Aporetic Serif Mono"
 	   :variable-pitch-family "Aporetic Serif")
@@ -578,27 +638,40 @@ If you use ~auto-save-visited-mode~, you may find it annoying that your whitespa
 		(next-line))))
 #+end_src
 
-*** The =my-mod-essentials.el= bind for ~grep-change-to-grep-edit-mode~
-
-Writable ~grep-mode~ now comes built inside Emacs 31.
+*** The =my-mod-essentials.el= section for ~display-time-mode~
 
 #+begin_src emacs-lisp :tangle "my-modules/my-mod-essentials.el"
-(my-emacs-configure
- (with-eval-after-load 'grep
-   (define-key grep-mode-map (kbd "e") #'grep-change-to-wgrep-mode)))
-#+end_src
-
-*** COMMENT The =my-mod-essentials.el= section for ~display-time-mode~
-
-#+begin_src emacs-lisp
 (setq display-time-string-forms '((format-time-string "%a %d %b, %H:%M")))
-(display-time-mode t)
+;; (display-time-mode t)
 #+end_src
 
 *** The =my-mod-essentials.el= bind for ~other-window~
 
 #+begin_src emacs-lisp :tangle "my-modules/my-mod-essentials.el"
 (define-key global-map (kbd "M-o") #'other-window)
+#+end_src
+
+*** The =my-mod-essentials.el= section for ~exec-path-path-shell~
+
+When you launch Emacs from a GUI application launcher such as MacOS Spotlight, Emacs will not be able to find the nonstandard directories in your path (for example, packages installed via Homebrew, an unofficial MacOS package manager).
+
+#+begin_src emacs-lisp :tangle "my-modules/my-mod-essentials.el"
+(use-package exec-path-from-shell)
+(when (memq window-system '(mac ns x pgtk))
+  (exec-path-from-shell-initialize))
+#+end_src
+
+*** The =my-mod-essentials.el= section for disabling line wrap (~truncate-lines~)
+
+#+begin_src emacs-lisp :tangle "my-modules/my-mod-essentials.el"
+(setq truncate-lines t)
+#+end_src
+
+*** The =my-mod-essentials.el= section for ~variable-pitch-mode~
+
+#+begin_src emacs-lisp :tangle "my-modules/my-mod-essentials.el"
+(my-emacs-configure
+  (add-hook 'text-mode #'variable-pitch-mode))
 #+end_src
 
 *** The =my-mod-essentials.el= call to ~provide~
@@ -681,7 +754,9 @@ I like to pull ~org-mode~ straight from the git mirror as to get the cutting-edg
 (my-emacs-configure
   (use-package org
     :straight (:host github :repo "bzg/org-mode" :branch "main")
-    :hook (org-mode . visual-line-mode)
+    :hook
+    (org-mode . visual-line-mode)
+    ;; (org-mode . variable-pitch-mode)
     :custom
     (org-use-speed-commands t) ; M-x org-speed-commands-help
     (org-startup-indented t)
@@ -780,6 +855,14 @@ To enable an ~eglot~ for a specific mode, add the following to your configuratio
  (add-hook 'nix-mode-hook #'eglot-ensure))
 #+end_src
 
+*** The =my-mod-prog.el= section for ~haskell-mode~
+
+#+begin_src emacs-lisp :tangle "my-modules/my-mod-prog.el"
+(my-emacs-configure
+  (use-package haskell-mode)
+  (add-hook 'haskell-mode-hook #'eglot-ensure))
+#+end_src
+
 *** The =my-mod-prog.el= call to ~provide~
 
 #+begin_src emacs-lisp :tangle "my-modules/my-mod-prog.el"
@@ -787,6 +870,8 @@ To enable an ~eglot~ for a specific mode, add the following to your configuratio
 #+end_src
 
 ** The =my-mod-text-editing= module
+
+*** The =my-mod-text-editing= module for ~multiple-cursors~
 
 The idea for these keymaps is to keep your fingers on the =CTRL=, =META=, and =hjkl= keys for the majority of the time. The =,= and the =.= are also significant.
 
@@ -807,19 +892,36 @@ The idea for these keymaps is to keep your fingers on the =CTRL=, =META=, and =h
 
    (define-key my-bind-overrides-mode-map (kbd "C-M-c") #'mc/edit-lines)
    (define-key my-bind-overrides-mode-map (kbd "C-M-n") #'mc/insert-numbers)
-   (define-key my-bind-overrides-mode-map (kbd "C-M-'") #'mc-hide-unmatched-lines-mode)))
+   (define-key my-bind-overrides-mode-map (kbd "C-M-'") #'mc-hide-unmatched-lines-mode))
 
-(my-emacs-configure
   (use-package expreg
     :config
     (define-key my-bind-overrides-mode-map (kbd "C-M-l") #'expreg-expand)
     (define-key my-bind-overrides-mode-map (kbd "C-M-h") #'expreg-contract)))
+#+end_src
 
+*** The =my-mod-text-editing= module for ~move-text~
+
+#+begin_src emacs-lisp :tangle "my-modules/my-mod-text-editing.el"
 (my-emacs-configure
   (use-package move-text
     :config
     (define-key my-bind-overrides-mode-map (kbd "M-p") #'move-text-up)
     (define-key my-bind-overrides-mode-map (kbd "M-n") #'move-text-down)))
+#+end_src
+
+*** The =my-mod-text-editing= module for ~wgrep-mode~
+
+#+begin_src emacs-lisp :tangle "my-modules/my-mod-text-editing.el"
+(use-package wgrep
+  :bind ((:map grep-mode-map
+               ("e" . wgrep-change-to-wgrep-mode)
+               ("C-x C-q" . wgrep-change-to-wgrep-mode)
+               ("C-c C-c" . wgrep-finish-edit))
+         (:map compilation-mode-map
+               ("e" . wgrep-change-to-wgrep-mode)
+               ("C-x C-q" . wgrep-change-to-wgrep-mode)
+               ("C-c C-c" . wgrep-finish-edit))))
 #+end_src
 
 *** The =my-mod-text-editing= call to ~provide~
@@ -841,12 +943,22 @@ The idea for these keymaps is to keep your fingers on the =CTRL=, =META=, and =h
 
 #+begin_src emacs-lisp :tangle "my-modules/my-mod-completions.el"
 (my-emacs-configure
- (use-package vertico
-   :config
-   (vertico-mode)
-   (vertico-multiform-mode)
-   :custom
-   (vertico-resize t)))
+  (use-package vertico
+    :config (vertico-mode)
+    :custom (vertico-resize t)))
+
+;; straight.el specific
+;; make backspace in find-file go up a full directory
+(my-emacs-configure
+  (use-package vertico-directory
+    :after vertico
+    :straight nil
+    :load-path "straight/repos/vertico/extensions/"
+    :bind ( :map vertico-map
+            ("RET" . vertico-directory-enter)
+            ("DEL" . vertico-directory-delete-char)
+            ("M-DEL" . vertico-directory-delete-word))
+    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)))
 #+end_src
 
 *** The =my-mod-completions= submodule for ~consult~
@@ -935,51 +1047,37 @@ Here are some packages that improve your ~vertico~ experience:
 
 ** The =my-mod-elfeed= module
 
-*** The =my-mod-elfeed= base setup
+*** The =my-mod-elfeed= setup (~elfeed~ & ~elfeed-tube~)
 
 #+begin_src emacs-lisp :tangle "my-modules/my-mod-elfeed.el"
 (my-emacs-configure
- (use-package elfeed
-   :bind ("C-x f" . elfeed)
-   :hook (elfeed-show-mode . visual-line-mode)
-   :custom (elfeed-search-filter "@6months +unread -junk"))
+  (use-package elfeed
+    :bind ("C-x f" . elfeed)
+    :hook (elfeed-show-mode . visual-line-mode))
 
- (use-package elfeed-org
-   :after elfeed
-   :config (elfeed-org)))
+  (use-package elfeed-org
+    :config (elfeed-org))
+
+  (use-package elfeed-tube
+    :config (elfeed-tube-setup)
+    :bind
+    (:map elfeed-show-mode-map
+          ("F" . elfeed-tube-fetch)
+          ([remap save-buffer] . elfeed-tube-save))
+    (:map elfeed-search-mode-map
+          ("F" . elfeed-tube-fetch)
+          ([remap save-buffer] . elfeed-tube-save)))
+
+  (use-package mpv)
+  (use-package elfeed-tube-mpv
+    :bind
+    (:map elfeed-show-mode-map
+          ("<return>" . elfeed-tube-mpv)
+          ("C-c C-f" . elfeed-tube-mpv-follow-mode)
+          ("C-c C-w" . elfeed-tube-mpv-where))))
 #+end_src
 
-*** The =my-mod-elfeed= ~elfeed-tube~ setup
-
-#+begin_src emacs-lisp :tangle "my-modules/my-mod-elfeed.el"
-(my-emacs-configure
- (use-package elfeed-tube
-   :after elfeed
-   :bind
-   (:map elfeed-show-mode-map
-         ("F" . elfeed-tube-fetch)
-         ([remap save-buffer] . elfeed-tube-save))
-   (:map elfeed-search-mode-map
-         ("F" . elfeed-tube-fetch)
-         ([remap save-buffer] . elfeed-tube-save))
-   :config
-   (elfeed-tube-setup)
-   (add-hook 'elfeed-new-entry-hook
-             (elfeed-make-tagger :entry-link "https://www\\.youtube\\.com/shorts/.*"
-                                 :add 'junk
-                                 :remove 'unread)))
-
- (use-package mpv)
- (use-package elfeed-tube-mpv
-   :after elfeed
-   :bind
-   (:map elfeed-show-mode-map
-         ("<return>" . elfeed-tube-mpv)
-         ("C-c C-f" . elfeed-tube-mpv-follow-mode)
-         ("C-c C-w" . elfeed-tube-mpv-where))))
-#+end_src
-
-*** The =my-mod-elfeed.el= call to ~provide~
+*** The =my-mod-elfeed.el= load feeds & call to ~provide~
 
 #+begin_src emacs-lisp :tangle "my-modules/my-mod-elfeed.el"
 (provide 'my-mod-elfeed)

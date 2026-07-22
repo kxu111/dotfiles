@@ -2,11 +2,15 @@
   environment.systemPackages = with pkgs; [
     rustup
     typst
-    python3
-    uv
-    basedpyright
     nil
     clang
     lua-language-server
+
+    python3
+    uv
+    basedpyright
+  ];
+  homebrew.brews = [
+    "ghcup"
   ];
 }

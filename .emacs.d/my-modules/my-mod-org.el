@@ -1,7 +1,9 @@
 (my-emacs-configure
   (use-package org
     :straight (:host github :repo "bzg/org-mode" :branch "main")
-    :hook (org-mode . visual-line-mode)
+    :hook
+    (org-mode . visual-line-mode)
+    ;; (org-mode . variable-pitch-mode)
     :custom
     (org-use-speed-commands t) ; M-x org-speed-commands-help
     (org-startup-indented t)

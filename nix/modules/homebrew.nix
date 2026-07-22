@@ -10,36 +10,6 @@
     brews = [
       "mas"
       "mpv"
-
-      "emacs-plus@31"
-      "m4"
-      "autoconf"
-      "gmp"
-      "coreutils"
-      "isl"
-      "mpfr"
-      "libmpc"
-      "gcc"
-      "gdk-pixbuf"
-      "gnu-sed"
-      "gnu-tar"
-      "libidn"
-      "libtasn"
-      "nettle"
-      "p11-kit"
-      "gnutls"
-      "grep"
-      "jpeg"
-      "libdatrie"
-      "libgccjit"
-      "libthai"
-      "pango"
-      "librsvg"
-      "make"
-      "pkgconf"
-      "texinfo"
-      "tree-sitter"
-      "zlib"
     ];
     casks = [
       "vesktop"
@@ -51,6 +21,7 @@
       "raycast"
       "helium-browser"
       "vlc"
+      "emacs-plus-app"
     ];
     masApps = {
       "Davinci Resolve" = 571213070;

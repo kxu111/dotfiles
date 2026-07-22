@@ -69,8 +69,6 @@ done <<< "$channels"
 *** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCsO-2AVa4SJXS30gnqMjv-A][No-Am]] :mustread:
 
 *** Education                                                          :edu:
-**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q][Kurzgesagt – In a Nutshell]]
-**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCq8ZAAsI89IoJ-fn1gYpO3g][Nightshift – Kurzgesagt After Dark]]
 **** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC2C_jShtL725hvbm1arSV9w][CGP Grey  ]]                                                 :mustread:
 **** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCTpmmkp1E4nmZqWPS-dl5bg][Quanta Magazine]]
 
@@ -82,7 +80,6 @@ done <<< "$channels"
 **** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCcaTUtGzOiS4cqrgtcsHYWg][jvscholz]]
 
 *** Programming                                                       :code:
-**** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCgUxdfi_5-m67UDbrgcAFBg][Coding Jesus]]
 **** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCwHwDuNd9lCdA7chyyquDXw][Bread on Penguins]]
 **** [[https://www.youtube.com/feeds/videos.xml?channel_id=UCpwl7jNE9PJc-lBTShNs5TQ][Coding with Sphere]]
 **** [[https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA][Luke Smith]]

@@ -11,7 +11,6 @@
     tmux
     fd
     zoxide
-    newsboat
     timewarrior
     yt-dlp
     nodejs

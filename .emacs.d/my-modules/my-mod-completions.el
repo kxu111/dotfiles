@@ -2,12 +2,22 @@
   (savehist-mode t))
 
 (my-emacs-configure
- (use-package vertico
-   :config
-   (vertico-mode)
-   (vertico-multiform-mode)
-   :custom
-   (vertico-resize t)))
+  (use-package vertico
+    :config (vertico-mode)
+    :custom (vertico-resize t)))
+
+;; straight.el specific
+;; make backspace in find-file go up a full directory
+(my-emacs-configure
+  (use-package vertico-directory
+    :after vertico
+    :straight nil
+    :load-path "straight/repos/vertico/extensions/"
+    :bind ( :map vertico-map
+            ("RET" . vertico-directory-enter)
+            ("DEL" . vertico-directory-delete-char)
+            ("M-DEL" . vertico-directory-delete-word))
+    :hook (rfn-eshadow-update-overlay . vertico-directory-tidy)))
 
 (my-emacs-configure
   (use-package consult
