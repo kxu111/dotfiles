@@ -21,4 +21,4 @@ eval "$(zoxide init zsh)"
 alias cd="z"
 alias cdi="zi"
 
-PROMPT="[%B%F{2}%n%f:%F{6}%~%f] %F{5}λ%f%b "
+PROMPT="[%B%F{2}%n%f%b:%B%F{6}%~%f%b] %F{5}λ%f "

@@ -26,6 +26,7 @@
     loginwindow.GuestEnabled = false;
     controlcenter.BatteryShowPercentage = true;
     screencapture.location = "~/Pictures/Screenshots";
+    menuExtraClock.Show24Hour = true;
     NSGlobalDomain = {
       AppleInterfaceStyle = "Dark";
       KeyRepeat = 2;
