@@ -3,7 +3,7 @@
 
   (standard-themes-take-over-modus-themes-mode t)
 
-  (setq modus-themes-variable-pitch-ui t
+  (setq modus-themes-variable-pitch-ui 0
         modus-themes-mixed-fonts t
         modus-themes-to-rotate nil ; defaults to the return value of `modus-themes-get-themes'
 	modus-themes-headings ; read the manual's entry of the doc string

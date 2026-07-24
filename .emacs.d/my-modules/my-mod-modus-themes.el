@@ -4,7 +4,7 @@
   (modus-themes-include-derivatives-mode t)
 
   (setq modus-themes-mixed-fonts t
-        modus-themes-variable-pitch-ui t
+        modus-themes-variable-pitch-ui 0
         modus-themes-italic-constructs t
         modus-themes-bold-constructs t
         modus-themes-completions '((t . (bold)))

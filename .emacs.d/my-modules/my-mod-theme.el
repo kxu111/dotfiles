@@ -2,7 +2,7 @@
 (require 'my-mod-ef-themes)
 (require 'my-mod-doric-themes)
 (require 'my-mod-standard-themes)
-(load-theme 'ef-owl)
+(load-theme 'doric-borage)
 
 (my-emacs-configure
   (use-package fontaine)
@@ -15,39 +15,25 @@
   (setq-default text-scale-remap-header-line t)
 
   (setq fontaine-presets
-	'((Aporetic-Sans-Regular
+	'((IBM-Plex-Regular
 	   :default-height 200
-	   :default-family "Aporetic Sans Mono"
-	   :fixed-pitch-family "Aporetic Sans Mono"
-	   :variable-pitch-family "Aporetic Sans")
-	  (Aporetic-Sans-Large
+	   :default-family "IBM Plex Mono"
+	   :fixed-pitch-family "IBM Plex Mono"
+	   :variable-pitch-family "IBM Plex Sans")
+	  (IBM-Plex-Large
 	   :default-height 260
-	   :default-family "Aporetic Sans Mono"
-	   :fixed-pitch-family "Aporetic Sans Mono"
-	   :variable-pitch-family "Aporetic Sans")
-
-          (Aporetic-Serif-Regular
-	   :default-height 200
-	   :default-family "Aporetic Serif Mono"
-	   :fixed-pitch-family "Aporetic Serif Mono"
-	   :variable-pitch-family "Aporetic Serif")
-	  (Aporetic-Serif-Large
-	   :default-height 260
-	   :default-family "Aporetic Serif Mono"
-	   :fixed-pitch-family "Aporetic Serif Mono"
-	   :variable-pitch-family "Aporetic Serif")
+	   :default-family "IBM Plex Mono"
+	   :fixed-pitch-family "IBM Plex Mono"
+	   :variable-pitch-family "IBM Plex Sans")
 
 	  (t
 	   :default-height 200
-	   :default-family "Aporetic Serif Mono"
-	   :fixed-pitch-family "Aporetic Serif Mono"
-	   :variable-pitch-family "Aporetic Serif")
+	   :default-family "IBM Plex Mono"
+	   :fixed-pitch-family "IBM Plex Mono"
+	   :variable-pitch-family "IBM Plex Sans")
 	  ))
 
-  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
-
-  (with-eval-after-load 'pulsar
-    (add-hook 'fontaine-set-preset-hook #'pulsar-pulse-line)))
+  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular)))
 
 (when (display-graphic-p)
   (my-emacs-configure

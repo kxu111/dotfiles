@@ -39,9 +39,7 @@
     }:
     {
       darwinConfigurations."air" = nix-darwin.lib.darwinSystem {
-        specialArgs = {
-          inherit self;
-        };
+        specialArgs = { inherit self; };
         modules = [
           ./modules/packages.nix
           ./modules/homebrew.nix

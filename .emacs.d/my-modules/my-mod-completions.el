@@ -39,15 +39,7 @@
     (let ((buffers '("*Async-native-compile-log*" "*straight-process*" "*straight-byte-compilation*" "*direnv*" "*Messages*" "*Help*" "*Backtrace*" "*Warnings*" "*Native-compile-Log" "*elfeed-tube-log*")))
       (dolist (buf buffers) (add-to-list 'consult-buffer-filter (regexp-quote buf))))
     (add-to-list 'consult-buffer-filter "\\*EGLOT.*\\*")
-    (add-to-list 'consult-buffer-filter "magit.*:"))
-
-  ;; `pulsar' package
-  (setq consult-after-jump-hook nil)
-  (my-emacs-hook
-    consult-after-jump-hook
-    (pulsar-recenter-top pulsar-reveal-entry)
-    nil
-    pulsar))
+    (add-to-list 'consult-buffer-filter "magit.*:")))
 
 (my-emacs-configure
  (use-package marginalia :config (marginalia-mode))

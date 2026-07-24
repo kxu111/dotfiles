@@ -1,3 +1,4 @@
 .config/homebrew/trust.json.lock
 .config/mpv/scripts/sponsorblock_shared/sponsorblock.txt
+.config/mpv/watch_later
 .user-lisp-autoloads.el

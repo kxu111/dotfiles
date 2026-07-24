@@ -21,7 +21,6 @@
   ];
 
   fonts.packages = with pkgs; [
-    iosevka-bin
-    aporetic-bin
+    ibm-plex
   ];
 }

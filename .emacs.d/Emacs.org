@@ -368,7 +368,7 @@ Splitting into multiple files allows me to review the individual source code fil
   (modus-themes-include-derivatives-mode t)
 
   (setq modus-themes-mixed-fonts t
-        modus-themes-variable-pitch-ui t
+        modus-themes-variable-pitch-ui 0
         modus-themes-italic-constructs t
         modus-themes-bold-constructs t
         modus-themes-completions '((t . (bold)))
@@ -399,7 +399,7 @@ Splitting into multiple files allows me to review the individual source code fil
 
   (ef-themes-take-over-modus-themes-mode t)
 
-  (setq modus-themes-variable-pitch-ui t
+  (setq modus-themes-variable-pitch-ui 0
         modus-themes-mixed-fonts t
         modus-themes-bold-constructs t
         modus-themes-italic-constructs t
@@ -437,7 +437,7 @@ Splitting into multiple files allows me to review the individual source code fil
 
   (standard-themes-take-over-modus-themes-mode t)
 
-  (setq modus-themes-variable-pitch-ui t
+  (setq modus-themes-variable-pitch-ui 0
         modus-themes-mixed-fonts t
         modus-themes-to-rotate nil ; defaults to the return value of `modus-themes-get-themes'
 	modus-themes-headings ; read the manual's entry of the doc string
@@ -463,7 +463,7 @@ Splitting into multiple files allows me to review the individual source code fil
 (require 'my-mod-ef-themes)
 (require 'my-mod-doric-themes)
 (require 'my-mod-standard-themes)
-(load-theme 'ef-owl)
+(load-theme 'doric-borage)
 #+end_src
 
 *** The =my-mod-theme.el= section for fonts (~fontaine~)
@@ -482,39 +482,25 @@ Read the ~fontaine~ manual: <https://protesilaos.com/emacs/fontaine>.
   (setq-default text-scale-remap-header-line t)
 
   (setq fontaine-presets
-	'((Aporetic-Sans-Regular
+	'((IBM-Plex-Regular
 	   :default-height 200
-	   :default-family "Aporetic Sans Mono"
-	   :fixed-pitch-family "Aporetic Sans Mono"
-	   :variable-pitch-family "Aporetic Sans")
-	  (Aporetic-Sans-Large
+	   :default-family "IBM Plex Mono"
+	   :fixed-pitch-family "IBM Plex Mono"
+	   :variable-pitch-family "IBM Plex Sans")
+	  (IBM-Plex-Large
 	   :default-height 260
-	   :default-family "Aporetic Sans Mono"
-	   :fixed-pitch-family "Aporetic Sans Mono"
-	   :variable-pitch-family "Aporetic Sans")
-
-          (Aporetic-Serif-Regular
-	   :default-height 200
-	   :default-family "Aporetic Serif Mono"
-	   :fixed-pitch-family "Aporetic Serif Mono"
-	   :variable-pitch-family "Aporetic Serif")
-	  (Aporetic-Serif-Large
-	   :default-height 260
-	   :default-family "Aporetic Serif Mono"
-	   :fixed-pitch-family "Aporetic Serif Mono"
-	   :variable-pitch-family "Aporetic Serif")
+	   :default-family "IBM Plex Mono"
+	   :fixed-pitch-family "IBM Plex Mono"
+	   :variable-pitch-family "IBM Plex Sans")
 
 	  (t
 	   :default-height 200
-	   :default-family "Aporetic Serif Mono"
-	   :fixed-pitch-family "Aporetic Serif Mono"
-	   :variable-pitch-family "Aporetic Serif")
+	   :default-family "IBM Plex Mono"
+	   :fixed-pitch-family "IBM Plex Mono"
+	   :variable-pitch-family "IBM Plex Sans")
 	  ))
 
-  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular))
-
-  (with-eval-after-load 'pulsar
-    (add-hook 'fontaine-set-preset-hook #'pulsar-pulse-line)))
+  (fontaine-set-preset (or (fontaine-restore-latest-preset) 'regular)))
 #+end_src
 
 *** The =my-mod-theme.el= section for ~spacious-padding~
@@ -545,32 +531,6 @@ Read the ~fontaine~ manual: <https://protesilaos.com/emacs/fontaine>.
       (setq x-underline-at-descent-line (when spacious-padding-subtle-frame-lines t))))
 
   (spacious-padding-mode t))
-#+end_src
-
-*** COMMENT The =my-mod-theme.el= section for ~pulsar~
-
-This is yet another package by Protesilaos. This package temporarily highlights your current line after running certain functions.
-Read the ~pulsar~ manual: <https://protesilaos.com/emacs/pulsar>.
-
-#+begin_src emacs-lisp :tangle "my-modules/my-mod-theme.el"
-(my-emacs-configure
-  (use-package pulsar)
-
-  (pulsar-global-mode t)
-
-  (my-emacs-hook
-    (next-error-hook minibuffer-setup-hook)
-    (pulsar-pulse-line-red pulsar-recenter-top pulsar-reveal-entry))
-
-  (setq pulsar-delay 0.055)
-  (setq pulsar-iterations 5)
-  (setq pulsar-face 'pulsar-blue)
-  (setq pulsar-region-face 'pulsar-yellow)
-  (setq pulsar-highlight-face 'pulsar-magenta)
-
-  (define-key global-map (kbd "C-x l") #'pulsar-pulse-line) ; override `count-lines-page'
-  (define-key global-map (kbd "C-x L") #'pulsar-highlight-permanently-dwim) ; or use `pulsar-highlight-temporarily-dwim'
-  )
 #+end_src
 
 *** The =my-mod-theme.el= call to ~provide~
@@ -775,14 +735,7 @@ I like to pull ~org-mode~ straight from the git mirror as to get the cutting-edg
     (org-startup-indented t)
     (org-hide-emphasis-markers t)
     (org-cycle-separator-lines 1) ; Keep a line between folded headings
-    (org-src-content-indentation 0)
-    )
-
-  (my-emacs-hook
-   (org-agenda-after-show-hook org-follow-link-hook)
-   (pulsar-recenter-center pulsar-reveal-entry)
-   nil
-   pulsar))
+    (org-src-content-indentation 0)))
 #+end_src
 
 *** The =my-mod-org.el= section for ~org-babel~
@@ -1011,15 +964,7 @@ I enjoy using =M-s= combined with another keybind in order to create lots of key
     (let ((buffers '("*Async-native-compile-log*" "*straight-process*" "*straight-byte-compilation*" "*direnv*" "*Messages*" "*Help*" "*Backtrace*" "*Warnings*" "*Native-compile-Log" "*elfeed-tube-log*")))
       (dolist (buf buffers) (add-to-list 'consult-buffer-filter (regexp-quote buf))))
     (add-to-list 'consult-buffer-filter "\\*EGLOT.*\\*")
-    (add-to-list 'consult-buffer-filter "magit.*:"))
-
-  ;; `pulsar' package
-  (setq consult-after-jump-hook nil)
-  (my-emacs-hook
-    consult-after-jump-hook
-    (pulsar-recenter-top pulsar-reveal-entry)
-    nil
-    pulsar))
+    (add-to-list 'consult-buffer-filter "magit.*:")))
 #+end_src
 
 *** The =my-mod-completions= submodule for miscellaneous minibuffer packages
@@ -1119,8 +1064,7 @@ It is based off Protesilaos' =prot-modeline.el= which you can find inside of his
 
 #+begin_src emacs-lisp :tangle "my-libraries/my-lib-modeline.el"
 (defvar my-major-mode-icons
-  '((dired-mode   "")
-    (prog-mode    "λ")
+  '((prog-mode    "λ")
     (conf-mode    "Σ")
     (text-mode    "§")
     (t            "·")))
@@ -1256,7 +1200,7 @@ It is based off Protesilaos' =prot-modeline.el= which you can find inside of his
   '(:eval
     (when buffer-read-only
       (propertize
-       " "
+       " "
        'face (if (mode-line-window-selected-p)
 		 'my-modeline-red
 	       'my-modeline-gray)))))

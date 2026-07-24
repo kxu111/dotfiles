@@ -1,6 +1,5 @@
 (defvar my-major-mode-icons
-  '((dired-mode   "")
-    (prog-mode    "λ")
+  '((prog-mode    "λ")
     (conf-mode    "Σ")
     (text-mode    "§")
     (t            "·")))
@@ -128,7 +127,7 @@
   '(:eval
     (when buffer-read-only
       (propertize
-       " "
+       " "
        'face (if (mode-line-window-selected-p)
 		 'my-modeline-red
 	       'my-modeline-gray)))))
