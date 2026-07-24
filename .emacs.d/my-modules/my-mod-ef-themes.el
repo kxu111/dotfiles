@@ -19,6 +19,6 @@
           (7 . (variable-pitch 1.2))
           (agenda-date . (semilight 1.5))
           (agenda-structure . (variable-pitch light 1.9))
-          (t . (variable-pitch 1.1))))
+          (t . (variable-pitch 1.1)))))
 
-  (provide 'my-mod-ef-themes))
+(provide 'my-mod-ef-themes)

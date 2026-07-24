@@ -415,9 +415,9 @@ Splitting into multiple files allows me to review the individual source code fil
           (7 . (variable-pitch 1.2))
           (agenda-date . (semilight 1.5))
           (agenda-structure . (variable-pitch light 1.9))
-          (t . (variable-pitch 1.1))))
+          (t . (variable-pitch 1.1)))))
 
-  (provide 'my-mod-ef-themes))
+(provide 'my-mod-ef-themes)
 #+end_src
 
 **** The =my-mod-doric-themes.el= module
@@ -641,8 +641,8 @@ If you use ~auto-save-visited-mode~, you may find it annoying that your whitespa
 *** The =my-mod-essentials.el= section for ~display-time-mode~
 
 #+begin_src emacs-lisp :tangle "my-modules/my-mod-essentials.el"
-(setq display-time-string-forms '((format-time-string "%a %d %b, %H:%M")))
-;; (display-time-mode t)
+(setq display-time-string-forms '((concat " " (format-time-string "%a %d %b, %H:%M"))))
+(display-time-mode t)
 #+end_src
 
 *** The =my-mod-essentials.el= bind for ~other-window~
@@ -672,6 +672,17 @@ When you launch Emacs from a GUI application launcher such as MacOS Spotlight, E
 #+begin_src emacs-lisp :tangle "my-modules/my-mod-essentials.el"
 (my-emacs-configure
   (add-hook 'text-mode #'variable-pitch-mode))
+#+end_src
+
+*** The =my-mod-essentials.el= section for bookmarks
+
+#+begin_src emacs-lisp :tangle "my-modules/my-mod-essentials.el"
+(my-emacs-configure
+  ;; Emacs 29 to hide bookmark fringe icon
+  (setq bookmark-fringe-mark nil)
+  ;; Write changes to the bookmark file as soon as modification is made.
+  ;; Otherwise Emacs will only save the bookmarks when it closes.
+  (setq bookmark-save-flag 1))
 #+end_src
 
 *** The =my-mod-essentials.el= call to ~provide~
@@ -1286,7 +1297,9 @@ It is based off Protesilaos' =prot-modeline.el= which you can find inside of his
 (defvar my-modeline-misc-info
   '(:eval
     (when (mode-line-window-selected-p)
-      mode-line-misc-info)))
+      (let ((misc (format-mode-line mode-line-misc-info)))
+        (unless (string-empty-p misc)
+          (concat " " misc))))))
 #+end_src
 
 *** The =my-lib-modeline.el= call to ~provide~

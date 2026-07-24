@@ -169,6 +169,8 @@
 (defvar my-modeline-misc-info
   '(:eval
     (when (mode-line-window-selected-p)
-      mode-line-misc-info)))
+      (let ((misc (format-mode-line mode-line-misc-info)))
+        (unless (string-empty-p misc)
+          (concat " " misc))))))
 
 (provide 'my-lib-modeline)

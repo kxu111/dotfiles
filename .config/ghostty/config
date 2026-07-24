@@ -17,8 +17,6 @@ copy-on-select          = clipboard
 macos-option-as-alt     = true
 
 # tmux binds
-keybind = super+t=text:\x02t
-
 keybind = super+digit_1=text:\x02\x31
 keybind = super+digit_2=text:\x02\x32
 keybind = super+digit_3=text:\x02\x33

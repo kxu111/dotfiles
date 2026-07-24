@@ -30,7 +30,7 @@ osascript -e "tell application \"System Events\" to tell every desktop to set pi
 
 source ~/.zshenv
 source ~/.zshrc
-crontab ~/.config/crontab
+crontab ~/.config/cron/crontab
 git config --global core.excludesfile ~/.gitignore-global
 
 # --- Bootstrap packages

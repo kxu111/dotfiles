@@ -67,9 +67,8 @@
     (setq spacious-padding-subtle-frame-lines
           '( :mode-line-active spacious-padding-line-active
              :mode-line-inactive spacious-padding-line-inactive
-             ;; :header-line-active spacious-padding-line-active
-             ;; :header-line-inactive spacious-padding-line-inactive
-	     ))
+             :header-line-active spacious-padding-line-active
+             :header-line-inactive spacious-padding-line-inactive))
 
     (when (< emacs-major-version 29)
       (setq x-underline-at-descent-line (when spacious-padding-subtle-frame-lines t))))

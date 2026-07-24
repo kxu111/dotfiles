@@ -27,8 +27,8 @@
 		(duplicate-line)
 		(next-line))))
 
-(setq display-time-string-forms '((format-time-string "%a %d %b, %H:%M")))
-;; (display-time-mode t)
+(setq display-time-string-forms '((concat " " (format-time-string "%a %d %b, %H:%M"))))
+(display-time-mode t)
 
 (define-key global-map (kbd "M-o") #'other-window)
 
@@ -40,5 +40,12 @@
 
 (my-emacs-configure
   (add-hook 'text-mode #'variable-pitch-mode))
+
+(my-emacs-configure
+  ;; Emacs 29 to hide bookmark fringe icon
+  (setq bookmark-fringe-mark nil)
+  ;; Write changes to the bookmark file as soon as modification is made.
+  ;; Otherwise Emacs will only save the bookmarks when it closes.
+  (setq bookmark-save-flag 1))
 
 (provide 'my-mod-essentials)
