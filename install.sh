@@ -25,7 +25,8 @@ cd ~/dotfiles
 stow . --adopt
 
 # Set wallpaper
-osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$HOME/dotfiles/misc/walls/sunflower.jpg\""
+# osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$HOME/dotfiles/misc/walls/sunflower.jpg\""
+osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$HOME/dotfiles/misc/walls/black.png\""
 
 source ~/.zshenv
 source ~/.zshrc
@@ -55,3 +56,4 @@ ghcup install stack
 # ---
 
 echo "Remember to disable spotlight and the \"game overlay\" keybind."
+echo "Remember set \"increase contrast\"."

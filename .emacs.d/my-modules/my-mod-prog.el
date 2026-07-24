@@ -1,4 +1,12 @@
 (my-emacs-configure
+  ;; Display line numbers
+  (setq display-line-numbers-width 3)
+  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+
+  (add-hook 'prog-mode-hook #'hl-line-mode)
+  )
+
+(my-emacs-configure
  (use-package eglot
    :bind
    (:map eglot-mode-map

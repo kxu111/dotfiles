@@ -10,6 +10,7 @@
     brews = [
       "mas"
       "mpv"
+      "imagemagick"
     ];
     casks = [
       "vesktop"

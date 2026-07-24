@@ -33,6 +33,7 @@
       "com.apple.mouse.tapBehavior" = 1;
       NSAutomaticPeriodSubstitutionEnabled = false;
       NSWindowShouldDragOnGesture = true;
+      _HIHideMenuBar = true;
     };
     ".GlobalPreferences"."com.apple.mouse.scaling" = -1.0;
     trackpad.Clicking = true;

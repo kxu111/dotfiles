@@ -1,11 +1,9 @@
-;;; -*- lexical-binding: t; -*-
-
 (defvar my-modeline-icons
   '((dired-mode   "")
     (archive-mode "🮯")
     (diff-mode    "⇄")
     (prog-mode    "λ")
-    (conf-mode    "")
+    (conf-mode    "¶")
     (text-mode    "¶")
     (comint-mode  "⨠")
     (t            "·")))

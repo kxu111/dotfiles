@@ -22,6 +22,8 @@ vim.o.swapfile = false
 vim.o.cursorline = true
 vim.o.ruler = false
 vim.o.signcolumn = "yes"
+vim.o.ignorecase = true
+vim.o.smartcase = true
 
 map("n", "<C-u>", "<C-u>zz")
 map("n", "<C-d>", "<C-d>zz")

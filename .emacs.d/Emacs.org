@@ -527,7 +527,7 @@ Read the ~fontaine~ manual: <https://protesilaos.com/emacs/fontaine>.
     (define-key global-map (kbd "<f8>") #'spacious-padding-mode)
 
     (setq spacious-padding-widths
-          `( :internal-border-width 20
+          `( :internal-border-width 15
              :header-line-width 4
              :mode-line-width 6
              :tab-width 4
@@ -547,7 +547,7 @@ Read the ~fontaine~ manual: <https://protesilaos.com/emacs/fontaine>.
   (spacious-padding-mode t))
 #+end_src
 
-*** The =prot-emacs-theme.el= section for ~pulsar~
+*** COMMENT The =my-mod-theme.el= section for ~pulsar~
 
 This is yet another package by Protesilaos. This package temporarily highlights your current line after running certain functions.
 Read the ~pulsar~ manual: <https://protesilaos.com/emacs/pulsar>.
@@ -819,6 +819,18 @@ This module is to configure packages and parameters relevant to ~prog-mode~.
 
 *When installing programming modes, use ~:defer t~ to avoid them loading preemptively.* I don't know if this does anything, but it's good to be safe.
 
+*** The =my-mod-prog.el= section for ~prog-mode-hook~
+
+#+begin_src emacs-lisp :tangle "my-modules/my-mod-prog.el"
+(my-emacs-configure
+  ;; Display line numbers
+  (setq display-line-numbers-width 3)
+  (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+
+  (add-hook 'prog-mode-hook #'hl-line-mode)
+  )
+#+end_src
+
 *** The =my-mod-prog.el= section for ~eglot~ (LSP client)
 
 ~Eglot~ is a client for using LSP (Language Server Protocol) servers. I prefer it over ~lsp-mode~ because it is more lightweight and makes use of builtin Emacs features rather than implementing its own.
@@ -1085,19 +1097,19 @@ Here are some packages that improve your ~vertico~ experience:
 
 * The libraries in my configuration (=my-libraries/=)
 
+** TODO The =my-lib-icons.el= library
+
 ** The =my-lib-modeline.el= library
 
 This library defines the icons, faces, and components of my modeline.
 
 #+begin_src emacs-lisp :tangle "my-libraries/my-lib-modeline.el"
-;;; -*- lexical-binding: t; -*-
-
 (defvar my-modeline-icons
   '((dired-mode   "")
     (archive-mode "🮯")
     (diff-mode    "⇄")
     (prog-mode    "λ")
-    (conf-mode    "")
+    (conf-mode    "¶")
     (text-mode    "¶")
     (comint-mode  "⨠")
     (t            "·")))

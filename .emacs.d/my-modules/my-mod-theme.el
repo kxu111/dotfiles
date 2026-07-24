@@ -56,7 +56,7 @@
     (define-key global-map (kbd "<f8>") #'spacious-padding-mode)
 
     (setq spacious-padding-widths
-          `( :internal-border-width 20
+          `( :internal-border-width 15
              :header-line-width 4
              :mode-line-width 6
              :tab-width 4
@@ -74,24 +74,5 @@
       (setq x-underline-at-descent-line (when spacious-padding-subtle-frame-lines t))))
 
   (spacious-padding-mode t))
-
-(my-emacs-configure
-  (use-package pulsar)
-
-  (pulsar-global-mode t)
-
-  (my-emacs-hook
-    (next-error-hook minibuffer-setup-hook)
-    (pulsar-pulse-line-red pulsar-recenter-top pulsar-reveal-entry))
-
-  (setq pulsar-delay 0.055)
-  (setq pulsar-iterations 5)
-  (setq pulsar-face 'pulsar-blue)
-  (setq pulsar-region-face 'pulsar-yellow)
-  (setq pulsar-highlight-face 'pulsar-magenta)
-
-  (define-key global-map (kbd "C-x l") #'pulsar-pulse-line) ; override `count-lines-page'
-  (define-key global-map (kbd "C-x L") #'pulsar-highlight-permanently-dwim) ; or use `pulsar-highlight-temporarily-dwim'
-  )
 
 (provide 'my-mod-theme)
